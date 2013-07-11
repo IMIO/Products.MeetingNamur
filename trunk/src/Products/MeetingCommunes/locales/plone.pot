@@ -1,0 +1,159 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MeetingCommunes\n"
+"POT-Creation-Date: 2007-08-29 07:12-100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: \n"
+"Language-Name: \n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: plone\n"
+
+#. Default: "MeetingCollege"
+msgid "MeetingCollege"
+msgstr ""
+
+#. Default: "MeetingItemCollege"
+msgid "MeetingItemCollege"
+msgstr ""
+
+#. Default: "MeetincCouncil"
+msgid "MeetingCouncil"
+msgstr ""
+
+#. Default: "MeetingItemCouncil"
+msgid "MeetingItemCouncil"
+msgstr ""
+
+# College item workflow states specific vocabulary
+#. Default: "Accepted with modifications"
+msgid "accepted_but_modified"
+msgstr ""
+
+#. Default: "Pre accepted"
+msgid "pre_accepted"
+msgstr ""
+
+# College meeting workflow states specific vocabulary
+#. Default: "decided"
+msgid "decided"
+msgstr ""
+
+#. Default: "Frozen"
+msgid "frozen"
+msgstr ""
+
+# College meeting workflow transitions specific vocabulary
+#. Default: "Decide"
+msgid "decide"
+msgstr ""
+
+#. Default: "Itemfrozen"
+msgid "itemfrozen"
+msgstr ""
+
+#. Default: "Accept with modifications"
+msgid "accept_but_modify"
+msgstr ""
+
+#. Default: "Pre accept"
+msgid "pre_accept"
+msgstr ""
+
+#. Default: "Meeting BP"
+msgid "Meetingbp"
+msgstr ""
+
+#. Default: "Meeting item BP"
+msgid "MeetingItembp"
+msgstr ""
+
+#. Default: "Meeting CAS"
+msgid "Meetingcas"
+msgstr ""
+
+#. Default: "Meeting item CAS"
+msgid "MeetingItemcas"
+msgstr ""
+
+#. Default: "Meeting Comitee"
+msgid "Meetingcomitee"
+msgstr ""
+
+#. Default: "Meeting item Comitee"
+msgid "MeetingItemcomitee"
+msgstr ""
+
+#. Default: "UID not found!"
+msgid "UID not found!"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the council."
+msgid "sendto_meeting-config-council_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the college."
+msgid "sendto_meeting-config-college_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the bp."
+msgid "sendto_meeting-config-bp_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the cas."
+msgid "sendto_meeting-config-cas_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the comitee."
+msgid "sendto_meeting-config-comitee_success"
+msgstr ""
+
+#. Default: "Back to created"
+msgid "backToCreated"
+msgstr ""
+
+#. Default: "Back to decided"
+msgid "backToDecided"
+msgstr ""
+
+#. Default: "Back to frozen"
+msgid "backToFrozen"
+msgstr ""
+
+#. Default: "Back to item created"
+msgid "backToItemCreated"
+msgstr ""
+
+#. Default: "Back to item frozen"
+msgid "backToItemFrozen"
+msgstr ""
+
+#. Default: "Back to presented"
+msgid "backToPresented"
+msgstr ""
+
+#. Default: "Back to pre-validated"
+msgid "backToPrevalidated"
+msgstr ""
+
+#. Default: "Back to proposed"
+msgid "backToProposed"
+msgstr ""
+
+#. Default: "Back to published"
+msgid "backToPublished"
+msgstr ""
+
+#. Default: "Back to decisions published"
+msgid "backToDecisionsPublished"
+msgstr ""
+
+#. Default: "Decisions published"
+msgid "decisions_published"
+msgstr ""
+
+#. Default: "Publish decisions"
+msgid "publish_decisions"
+msgstr ""
