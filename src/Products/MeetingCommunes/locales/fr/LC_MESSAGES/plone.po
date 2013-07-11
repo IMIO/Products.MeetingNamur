@@ -1,0 +1,165 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2007-08-29 07:12-100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: plone\n"
+"Language-code: fr\n"
+"Language-name: French\n"
+"Preferred-encodings: utf-8 latin1\n"
+"X-is-fallback-for: fr-be fr-ca fr-lu fr-mc fr-ch fr-fr\n"
+
+#. Default: "MeetingCollege"
+msgid "MeetingCollege"
+msgstr "Séance du Collège Communal"
+
+#. Default: "MeetincCouncil"
+msgid "MeetingCouncil"
+msgstr "Séance du Conseil Communal"
+
+#. Default: "MeetingItemCollege"
+msgid "MeetingItemCollege"
+msgstr "Point collège"
+
+#. Default: "MeetingItemCouncil"
+msgid "MeetingItemCouncil"
+msgstr "Point Conseil"
+
+#. Default: "Meeting item BP"
+msgid "MeetingItembp"
+msgstr "Point Bureau Permanent"
+
+#. Default: "Meeting item CAS"
+msgid "MeetingItemcas"
+msgstr "Point Conseil de l'Action Sociale"
+
+#. Default: "Meeting item Comitee"
+msgid "MeetingItemcomitee"
+msgstr "Point Comité de Concertation"
+
+#. Default: "Meeting BP"
+msgid "Meetingbp"
+msgstr "Séance du Bureau Permanent"
+
+#. Default: "Meeting CAS"
+msgid "Meetingcas"
+msgstr "Séance du Conseil de l'Action Sociale"
+
+#. Default: "Meeting Comitee"
+msgid "Meetingcomitee"
+msgstr "Séance du Comité de Concertation"
+
+#. Default: "UID not found!"
+msgid "UID not found!"
+msgstr "L'élément à déplacer n'a pas été trouvé!"
+
+#. Default: "Accept with modifications"
+msgid "accept_but_modify"
+msgstr "Accepter avec modifications"
+
+#. Default: "Accepted with modifications"
+msgid "accepted_but_modified"
+msgstr "Accepté avec modifications"
+
+#. Default: "Back to created"
+msgid "backToCreated"
+msgstr "Remettre \"En création\""
+
+#. Default: "Back to decided"
+msgid "backToDecided"
+msgstr "Remettre en \"Rédaction du PV\""
+
+#. Default: "Back to decisions published"
+msgid "backToDecisionsPublished"
+msgstr "Remettre en \"Décisions publiées\""
+
+#. Default: "Back to frozen"
+msgid "backToFrozen"
+msgstr "Remettre en \"Gelée\""
+
+#. Default: "Back to item created"
+msgid "backToItemCreated"
+msgstr "Remettre \"En création\""
+
+#. Default: "Back to item frozen"
+msgid "backToItemFrozen"
+msgstr "Remettre en \"Gelé\""
+
+#. Default: "Back to presented"
+msgid "backToPresented"
+msgstr "Remettre en \"Présenté\""
+
+#. Default: "Back to pre-validated"
+msgid "backToPrevalidated"
+msgstr "Remettre en \"Accepté provisoirement\""
+
+#. Default: "Back to proposed"
+msgid "backToProposed"
+msgstr "Remettre en \"Proposé\""
+
+#. Default: "Back to published"
+msgid "backToPublished"
+msgstr "Remettre en \"Publié\""
+
+# College meeting workflow transitions specific vocabulary
+#. Default: "Decide"
+msgid "decide"
+msgstr "Rédiger le PV"
+
+# College meeting workflow states specific vocabulary
+#. Default: "decided"
+msgid "decided"
+msgstr "Rédaction du PV"
+
+#. Default: "Decisions published"
+msgid "decisions_published"
+msgstr "Décisions publiées"
+
+#. Default: "Frozen"
+msgid "frozen"
+msgstr "Gelé"
+
+#. Default: "Itemfrozen"
+msgid "itemfrozen"
+msgstr "Gelé"
+
+#. Default: "Pre accept"
+msgid "pre_accept"
+msgstr "Accepter provisoirement"
+
+#. Default: "Pre accepted"
+msgid "pre_accepted"
+msgstr "Accepté provisoirement"
+
+#. Default: "Publish decisions"
+msgid "publish_decisions"
+msgstr "Publier les décisions"
+
+#. Default: "The item has been successfully transfered to the bp."
+msgid "sendto_meeting-config-bp_success"
+msgstr "Le point a été envoyé au Bureau permanent."
+
+#. Default: "The item has been successfully transfered to the cas."
+msgid "sendto_meeting-config-cas_success"
+msgstr "Le point a été envoyé au Conseil de l'Action Sociale."
+
+#. Default: "The item has been successfully transfered to the college."
+msgid "sendto_meeting-config-college_success"
+msgstr "Le point a été envoyé au Collège."
+
+#. Default: "The item has been successfully transfered to the comitee."
+msgid "sendto_meeting-config-comitee_success"
+msgstr "Le point a été envoyé au Comité de concertation."
+
+#. Default: "The item has been successfully transfered to the council."
+msgid "sendto_meeting-config-council_success"
+msgstr "Le point a été envoyé au Conseil communal."

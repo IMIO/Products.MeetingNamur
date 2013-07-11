@@ -1,0 +1,260 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2005-05-17 15:00-100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: PloneMeeting\n"
+"Language-code: en\n"
+"Language-name: English\n"
+"Preferred-encodings: utf-8 latin1\n"
+"X-is-fallback-for: en-us en-ca\n"
+
+# portal_tabs
+#. Default: "Meeting config College"
+msgid "Meeting config College"
+msgstr "Meeting config College"
+
+#. Default: "Meeting config Council"
+msgid "Meeting config Council"
+msgstr "Meeting config Council"
+
+#. Default: "If the group is responsible of other groups, select them here above, either do not select any elements of the list."
+msgid "MeetingCommune_descr_echevinServices"
+msgstr "If the group is responsible of other groups, select them here above, either do not select any elements of the list."
+
+#. Default: "Alderman of the following services (departments)"
+#, fuzzy
+msgid "MeetingCommune_label_echevinServices"
+msgstr "Alderman of the following services(departments)"
+
+#. Default: "If you specify signatures here, it will be used while generating documents of this proposing group.  Either, signatures defined on the meeting will be used."
+msgid "MeetingCommunes_descr_signatures"
+msgstr ""
+
+#. Default: "Signatures delegation"
+#, fuzzy
+msgid "MeetingCommunes_label_signatures"
+msgstr "Signatures Delegation"
+
+# MeetingItem
+#. Default: "Decision"
+msgid "PloneMeeting_label_decision"
+msgstr "Decision"
+
+#. Default: "Gives mandatory advice on"
+msgid "PloneMeeting_label_givesMandatoryAdviceOn"
+msgstr ""
+
+#. Default: "Decision used when the item is delayed"
+msgid "PloneMeeting_label_itemDecisionReportText"
+msgstr ""
+
+#. Default: "The item has been accepted with modifications."
+msgid "accept_but_modify_done_descr"
+msgstr ""
+
+#. Default: "The item has been accepted."
+msgid "accept_done_descr"
+msgstr ""
+
+#. Default: "PloneMeeting"
+msgid "app_name"
+msgstr ""
+
+#. Default: "Add [[ ]] around absent people (like [[Mister Sample Peter]])"
+msgid "assembly_meeting_descr"
+msgstr ""
+
+#. Default: "The meeting has been set back to 'created'."
+msgid "backToCreated_done_descr"
+msgstr ""
+
+#. Default: "The meeting has been set back to 'decided', it can be edited again."
+msgid "backToDecided_done_descr"
+msgstr ""
+
+#. Default: "The meeting has been set back to 'decisions published'."
+msgid "backToDecisionsPublished_done_descr"
+msgstr ""
+
+#. Default: "The meeting has been set back to 'frozen'."
+msgid "backToFrozen_done_descr"
+msgstr ""
+
+#. Default: "The item has been set back to 'presented'.."
+msgid "backToPresented_done_descr"
+msgstr ""
+
+#. Default: "The meeting is now closed, every items for wich no decisions had been taken, have been automatically accepted."
+msgid "close_done_descr"
+msgstr ""
+
+#. Default: "Create an item council from an item college"
+msgid "create_to_meeting-config-council_from_meeting-config-college"
+msgstr ""
+
+#. Default: "Item created from a college item"
+msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
+msgstr ""
+
+#. Default: "You can now decide the items and write reports."
+msgid "decide_done_descr"
+msgstr ""
+
+#. Default: "Decision"
+msgid "decision"
+msgstr "Decision"
+
+#. Default: "<p>The decision is currently under edit by managers, you can not access it</p>"
+msgid "decision_under_edit"
+msgstr ""
+
+#. Default: "Decisions"
+msgid "decisions"
+msgstr "Decisions"
+
+#. Default: "The item has been delayed.  It has been duplicated for the corresponding proposing group so it can propose it again easily."
+msgid "delay_done_descr"
+msgstr ""
+
+#. Default: "When advice mandatoriness is enforced, an item can't be inserted into a meeting unless all mandatory advices are given and positive."
+msgid "enforce_advice_mandatoriness_descr"
+msgstr ""
+
+# transitions descriptions
+#. Default: "The meeting has been frozen."
+msgid "freeze_done_descr"
+msgstr ""
+
+#. Default: "Specify here a TAL expression that will return True if the group must give a mandatory advice on an item.  We receive 'item' as the meeting item to give an advice on.  WARNING if the group of advisers linked to this PloneMeeting group os empty, it will no be considered, despite the result of the TAL expression"
+msgid "gives_mandatory_advice_on_descr"
+msgstr ""
+
+#. Default: "For every field you select here, PloneMeeting will keep track of any change on any item, if it is in one of the 'historizable' states as defined below."
+msgid "historized_item_attrs_descr"
+msgstr ""
+
+#. Default: "For every field you select here, PloneMeeting will keep track of any change on any meeting, if it is in one of the 'historizable' states as defined below."
+msgid "historized_meeting_attrs_descr"
+msgstr ""
+
+#. Default: "Configure PloneMeeting"
+msgid "hs_configuration"
+msgstr ""
+
+#. Default: "Welcome to PloneMeeting!"
+msgid "hs_welcome_title"
+msgstr ""
+
+#. Default: "Accepted but modified"
+#, fuzzy
+msgid "icon_help_accepted_but_modified"
+msgstr "accepted but modified"
+
+#. Default: "Pre accepted"
+#, fuzzy
+msgid "icon_help_pre_accepted"
+msgstr "pre accepted"
+
+#. Default: "Public"
+msgid "ip_public"
+msgstr ""
+
+#. Default: "Secret"
+msgid "ip_secret"
+msgstr ""
+
+#. Default: "If you don't fill this field, meeting assembly will be used for this item.  Add [[ ]] around absent people (like [[Mister Sample Peter]])"
+msgid "item_assembly_descr"
+msgstr ""
+
+#. Default: "When an item is delay, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
+msgid "item_decision_report_text_descr"
+msgstr ""
+
+#. Default: "The item has been frozen."
+msgid "itemfreeze_done_descr"
+msgstr ""
+
+# Other
+#. Default: "Late items"
+msgid "late_presented_items"
+msgstr "Late items"
+
+#. Default: "Description"
+msgid "meeting_item_description"
+msgstr "Description"
+
+#. Default: "Choose advisers that will have to issue an optional advice for this item"
+msgid "optional_advisers_item_descr"
+msgstr ""
+
+#. Default: "Decision"
+msgid "portletdecisions_title"
+msgstr "Decisions"
+
+#. Default: "Meeting"
+msgid "portletmeetings_title"
+msgstr ""
+
+#. Default: "Commented"
+msgid "positive_with_remarks"
+msgstr ""
+
+#. Default: "The item has been pre accepted."
+msgid "pre_accept_done_descr"
+msgstr ""
+
+#. Default: "Present every selected items"
+msgid "present_several_items"
+msgstr "Present every selected items"
+
+#. Default: "Decisions have been published and are now visible to relevant proposing groups."
+msgid "publish_decisions_done_descr"
+msgstr ""
+
+#. Default: "The item has been refused."
+msgid "refuse_done_descr"
+msgstr ""
+
+#. Default: "Every decisions"
+msgid "searchalldecisions"
+msgstr "see every decisions"
+
+#. Default: "Decided items"
+#, fuzzy
+msgid "searchdecideditems"
+msgstr "Decided items"
+
+#. Default: "Items of my group"
+msgid "searchgroupitems"
+msgstr "items of my service"
+
+#. Default: "Items to validate"
+msgid "searchitemstovalidate"
+msgstr ""
+
+# searches
+#. Default: "Proposed items"
+#, fuzzy
+msgid "searchproposeditems"
+msgstr "Items to validate"
+
+#. Default: "Validated items"
+#, fuzzy
+msgid "searchvalidateditems"
+msgstr "Validated items"
+
+#. Default: "Hide the decision to the proposing group when it is under writing."
+msgid "wa_add_published_state"
+msgstr ""
+

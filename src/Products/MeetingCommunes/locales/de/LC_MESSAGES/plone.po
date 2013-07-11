@@ -1,0 +1,170 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MeetingCommunes\n"
+"POT-Creation-Date: 2007-08-29 07:12-100\n"
+"PO-Revision-Date: 2009-11-10 11:35+0100\n"
+"Last-Translator: Arnold François <arnold.francois@oshz-eupen.be>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: de\n"
+"Language-Name: Deutsch\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: plone\n"
+"X-Is-Fallback-For: de-at de-li de-lu de-ch de-de\n"
+
+#. Default: "MeetingCollege"
+msgid "MeetingCollege"
+msgstr "Sitzung des Gemeindekollegiums"
+
+#. Default: "MeetincCouncil"
+msgid "MeetingCouncil"
+msgstr "Sitzung des Gemeinderats"
+
+#. Default: "MeetingItemCollege"
+msgid "MeetingItemCollege"
+msgstr "TOP Kollegium"
+
+#. Default: "MeetingItemCouncil"
+msgid "MeetingItemCouncil"
+msgstr "TOP Rat"
+
+#. Default: "Meeting item BP"
+msgid "MeetingItembp"
+msgstr "TOP Ständiges Präsidium"
+
+#. Default: "Meeting item CAS"
+msgid "MeetingItemcas"
+msgstr "TOP Sozialhilferat"
+
+#. Default: "Meeting item Comitee"
+msgid "MeetingItemcomitee"
+msgstr "TOP Konzertierungsausschuss"
+
+#. Default: "Meeting BP"
+msgid "Meetingbp"
+msgstr "Sitzung Ständiges Präsidium"
+
+#. Default: "Meeting CAS"
+msgid "Meetingcas"
+msgstr "Sitzung Sozialhilferat"
+
+#. Default: "Meeting Comitee"
+msgid "Meetingcomitee"
+msgstr "Sitzung Konzertierungsausschuss"
+
+#. Default: "UID not found!"
+msgid "UID not found!"
+msgstr ""
+
+#. Default: "Accept with modifications"
+#, fuzzy
+msgid "accept_but_modify"
+msgstr "Angenommen aber ändern"
+
+#. Default: "Accepted with modifications"
+#, fuzzy
+msgid "accepted_but_modified"
+msgstr "Angenommen aber geändert"
+
+#. Default: "Back to created"
+msgid "backToCreated"
+msgstr ""
+
+#. Default: "Back to decided"
+msgid "backToDecided"
+msgstr ""
+
+#. Default: "Back to decisions published"
+msgid "backToDecisionsPublished"
+msgstr ""
+
+#. Default: "Back to frozen"
+msgid "backToFrozen"
+msgstr ""
+
+#. Default: "Back to item created"
+msgid "backToItemCreated"
+msgstr ""
+
+#. Default: "Back to item frozen"
+msgid "backToItemFrozen"
+msgstr ""
+
+#. Default: "Back to presented"
+msgid "backToPresented"
+msgstr ""
+
+#. Default: "Back to pre-validated"
+msgid "backToPrevalidated"
+msgstr ""
+
+#. Default: "Back to proposed"
+msgid "backToProposed"
+msgstr ""
+
+#. Default: "Back to published"
+msgid "backToPublished"
+msgstr ""
+
+# College meeting workflow transitions specific vocabulary
+#. Default: "Decide"
+#, fuzzy
+msgid "decide"
+msgstr "Protokoll verfassen"
+
+# College meeting workflow states specific vocabulary
+#. Default: "decided"
+msgid "decided"
+msgstr "Verfassung des Protokolls"
+
+#. Default: "Decisions published"
+msgid "decisions_published"
+msgstr ""
+
+#. Default: "Frozen"
+#, fuzzy
+msgid "frozen"
+msgstr "Gesperrt"
+
+#. Default: "Itemfrozen"
+#, fuzzy
+msgid "itemfrozen"
+msgstr "TOP gesperrt"
+
+#. Default: "Pre accept"
+#, fuzzy
+msgid "pre_accept"
+msgstr "Provisiorisch aktzeptieren"
+
+#. Default: "Pre accepted"
+#, fuzzy
+msgid "pre_accepted"
+msgstr "Provisorisch akzeptiert"
+
+#. Default: "Publish decisions"
+msgid "publish_decisions"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the bp."
+msgid "sendto_meeting-config-bp_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the cas."
+msgid "sendto_meeting-config-cas_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the college."
+msgid "sendto_meeting-config-college_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the comitee."
+msgid "sendto_meeting-config-comitee_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the council."
+msgid "sendto_meeting-config-council_success"
+msgstr ""
+

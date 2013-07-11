@@ -1,0 +1,169 @@
+# translation of MeetingCommunes-plone-es.po to Spanish
+# Leonardo Caballero <leonardocaballero@gmail.com>, 2009.
+# Spanish translation team <plone-conosur@lists.plone.org>
+msgid ""
+msgstr ""
+"Project-Id-Version: MeetingCommunes-plone\n"
+"POT-Creation-Date: 2007-08-29 07:12-100\n"
+"PO-Revision-Date: 2009-03-10 11:12-0430\n"
+"Last-Translator: Leonardo Caballero <leonardocaballero@gmail.com>\n"
+"Language-Team: Spanish <plone-conosur@lists.plone.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: es\n"
+"Language-Name: Spanish\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: plone\n"
+"X-Is-Fallback-For: es-ar es-bo es-cl es-co es-cr es-do es-ec es-es es-sv es-gt es-hn es-mx es-ni es-pa es-py es-pe es-pr es-us es-uy es-ve\n"
+
+#. Default: "MeetingCollege"
+msgid "MeetingCollege"
+msgstr "Reunión del Colegio Comunal"
+
+#. Default: "MeetincCouncil"
+msgid "MeetingCouncil"
+msgstr "Reunión del Consejo Comunal"
+
+#. Default: "MeetingItemCollege"
+msgid "MeetingItemCollege"
+msgstr "Tema Colegio"
+
+#. Default: "MeetingItemCouncil"
+msgid "MeetingItemCouncil"
+msgstr "Tema Consejo"
+
+#. Default: "Meeting item BP"
+msgid "MeetingItembp"
+msgstr "Tema Oficina Permanente"
+
+#. Default: "Meeting item CAS"
+msgid "MeetingItemcas"
+msgstr "Tema Consejo Social"
+
+#. Default: "Meeting item Comitee"
+msgid "MeetingItemcomitee"
+msgstr "Tema Comite de Concertación"
+
+#. Default: "Meeting BP"
+msgid "Meetingbp"
+msgstr "Reunión de Oficina Permanente"
+
+#. Default: "Meeting CAS"
+msgid "Meetingcas"
+msgstr "Reunión de Consejo Social"
+
+#. Default: "Meeting Comitee"
+msgid "Meetingcomitee"
+msgstr "Reunión de Comité de Concertación"
+
+#. Default: "UID not found!"
+msgid "UID not found!"
+msgstr ""
+
+#. Default: "Accept with modifications"
+msgid "accept_but_modify"
+msgstr ""
+
+#. Default: "Accepted with modifications"
+msgid "accepted_but_modified"
+msgstr ""
+
+#. Default: "Back to created"
+msgid "backToCreated"
+msgstr ""
+
+#. Default: "Back to decided"
+msgid "backToDecided"
+msgstr ""
+
+#. Default: "Back to decisions published"
+msgid "backToDecisionsPublished"
+msgstr ""
+
+#. Default: "Back to frozen"
+msgid "backToFrozen"
+msgstr ""
+
+#. Default: "Back to item created"
+msgid "backToItemCreated"
+msgstr ""
+
+#. Default: "Back to item frozen"
+msgid "backToItemFrozen"
+msgstr ""
+
+#. Default: "Back to presented"
+msgid "backToPresented"
+msgstr ""
+
+#. Default: "Back to pre-validated"
+msgid "backToPrevalidated"
+msgstr ""
+
+#. Default: "Back to proposed"
+msgid "backToProposed"
+msgstr ""
+
+#. Default: "Back to published"
+msgid "backToPublished"
+msgstr ""
+
+# College meeting workflow transitions specific vocabulary
+#. Default: "Decide"
+#, fuzzy
+msgid "decide"
+msgstr "escribir el Acta"
+
+# College meeting workflow states specific vocabulary
+#. Default: "decided"
+msgid "decided"
+msgstr "redacción de Acta"
+
+#. Default: "Decisions published"
+msgid "decisions_published"
+msgstr ""
+
+#. Default: "Frozen"
+#, fuzzy
+msgid "frozen"
+msgstr "congelado"
+
+#. Default: "Itemfrozen"
+#, fuzzy
+msgid "itemfrozen"
+msgstr "congelado"
+
+#. Default: "Pre accept"
+msgid "pre_accept"
+msgstr ""
+
+#. Default: "Pre accepted"
+msgid "pre_accepted"
+msgstr ""
+
+#. Default: "Publish decisions"
+msgid "publish_decisions"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the bp."
+msgid "sendto_meeting-config-bp_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the cas."
+msgid "sendto_meeting-config-cas_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the college."
+msgid "sendto_meeting-config-college_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the comitee."
+msgid "sendto_meeting-config-comitee_success"
+msgstr ""
+
+#. Default: "The item has been successfully transfered to the council."
+msgid "sendto_meeting-config-council_success"
+msgstr ""
+
