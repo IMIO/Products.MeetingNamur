@@ -41,7 +41,7 @@ def updateRoleMappings(context):
 def postInstall(context):
     """Called as at the end of the setup process. """
     # the right place for your custom code
-    if isNotMeetingCommunesProfile(context):
+    if isNotMeetingNamurProfile(context):
         return
     logStep("postInstall", context)
     site = context.getSite()
@@ -58,36 +58,31 @@ def logStep(method, context):
                 (method, '/'.join(context._profile_path.split(os.sep)[-3:])))
 
 
-def isMeetingCommunesConfigureProfile(context):
-    return context.readDataFile("MeetingCommunes_examples_fr_marker.txt") or \
-        context.readDataFile("MeetingCommunes_examples_marker.txt") or \
-        context.readDataFile("MeetingCommunes_cpas_marker.txt") or \
-        context.readDataFile("MeetingCommunes_testing_marker.txt")
+def isMeetingNamurConfigureProfile(context):
+    return context.readDataFile("MeetingNamur_examples_fr_marker.txt") or \
+           context.readDataFile("MeetingNamur_tests_marker.txt")
 
-def isNotMeetingCommunesDemoProfile(context):
-    return context.readDataFile("MeetingCommunes_demo_marker.txt") is None
-
-def isMeetingCommunesTestingProfile(context):
-    return context.readDataFile("MeetingCommunes_testing_marker.txt")
+def isMeetingNamurTestingProfile(context):
+    return context.readDataFile("MeetingNamur_tests_marker.txt")
 
 
-def isMeetingCommunesMigrationProfile(context):
-    return context.readDataFile("MeetingCommunes_migrations_marker.txt")
+def isMeetingNamurMigrationProfile(context):
+    return context.readDataFile("MeetingNamur_migrations_marker.txt")
 
 
-def installMeetingCommunes(context):
+def installMeetingNamur(context):
     """ Run the default profile"""
-    if not isMeetingCommunesConfigureProfile(context):
+    if not isMeetingNamurConfigureProfile(context):
         return
-    logStep("installMeetingCommunes", context)
+    logStep("installMeetingNamur", context)
     portal = context.getSite()
-    portal.portal_setup.runAllImportStepsFromProfile('profile-Products.MeetingCommunes:default')
+    portal.portal_setup.runAllImportStepsFromProfile('profile-Products.MeetingNamur:default')
 
 
 def initializeTool(context):
     '''Initialises the PloneMeeting tool based on information from the current
        profile.'''
-    if not isMeetingCommunesConfigureProfile(context):
+    if not isMeetingNamurConfigureProfile(context):
         return
 
     logStep("initializeTool", context)
@@ -101,7 +96,7 @@ def reinstallPloneMeeting(context, site):
     '''Reinstall PloneMeeting so after install methods are called and applied,
        like performWorkflowAdaptations for example.'''
 
-    if isNotMeetingCommunesProfile(context):
+    if isNotMeetingNamurProfile(context):
         return
 
     logStep("reinstallPloneMeeting", context)
@@ -118,7 +113,7 @@ def showHomeTab(context, site):
     """
        Make sure the 'home' tab is shown...
     """
-    if isNotMeetingCommunesProfile(context):
+    if isNotMeetingNamurProfile(context):
         return
 
     logStep("showHomeTab", context)
@@ -132,10 +127,10 @@ def showHomeTab(context, site):
 
 def reinstallPloneMeetingSkin(context, site):
     """
-       Reinstall Products.plonemeetingskin as the reinstallation of MeetingCommunes
+       Reinstall Products.plonemeetingskin as the reinstallation of MeetingNamur
        change the portal_skins layers order
     """
-    if isNotMeetingCommunesProfile(context) and not isMeetingCommunesConfigureProfile:
+    if isNotMeetingNamurProfile(context) and not isMeetingNamurConfigureProfile:
         return
 
     logStep("reinstallPloneMeetingSkin", context)
@@ -153,18 +148,13 @@ def finalizeExampleInstance(context):
        Some parameters can not be handled by the PloneMeeting installation,
        so we handle this here
     """
-    if not isMeetingCommunesConfigureProfile(context):
+    if not isMeetingNamurConfigureProfile(context):
         return
 
-    # finalizeExampleInstance will behave differently if on
-    # a Commune instance or CPAS instance
+    # finalizeExampleInstance on namur instance
     specialUserId = 'bourgmestre'
     meetingConfig1Id = 'meeting-config-college'
     meetingConfig2Id = 'meeting-config-council'
-    if context.readDataFile("MeetingCommunes_cpas_marker.txt"):
-        specialUserId = 'president'
-        meetingConfig1Id = 'meeting-config-bp'
-        meetingConfig2Id = 'meeting-config-cas'
 
     site = context.getSite()
 
@@ -202,9 +192,9 @@ def finalizeExampleInstance(context):
          getattr(mc_council_or_cas.topics, 'searchallitemsincopy'),
          ])
 
-    # finally, re-launch plonemeetingskin and MeetingCommunes skins step
+    # finally, re-launch plonemeetingskin and MeetingNamur skins step
     # because PM has been installed before the import_data profile and messed up skins layers
-    site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingCommunes:default', 'skins')
+    site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingNamur:default', 'skins')
     site.portal_setup.runImportStepFromProfile(u'profile-plonetheme.imioapps:default', 'skins')
     site.portal_setup.runImportStepFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin', 'skins')
     # define default workflowAdaptations for council
@@ -219,7 +209,7 @@ def reorderCss(context):
        Make sure CSS are correctly reordered in portal_css so things
        work as expected...
     """
-    if isNotMeetingCommunesProfile(context) and not isMeetingCommunesConfigureProfile(context):
+    if isNotMeetingNamurProfile(context) and not isMeetingNamurConfigureProfile(context):
         return
 
     site = context.getSite()
@@ -230,127 +220,12 @@ def reorderCss(context):
     css = ['plonemeeting.css',
            'meeting.css',
            'meetingitem.css',
-           'meetingcommunes.css',
+           'meetingnamur.css',
            'imioapps.css',
            'plonemeetingskin.css',
            'imioapps_IEFixes.css',
            'ploneCustom.css']
     for resource in css:
         portal_css.moveResourceToBottom(resource)
-
-
-def addDemoData(context):
-    ''' '''
-    if isNotMeetingCommunesDemoProfile(context):
-        return
-
-    site = context.getSite()
-    tool = getToolByName(site, 'portal_plonemeeting')
-    wfTool = getToolByName(site, 'portal_workflow')
-    pTool = getToolByName(site, 'plone_utils')
-    # we will create elements for some users, make sure their personal
-    # area is correctly configured
-    site.portal_membership.createMemberArea('agentPers')
-    site.portal_membership.createMemberArea('agentInfo')
-    site.portal_membership.createMemberArea('agentCompta')
-    # create 5 meetings : 2 passed, 1 current and 2 future
-    today = DateTime()
-    dates = [today-13, today-6, today+1, today+8, today+15]
-    # login as 'secretaire'
-    site.portal_membership.createMemberArea('secretaire')
-    secrFolder = tool.getPloneMeetingFolder('meeting-config-college', 'secretaire')
-    for date in dates:
-        meetingId = secrFolder.invokeFactory('MeetingCollege', id=date.strftime('%Y%m%d'))
-        meeting = getattr(secrFolder, meetingId)
-        meeting.setDate(date)
-        pTool.changeOwnershipOf(meeting, 'secretaire')
-        meeting.processForm()
-        # -13 meeting is closed
-        if date == today-13:
-            wfTool.doActionFor(meeting, 'freeze')
-            wfTool.doActionFor(meeting, 'decide')
-            wfTool.doActionFor(meeting, 'close')
-        # -6 meeting is frozen
-        if date == today-6:
-            wfTool.doActionFor(meeting, 'freeze')
-            wfTool.doActionFor(meeting, 'decide')
-        meeting.reindexObject()
-
-    # items dict here : the key is the user we will create the item for
-    # we use item templates so content is created for the demo
-    items = {'agentPers': ({'templateId': 'template3',
-                            'title': u'Engagement temporaire d\'un informaticien',
-                            'budgetRelated': False,
-                            'review_state': 'validated', },
-                           {'templateId': 'template2',
-                            'title': u'Contrôle médical de Mr Antonio',
-                            'budgetRelated': False,
-                            'review_state': 'proposed', },
-                           {'templateId': 'template2',
-                            'title': u'Contrôle médical de Mlle Debbeus',
-                            'budgetRelated': False,
-                            'review_state': 'proposed', },
-                           {'templateId': 'template2',
-                            'title': u'Contrôle médical de Mme Hanck',
-                            'budgetRelated': False,
-                            'review_state': 'validated', },
-                           {'templateId': 'template4',
-                            'title': u'Prestation réduite Mme Untelle, instritutrice maternelle',
-                            'budgetRelated': False,
-                            'review_state': 'validated', },),
-             'agentInfo': ({'templateId': 'template5',
-                            'title': u'Achat nouveaux serveurs',
-                            'budgetRelated': True,
-                            'review_state': 'validated',
-                            },
-                           {'templateId': 'template5',
-                            'title': u'Marché public, contestation entreprise Untelle SA',
-                            'budgetRelated': False,
-                            'review_state': 'validated',
-                            },),
-             'agentCompta': ({'templateId': 'template5',
-                              'title': u'Présentation budget 2014',
-                              'budgetRelated': True,
-                              'review_state': 'validated',
-                              },
-                             {'templateId': 'template5',
-                              'title': u'Plainte de Mme Daise, taxe immondice',
-                              'budgetRelated': False,
-                              'review_state': 'validated',
-                              },
-                             {'templateId': 'template5',
-                              'title': u'Plainte de Mme Uneautre, taxe piscine',
-                              'budgetRelated': False,
-                              'review_state': 'proposed',
-                              },),
-             'secretaire': ({'templateId': 'template1',
-                             'title': u'Tutelle CPAS : point 1 BP du 15 juin',
-                             'budgetRelated': False,
-                             'review_state': 'created',
-                             },
-                            {'templateId': 'template5',
-                             'title': u'Tutelle CPAS : point 2 BP du 15 juin',
-                             'budgetRelated': False,
-                             'review_state': 'proposed',
-                             },
-                            {'templateId': 'template5',
-                             'title': u'Tutelle CPAS : point 16 BP du 15 juin',
-                             'budgetRelated': True,
-                             'review_state': 'validated',
-                             },),
-             }
-    for userId in items:
-        userFolder = tool.getPloneMeetingFolder('meeting-config-college', userId)
-        for item in items[userId]:
-            # get the template then clone it
-            template = getattr(tool.getMeetingConfig(userFolder).recurringitems, item['templateId'])
-            newItem = template.clone(newOwnerId=userId)
-            newItem.setTitle(item['title'])
-            newItem.setBudgetRelated(item['budgetRelated'])
-            if item['review_state'] in ['proposed', 'validated', ]:
-                wfTool.doActionFor(newItem, 'propose')
-            if item['review_state'] == 'validated':
-                wfTool.doActionFor(newItem, 'validate')
-            newItem.reindexObject()
 
 ##/code-section FOOT

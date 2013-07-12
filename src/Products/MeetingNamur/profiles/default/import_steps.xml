@@ -8,7 +8,7 @@
     id="MeetingNamur-Update-RoleMappings" 
     handler="Products.MeetingNamur.setuphandlers.updateRoleMappings"
     title="Update Workflow role mappings for MeetingNamur"
-    version="2013-07-12T14:55:48.331721">
+    version="2013-01-08T14:58:30.881371">
    <dependency step="MeetingNamur-QI-dependencies"/>
    updates the workflow role mappings for MeetingNamur
  </import-step>
@@ -17,20 +17,29 @@
     id="MeetingNamur-postInstall" 
     handler="Products.MeetingNamur.setuphandlers.postInstall"
     title="manual coded post-install for MeetingNamur"
-    version="2013-07-12T14:55:48.331721">
+    version="2013-01-08T14:58:30.881371">
    <dependency step="MeetingNamur-QI-dependencies"/>
    manual coded post-install for MeetingNamur
  </import-step>
 
 <!-- ##code-section ADDITIONALSTEPS -->
- <import-step
-    id="MeetingCommunes-reorderCss"
-    handler="Products.MeetingCommunes.setuphandlers.reorderCss"
-    title="Make sure CSS order is correct."
-    version="2013-04-22T13:00:00.000000">
-   <dependency step="MeetingCommunes-postInstall"/>
-   Make sure CSS order is correct.
+ <import-step 
+    id="MeetingNamur-addTaxControllerGroup" 
+    handler="Products.MeetingNamur.setuphandlers.addTaxControllerGroup"
+    title="Add a Tax Controller group"
+    version="2011-02-01T15:00:00">
+   <dependency step="MeetingNamur-QI-dependencies"/>
+   Add a TaxController group
  </import-step>
+ 
+ <import-step 
+    id="MeetingNamur-unregisterSomeSteps" 
+    handler="Products.MeetingNamur.setuphandlers.unregisterSomeSteps"
+    title="Some old steps are no more used, remove them!"
+    version="2012-03-06T10:50:00.000000">
+   Some old steps are no more used, remove them!
+ </import-step>
+ 
 <!-- ##/code-section ADDITIONALSTEPS -->
 
 </import-steps>

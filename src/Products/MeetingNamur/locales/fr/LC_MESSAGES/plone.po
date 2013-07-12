@@ -62,104 +62,82 @@ msgstr "Séance du Comité de Concertation"
 msgid "UID not found!"
 msgstr "L'élément à déplacer n'a pas été trouvé!"
 
-#. Default: "Accept with modifications"
+#. Default: "accept but modify"
 msgid "accept_but_modify"
-msgstr "Accepter avec modifications"
+msgstr "accepter avec modifications"
 
-#. Default: "Accepted with modifications"
+#. Default: "accepted but modified"
 msgid "accepted_but_modified"
-msgstr "Accepté avec modifications"
+msgstr "accepté avec modifications"
 
-#. Default: "Back to created"
-msgid "backToCreated"
-msgstr "Remettre \"En création\""
+#. Default: "Advices and copies"
+msgid "advices"
+msgstr "Avis et copies"
 
-#. Default: "Back to decided"
-msgid "backToDecided"
-msgstr "Remettre en \"Rédaction du PV\""
+#. Default: "backToCreated_done_descr"
+msgid "backToCreated_done_descr"
+msgstr "Vous venez d'annuler le gel de l'ordre du jour."
 
-#. Default: "Back to decisions published"
-msgid "backToDecisionsPublished"
-msgstr "Remettre en \"Décisions publiées\""
+#. Default: "backToDecided_done_descr"
+msgid "backToDecided_done_descr"
+msgstr "Vous pouvez à nouveau modifier le procès-verbal."
 
-#. Default: "Back to frozen"
-msgid "backToFrozen"
-msgstr "Remettre en \"Gelée\""
+#. Default: "backToFrozen_done_descr"
+msgid "backToFrozen_done_descr"
+msgstr "Vous ne pouvez plus rédiger le Procès-verbal pour l'instant."
 
-#. Default: "Back to item created"
-msgid "backToItemCreated"
-msgstr "Remettre \"En création\""
+#. Default: "close"
+msgid "close"
+msgstr "clôturer"
 
-#. Default: "Back to item frozen"
-msgid "backToItemFrozen"
-msgstr "Remettre en \"Gelé\""
+#. Default: "close_done_descr"
+msgid "close_done_descr"
+msgstr "Le procès-verbal est maintenant clôturé, tous les points pour lesquels aucune décision n'avait été prise ont été automatiquement acceptés."
 
-#. Default: "Back to presented"
-msgid "backToPresented"
-msgstr "Remettre en \"Présenté\""
-
-#. Default: "Back to pre-validated"
-msgid "backToPrevalidated"
-msgstr "Remettre en \"Accepté provisoirement\""
-
-#. Default: "Back to proposed"
-msgid "backToProposed"
-msgstr "Remettre en \"Proposé\""
-
-#. Default: "Back to published"
-msgid "backToPublished"
-msgstr "Remettre en \"Publié\""
+#. Default: "closed"
+msgid "closed"
+msgstr "clôturé"
 
 # College meeting workflow transitions specific vocabulary
-#. Default: "Decide"
+#. Default: ""
 msgid "decide"
-msgstr "Rédiger le PV"
+msgstr "rédiger le PV"
+
+#. Default: "decide_done_descr"
+msgid "decide_done_descr"
+msgstr "Vous pouvez maintenant rédiger le Procès-verbal de cette séance."
 
 # College meeting workflow states specific vocabulary
 #. Default: "decided"
 msgid "decided"
-msgstr "Rédaction du PV"
+msgstr "rédaction du PV"
 
-#. Default: "Decisions published"
-msgid "decisions_published"
-msgstr "Décisions publiées"
+# transitions descriptions
+#. Default: "freeze_done_descr"
+msgid "freeze_done_descr"
+msgstr "L'ordre du jour vient d'être gelé."
 
-#. Default: "Frozen"
+#. Default: "frozen"
 msgid "frozen"
-msgstr "Gelé"
+msgstr "gelé"
 
-#. Default: "Itemfrozen"
+#. Default: "itemfrozen"
 msgid "itemfrozen"
-msgstr "Gelé"
+msgstr "gelé"
 
-#. Default: "Pre accept"
+#. Default: "pre accept"
 msgid "pre_accept"
-msgstr "Accepter provisoirement"
+msgstr "accepter provisoirement"
 
-#. Default: "Pre accepted"
+#. Default: "pre accepted"
 msgid "pre_accepted"
-msgstr "Accepté provisoirement"
-
-#. Default: "Publish decisions"
-msgid "publish_decisions"
-msgstr "Publier les décisions"
-
-#. Default: "The item has been successfully transfered to the bp."
-msgid "sendto_meeting-config-bp_success"
-msgstr "Le point a été envoyé au Bureau permanent."
-
-#. Default: "The item has been successfully transfered to the cas."
-msgid "sendto_meeting-config-cas_success"
-msgstr "Le point a été envoyé au Conseil de l'Action Sociale."
-
-#. Default: "The item has been successfully transfered to the college."
-msgid "sendto_meeting-config-college_success"
-msgstr "Le point a été envoyé au Collège."
-
-#. Default: "The item has been successfully transfered to the comitee."
-msgid "sendto_meeting-config-comitee_success"
-msgstr "Le point a été envoyé au Comité de concertation."
+msgstr "accepté provisoirement"
 
 #. Default: "The item has been successfully transfered to the council."
 msgid "sendto_meeting-config-council_success"
 msgstr "Le point a été envoyé au Conseil communal."
+
+# College item workflow states specific vocabulary
+#. Default: "validated"
+msgid "validated"
+msgstr "validé"

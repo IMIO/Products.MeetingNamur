@@ -17,7 +17,23 @@ msgid "PloneMeeting_label_decision"
 msgstr ""
 
 #. Default: "Description"
+msgid "PloneMeeting_label_description"
+msgstr ""
+
+#. Default: "Acronym"
+msgid "meetingNamur_acronym_descri_msgid"
+msgstr ""
+
+#. Default: "Description"
 msgid "meeting_item_description"
+msgstr ""
+
+#. Default: "Description"
+msgid "projectOfDecision"
+msgstr ""
+
+#. Default: "Description"
+msgid "projectOfDecision_label"
 msgstr ""
 
 # Other
@@ -54,24 +70,32 @@ msgid "present_several_items"
 msgstr ""
 
 #searches
-#. Default: "Proposed items"
+#. Default: "proposed items"
 msgid "searchproposeditems"
 msgstr ""
 
-#. Default: "Items to validate"
-msgid "searchitemstovalidate"
-msgstr ""
-
-#. Default: "Validated items"
+#. Default: "validated items"
 msgid "searchvalidateditems"
 msgstr ""
 
-#. Default: "Decided items"
+#. Default: "decided items"
 msgid "searchdecideditems"
+msgstr ""
+
+#. Default: "PowerObservers"
+msgid "powerObserversGroupTitle"
+msgstr ""
+
+#. Default: "TaxController"
+msgid "taxControllerGroupTitle"
 msgstr ""
 
 #. Default: "PloneMeeting"
 msgid "app_name"
+msgstr ""
+
+#. Default: "Configure PloneMeeting"
+msgid "search_advanced"
 msgstr ""
 
 #. Default: "Choose advisers that will have to issue an optional advice for this item"
@@ -94,28 +118,24 @@ msgstr ""
 msgid "hs_welcome_title"
 msgstr ""
 
-#. Default: "Public"
-msgid "ip_public"
+#. Default: "Linked items"
+msgid "PloneMeeting_label_predecessor"
 msgstr ""
 
-#. Default: "Secret"
-msgid "ip_secret"
-msgstr ""
-
-#. Default: "Alderman of the following services (departments)"
+#. Default: "Alderman of the following services(departments)"
 msgid "MeetingCommune_label_echevinServices"
 msgstr ""
 
-#. Default: "If the group is responsible of other groups, select them here above, either do not select any elements of the list."
+#. Default: "Leave empty if he is not an echevin"
 msgid "MeetingCommune_descr_echevinServices"
 msgstr ""
 
-#. Default: "If you specify signatures here, it will be used while generating documents of this proposing group.  Either, signatures defined on the meeting will be used."
-msgid "MeetingCommunes_descr_signatures"
+#. Default: "Leave empty to use the signatures defined on the meeting"
+msgid "MeetingCommune_descr_signatures"
 msgstr ""
 
-#. Default: "Signatures delegation"
-msgid "MeetingCommunes_label_signatures"
+#. Default: "Signatures Delegation"
+msgid "MeetingCommune_label_signatures"
 msgstr ""
 
 #. Default: "Gives mandatory advice on"
@@ -130,40 +150,48 @@ msgstr ""
 msgid "enforce_advice_mandatoriness_descr"
 msgstr ""
 
-#. Default: "Item created from a college item"
-msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
+#. Default: "budgetimpactreviewers"
+msgid "budgetimpactreviewers"
 msgstr ""
 
-#. Default: "Create an item council from an item college"
-msgid "create_to_meeting-config-council_from_meeting-config-college"
+#. Default: "GrpBudgetInfos"
+msgid "MeetingNamur_descr_grpBudgetInfos"
 msgstr ""
 
-#. Default: "If you don't fill this field, meeting assembly will be used for this item.  Add [[ ]] around absent people (like [[Mister Sample Peter]])"
-msgid "item_assembly_descr"
+#. Default: "MeetingNamur_label_grpBudgetInfos"
+msgid "MeetingNamur_label_grpBudgetInfos"
+msgstr ""
+
+# Mails (item corrected notifications)
+#. Default: "${portalTitle} - '${itemTitle}' must be corrected"
+msgid "itemMustBeCorrected_mail_subject"
+msgstr ""
+
+#. Default: "An item was sent back to you in PloneMeeting. You can find the item here ${objectUrl}."
+msgid "itemMustBeCorrected_mail_body"
 msgstr ""
 
 #. Default: "Add [[ ]] around absent people (like [[Mister Sample Peter]])"
 msgid "assembly_meeting_descr"
 msgstr ""
 
-#. Default: "Commented"
-msgid "positive_with_remarks"
+#. Default: "Observations for the preparatory meeting"
+msgid "PloneMeeting_label_preObservations"
 msgstr ""
 
-#portal_tabs
-#. Default: "Meeting config College"
-msgid "Meeting config College"
+#. Default: "Observations for the preparatory meeting"
+msgid "PloneMeeting_label_preObservations2"
 msgstr ""
 
-#. Default: "Meeting config Council"
-msgid "Meeting config Council"
+#. Default: "Observations"
+msgid "PloneMeeting_meetingObservations"
 msgstr ""
 
-#. Default: "Hide the decision to the proposing group when it is under writing."
-msgid "wa_add_published_state"
+#. Default: "Observations"
+msgid "PloneMeeting_meetingObservations2"
 msgstr ""
 
-#. Default: "Decision used when the item is delayed"
+#. Default: "Décision used when the item is reported"
 msgid "PloneMeeting_label_itemDecisionReportText"
 msgstr ""
 
@@ -171,75 +199,10 @@ msgstr ""
 msgid "item_decision_report_text_descr"
 msgstr ""
 
-#. Default: "<p>The decision is currently under edit by managers, you can not access it</p>"
-msgid "decision_under_edit"
+#. Default: "Décision used when the item is refused"
+msgid "PloneMeeting_label_itemDecisionRefuseText"
 msgstr ""
 
-#transitions descriptions
-#. Default: "The meeting has been frozen."
-msgid "freeze_done_descr"
-msgstr ""
-
-#. Default: "The meeting has been set back to 'created'."
-msgid "backToCreated_done_descr"
-msgstr ""
-
-#. Default: "You can now decide the items and write reports."
-msgid "decide_done_descr"
-msgstr ""
-
-#. Default: "The meeting has been set back to 'decided', it can be edited again."
-msgid "backToDecided_done_descr"
-msgstr ""
-
-#. Default: "The meeting has been set back to 'frozen'."
-msgid "backToFrozen_done_descr"
-msgstr ""
-
-#. Default: "The item has been set back to 'presented'.."
-msgid "backToPresented_done_descr"
-msgstr ""
-
-#. Default: "The item has been frozen."
-msgid "itemfreeze_done_descr"
-msgstr ""
-
-#. Default: "The item has been refused."
-msgid "refuse_done_descr"
-msgstr ""
-
-#. Default: "The item has been delayed.  It has been duplicated for the corresponding proposing group so it can propose it again easily."
-msgid "delay_done_descr"
-msgstr ""
-
-#. Default: "The item has been pre accepted."
-msgid "pre_accept_done_descr"
-msgstr ""
-
-#. Default: "The item has been accepted."
-msgid "accept_done_descr"
-msgstr ""
-
-#. Default: "The item has been accepted with modifications."
-msgid "accept_but_modify_done_descr"
-msgstr ""
-
-#. Default: "The meeting is now closed, every items for wich no decisions had been taken, have been automatically accepted."
-msgid "close_done_descr"
-msgstr ""
-
-#. Default: "The meeting has been set back to 'decisions published'."
-msgid "backToDecisionsPublished_done_descr"
-msgstr ""
-
-#. Default: "Decisions have been published and are now visible to relevant proposing groups."
-msgid "publish_decisions_done_descr"
-msgstr ""
-
-#. Default: "Accepted but modified"
-msgid "icon_help_accepted_but_modified"
-msgstr ""
-
-#. Default: "Pre accepted"
-msgid "icon_help_pre_accepted"
+#. Default: "When an item is refused, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
+msgid "item_decision_refuse_text_descr"
 msgstr ""
