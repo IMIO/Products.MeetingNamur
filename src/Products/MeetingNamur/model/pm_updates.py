@@ -1,20 +1,8 @@
 from Products.Archetypes.atapi import *
 from Products.PloneMeeting.Meeting import Meeting
+from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingGroup import MeetingGroup
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
-
-
-def update_meeting_schema(baseSchema):
-   
-    specificSchema = Schema((
-    ),)
-
-    baseSchema['assembly'].widget.description_msgid = "assembly_meeting_descr"
-
-    completeSchema = baseSchema + specificSchema.copy()
-    return completeSchema
-Meeting.schema = update_meeting_schema(Meeting.schema)
-
 
 def update_group_schema(baseSchema):
    
@@ -39,22 +27,60 @@ def update_group_schema(baseSchema):
         # field used to define specific signatures for a MeetingGroup
         TextField(
             name='signatures',
-            allowable_content_types=('text/plain',),
             widget=TextAreaWidget(
                 label='Signatures',
-                label_msgid='MeetingCommunes_label_signatures',
+                label_msgid='MeetingCommune_label_signatures',
                 description='Leave empty to use the signatures defined on the meeting',
-                description_msgid='MeetingCommunes_descr_signatures',
+                description_msgid='MeetingCommune_descr_signatures',
                 i18n_domain='PloneMeeting',
             ),
-            default_content_type='text/plain',
         ),
     ),)
 
     completeSchema = baseSchema + specificSchema.copy()
+    completeSchema['acronym'].widget.description = "Acronym"
+    completeSchema['acronym'].widget.description_msgid = "meetingNamur_acronym_descri_msgid"  
+
     return completeSchema
 MeetingGroup.schema = update_group_schema(MeetingGroup.schema)
 
+def update_item_schema(baseSchema):
+    specificSchema = Schema((
+
+    StringField(
+        name='grpBudgetInfos',
+        widget=MultiSelectionWidget(
+            description="GrpBudgetInfos",
+            description_msgid="MeetingNamur_descr_grpBudgetInfos",
+            size=10,
+            label='GrpBudgetInfos',
+            label_msgid='MeetingNamur_label_grpBudgetInfos',
+            i18n_domain='PloneMeeting',
+        ),
+        vocabulary='listGrpBudgetInfosAdviser',
+        multiValued=1,        
+        enforceVocabulary=False,
+        ),
+    ),)
+
+    baseSchema['description'].write_permission = "MeetingNamur: Write description"
+    baseSchema['description'].widget.label = "projectOfDecision"
+    baseSchema['description'].widget.label_msgid = "projectOfDecision_label"
+    
+    completeSchema = baseSchema + specificSchema.copy()
+    return completeSchema
+MeetingItem.schema = update_item_schema(MeetingItem.schema)
+    
+def update_meeting_schema(baseSchema):
+   
+    specificSchema = Schema((
+    ),)
+
+    baseSchema['assembly'].widget.description_msgid = "assembly_meeting_descr"
+
+    completeSchema = baseSchema + specificSchema.copy()
+    return completeSchema
+Meeting.schema = update_meeting_schema(Meeting.schema)
 
 def update_config_schema(baseSchema):
     specificSchema = Schema((
@@ -68,16 +94,25 @@ def update_config_schema(baseSchema):
                 label_msgid='PloneMeeting_label_itemDecisionReportText',
                 i18n_domain='PloneMeeting',
             ),
-        allowable_content_types=('text/plain',),
-        default_output_type="text/plain",
+        ),
+        
+        TextField(
+            name='itemDecisionRefuseText',
+            widget=TextAreaWidget(
+                description="ItemDecisionRefuseText",
+                description_msgid="item_decision_refuse_text_descr",
+                label='ItemDecisionRefuseText',
+                label_msgid='PloneMeeting_label_itemDecisionRefuseText',
+                i18n_domain='PloneMeeting',
+            ),
         )
     ),)
     
     completeConfigSchema = baseSchema + specificSchema.copy()
-    completeConfigSchema.moveField('itemDecisionReportText', after='budgetDefault')    
+    completeConfigSchema.moveField('itemDecisionReportText', after='budgetDefault')
+    completeConfigSchema.moveField('itemDecisionRefuseText', after='itemDecisionReportText')
     return completeConfigSchema
 MeetingConfig.schema = update_config_schema(MeetingConfig.schema)
-
 
 # Classes have already been registered, but we register them again here
 # because we have potentially applied some schema adaptations (see above).
