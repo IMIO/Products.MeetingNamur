@@ -57,8 +57,8 @@ WriteDecision = 'PloneMeeting: Write decision'
 setDefaultRoles(ReadDecision, ('Manager',))
 setDefaultRoles(WriteDecision, ('Manager',))
 
-STYLESHEETS = [{'id': 'meetingcommunes.css',
-                'title': 'MeetingCommunes CSS styles'}]
+STYLESHEETS = [{'id': 'meetingnamur.css',
+                'title': 'MeetingNamur CSS styles'}]
 
 # define some more value in MeetingConfig.topicsInfo so extra topics are created for each MeetingConfig
 from Products.PloneMeeting.MeetingConfig import MeetingConfig

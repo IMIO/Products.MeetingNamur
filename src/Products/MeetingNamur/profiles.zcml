@@ -17,33 +17,20 @@
       />
   
   <!-- ##code-section profiles.zcml-bottom #fill in your manual code here -->
-  <genericsetup:registerProfile
-   name="demo"
-   title="PloneMeeting / Demo profile for Communes with french examples"
-   description="Demo profile for Communes with french examples"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="examples"
-   title="PloneMeeting / Communes with english examples"
-   description="PloneMeeting for City College and Council (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
   <genericsetup:registerProfile
    name="examples_fr"
-   title="PloneMeeting / Communes with french examples"
-   description="PloneMeeting for City College and Council (Belgium)"
+   title="PloneMeeting / Namur with french examples"
+   description="PloneMeeting for Namur College and Council (Belgium)"
    provides="Products.GenericSetup.interfaces.EXTENSION"
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
   <genericsetup:registerProfile
-   name="zcpas"
-   title="PloneMeeting / CPAS"
-   description="PloneMeeting for CPAS (Belgium)"
+   name="tests"
+   title="PloneMeeting / Namur for unit tests : do not use manually"
+   description="PloneMeeting for Namur College and Council (Belgium) : unit test only"
    provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+   for="Products.CMFCore.interfaces.ISiteRoot"/>
 
   <genericsetup:upgradeStep
       title="Go to MeetingCommunes 3.0"

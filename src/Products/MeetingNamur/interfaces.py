@@ -20,7 +20,7 @@
 # 02110-1301, USA.
 #
 
-__author__ = """Gauthier Bastien <gbastien@commune.sambreville.be>"""
+__author__ = """Andre Nuyens <a.nuyens@imio.be>"""
 __docformat__ = 'plaintext'
 
 # ------------------------------------------------------------------------------
@@ -29,9 +29,9 @@ from Products.PloneMeeting.interfaces import \
     IMeetingWorkflowActions, IMeetingWorkflowConditions
 
 # ------------------------------------------------------------------------------
-class IMeetingItemCollegeWorkflowActions(IMeetingItemWorkflowActions):
+class IMeetingItemNamurCollegeWorkflowActions(IMeetingItemWorkflowActions):
     '''This interface represents a meeting item as viewed by the specific
-       item workflow that is defined in this MeetingCommunes product.'''
+       item workflow that is defined in this MeetingNamur product.'''
     def doPresent():
         """
           Triggered while doing the 'present' transition
@@ -44,9 +44,9 @@ class IMeetingItemCollegeWorkflowActions(IMeetingItemWorkflowActions):
         """
           Triggered while doing the 'pre_accept' transition
         """
-class IMeetingItemCollegeWorkflowConditions(IMeetingItemWorkflowConditions):
+class IMeetingItemNamurCollegeWorkflowConditions(IMeetingItemWorkflowConditions):
     '''This interface represents a meeting item as viewed by the specific
-       item workflow that is defined in this MeetingCommunes product.'''
+       item workflow that is defined in this MeetingNamur product.'''
     def mayDecide():
         """
           Guard for the 'decide' transition
@@ -63,9 +63,9 @@ class IMeetingItemCollegeWorkflowConditions(IMeetingItemWorkflowConditions):
         """
           Guard for the 'backToXXX' transitions
         """
-class IMeetingCollegeWorkflowActions(IMeetingWorkflowActions):
+class IMeetingNamurCollegeWorkflowActions(IMeetingWorkflowActions):
     '''This interface represents a meeting as viewed by the specific meeting
-       workflow that is defined in this MeetingCommunes product.'''
+       workflow that is defined in this MeetingNamur product.'''
     def doClose():
         """
           Triggered while doing the 'close' transition
@@ -82,9 +82,9 @@ class IMeetingCollegeWorkflowActions(IMeetingWorkflowActions):
         """
           Triggered while doing the 'doBackToCreated' transition
         """
-class IMeetingCollegeWorkflowConditions(IMeetingWorkflowConditions):
+class IMeetingNamurCollegeWorkflowConditions(IMeetingWorkflowConditions):
     '''This interface represents a meeting as viewed by the specific meeting
-       workflow that is defined in this MeetingCommunes product.'''
+       workflow that is defined in this MeetingNamur product.'''
     def mayFreeze():
         """
           Guard for the 'freeze' transition
@@ -105,9 +105,9 @@ class IMeetingCollegeWorkflowConditions(IMeetingWorkflowConditions):
         """
           Guard for the 'backToXXX' transitions
         """
-class IMeetingItemCouncilWorkflowActions(IMeetingItemWorkflowActions):
+class IMeetingItemNamurCouncilWorkflowActions(IMeetingItemWorkflowActions):
     '''This interface represents a meeting item as viewed by the specific
-       item workflow that is defined in this MeetingCommunes product.'''
+       item workflow that is defined in this MeetingNamur product.'''
     def doPresent():
         """
           Triggered while doing the 'present' transition
@@ -120,9 +120,9 @@ class IMeetingItemCouncilWorkflowActions(IMeetingItemWorkflowActions):
         """
           Triggered while doing the 'pre_accept' transition
         """
-class IMeetingItemCouncilWorkflowConditions(IMeetingItemWorkflowConditions):
+class IMeetingItemNamurCouncilWorkflowConditions(IMeetingItemWorkflowConditions):
     '''This interface represents a meeting item as viewed by the specific
-       meeting item workflow that is defined in this MeetingCommunes product.'''
+       meeting item workflow that is defined in this MeetingNamur product.'''
     def mayDecide():
         """
           Guard for the 'decide' transition
@@ -139,9 +139,9 @@ class IMeetingItemCouncilWorkflowConditions(IMeetingItemWorkflowConditions):
         """
           Guard for the 'backToXXX' transitions
         """
-class IMeetingCouncilWorkflowActions(IMeetingWorkflowActions):
+class IMeetingNamurCouncilWorkflowActions(IMeetingWorkflowActions):
     '''This interface represents a meeting as viewed by the specific meeting
-       workflow that is defined in this MeetingCommunes product.'''
+       workflow that is defined in this MeetingNamur product.'''
     def doClose():
         """
           Triggered while doing the 'close' transition
@@ -158,9 +158,9 @@ class IMeetingCouncilWorkflowActions(IMeetingWorkflowActions):
         """
           Triggered while doing the 'doBackToCreated' transition
         """
-class IMeetingCouncilWorkflowConditions(IMeetingWorkflowConditions):
+class IMeetingNamurCouncilWorkflowConditions(IMeetingWorkflowConditions):
     '''This interface represents a meeting as viewed by the specific meeting
-       workflow that is defined in this MeetingCommunes product.'''
+       workflow that is defined in this MeetingNamur product.'''
     def mayFreeze():
         """
           Guard for the 'freeze' transition

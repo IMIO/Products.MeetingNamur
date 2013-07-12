@@ -1,8 +1,8 @@
 1. Overview
 ===========
-MeetingCommunes is a specific profile for the package Products.PloneMeeting
+MeetingNamur is a specific profile for the package Products.PloneMeeting
 
-It configures PloneMeeting to be useable for college and council of belgian cities
+It configures PloneMeeting to be useable for college and council of namen cities
 
 2. Project resources
 ====================
