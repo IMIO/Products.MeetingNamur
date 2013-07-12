@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: MeetingCommunes.py
+# File: MeetingNamur.py
 #
 # Copyright (c) 2013 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
@@ -24,7 +24,7 @@
 # 02110-1301, USA.
 #
 
-__author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulette@imio.be>"""
+__author__ = """Andre Nuyens <andre@imio.be>"""
 __docformat__ = 'plaintext'
 
 
@@ -37,7 +37,7 @@ __docformat__ = 'plaintext'
 #       use the protected code section at the bottom of initialize().
 
 import logging
-logger = logging.getLogger('MeetingCommunes')
+logger = logging.getLogger('MeetingNamur')
 logger.debug('Installing Product')
 
 import os

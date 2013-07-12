@@ -9,14 +9,14 @@
 # GNU General Public License (GPL)
 #
 
-__author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulette@imio.be>"""
+__author__ = """Andre Nuyens <andre@imio.be>"""
 __docformat__ = 'plaintext'
 
 
 import logging
-logger = logging.getLogger('MeetingCommunes: setuphandlers')
-from Products.MeetingCommunes.config import PROJECTNAME
-from Products.MeetingCommunes.config import DEPENDENCIES
+logger = logging.getLogger('MeetingNamur: setuphandlers')
+from Products.MeetingNamur.config import PROJECTNAME
+from Products.MeetingNamur.config import DEPENDENCIES
 import os
 from Products.CMFCore.utils import getToolByName
 import transaction
@@ -26,16 +26,15 @@ from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 ##/code-section HEAD
 
-
-def isNotMeetingCommunesProfile(context):
-    return context.readDataFile("MeetingCommunes_marker.txt") is None
+def isNotMeetingNamurProfile(context):
+    return context.readDataFile("MeetingNamur_marker.txt") is None
 
 
 
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingCommunesProfile(context): return
+    if isNotMeetingNamurProfile(context): return
     wft = getToolByName(context.getSite(), 'portal_workflow')
     wft.updateRoleMappings()
 

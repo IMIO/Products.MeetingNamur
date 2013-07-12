@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: MeetingCommunes.py
+# File: MeetingNamur.py
 #
 # Copyright (c) 2013 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
@@ -9,7 +9,7 @@
 # GNU General Public License (GPL)
 #
 
-__author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulette@imio.be>"""
+__author__ = """Andre Nuyens <andre@imio.be>"""
 __docformat__ = 'plaintext'
 
 
@@ -27,7 +27,7 @@ from Products.CMFCore.permissions import setDefaultRoles
 ##/code-section config-head
 
 
-PROJECTNAME = "MeetingCommunes"
+PROJECTNAME = "MeetingNamur"
 
 # Permissions
 DEFAULT_ADD_CONTENT_PERMISSION = "Add portal content"
@@ -106,6 +106,6 @@ MeetingConfig.topicsInfo = tuple(existingTopicsInfo)
 
 # Load custom configuration not managed by archgenxml
 try:
-    from Products.MeetingCommunes.AppConfig import *
+    from Products.MeetingNamur.AppConfig import *
 except ImportError:
     pass

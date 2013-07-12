@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="meetingitemcollege_workflow"
-             title="meetingitemcollege_workflow"
+<dc-workflow workflow_id="meetingitemnamurcollege_workflow"
+             title="meetingitemnamurcollege_workflow"
              state_variable="review_state"
              initial_state="itemcreated"
              xmlns:i18n="http://xml.zope.org/namespaces/i18n"
@@ -21,6 +21,7 @@
  <permission>PloneMeeting: Write decision annex</permission>
  <permission>PloneMeeting: Read item observations</permission>
  <permission>PloneMeeting: Write item observations</permission>
+ <permission>MeetingNamur: Write description</permission>
  <state state_id="accepted"
         title="accepted"
         i18n:attributes="title">
@@ -43,6 +44,10 @@
    <permission-role>MeetingMember</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="MeetingNamur: Write description"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -149,6 +154,8 @@
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
    <permission-role>MeetingPowerObserverLocal</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
                   acquired="False">
@@ -158,6 +165,10 @@
    <permission-role>MeetingReviewer</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="MeetingNamur: Write description"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -264,6 +275,8 @@
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
    <permission-role>MeetingPowerObserverLocal</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
                   acquired="False">
@@ -273,6 +286,10 @@
    <permission-role>MeetingReviewer</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="MeetingNamur: Write description"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -374,7 +391,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
@@ -386,6 +402,12 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingMember</permission-role>
+  </permission-map>
+  <permission-map name="MeetingNamur: Write description"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingMember</permission-role>
+   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
@@ -401,6 +423,7 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingMember</permission-role>
+   <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Read decision"
                   acquired="False">
@@ -432,7 +455,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Write decision annex"
                   acquired="False">
@@ -459,8 +481,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingObserverLocal</permission-role>
-   <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
  </state>
  <state state_id="itemfrozen"
@@ -481,6 +501,8 @@
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
    <permission-role>MeetingPowerObserverLocal</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
                   acquired="False">
@@ -490,12 +512,17 @@
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="MeetingNamur: Write description"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Add MeetingFile"
                   acquired="False">
@@ -598,6 +625,8 @@
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
    <permission-role>MeetingPowerObserverLocal</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
                   acquired="False">
@@ -607,7 +636,10 @@
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="MeetingNamur: Write description"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
@@ -715,7 +747,8 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
-   <permission-role>MeetingPowerObserverLocal</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
                   acquired="False">
@@ -725,12 +758,17 @@
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="MeetingNamur: Write description"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Add MeetingFile"
                   acquired="False">
@@ -750,7 +788,6 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
-   <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Read decision annex"
                   acquired="False">
@@ -760,7 +797,6 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
-   <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Read item observations"
                   acquired="False">
@@ -770,7 +806,6 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
-   <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Read optional advisers"
                   acquired="False">
@@ -780,7 +815,6 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
-   <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Write decision"
                   acquired="False">
@@ -815,7 +849,6 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
-   <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
  </state>
  <state state_id="proposed"
@@ -829,6 +862,8 @@
    <permission-role>MeetingMember</permission-role>
    <permission-role>MeetingReviewer</permission-role>
    <permission-role>MeetingObserverLocal</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
    <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
@@ -841,10 +876,18 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingReviewer</permission-role>
   </permission-map>
+  <permission-map name="MeetingNamur: Write description"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingMember</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingReviewer</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Add MeetingFile"
                   acquired="False">
@@ -892,7 +935,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Write decision annex"
                   acquired="False">
@@ -938,6 +980,8 @@
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
    <permission-role>MeetingPowerObserverLocal</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
                   acquired="False">
@@ -947,6 +991,10 @@
    <permission-role>MeetingReviewer</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="MeetingNamur: Write description"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -1043,7 +1091,7 @@
  <state state_id="validated"
         title="validated"
         i18n:attributes="title">
-  <exit-transition transition_id="backToProposed"/>
+  <exit-transition transition_id="backToItemCreated"/>
   <exit-transition transition_id="present"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -1053,6 +1101,8 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>MeetingObserverLocalCopy</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
    <permission-role>MeetingPowerObserverLocal</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
@@ -1063,12 +1113,18 @@
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingReviewer</permission-role>
+  </permission-map>
+  <permission-map name="MeetingNamur: Write description"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingTaxController</permission-role>
+   <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Add MeetingFile"
                   acquired="False">
@@ -1212,18 +1268,6 @@
              after_script=""
              i18n:attributes="title">
   <action url="" category="workflow" i18n:translate="">backToPresented</action>
-  <guard>
-    <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
-  </guard>
- </transition>
- <transition transition_id="backToProposed"
-             title="backToProposed"
-             new_state="proposed"
-             trigger="USER"
-             before_script=""
-             after_script=""
-             i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">backToProposed</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>

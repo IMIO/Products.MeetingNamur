@@ -1,7 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="MeetingCommunes">
+    i18n_domain="MeetingNamur">
 
   <include package="Products.GenericSetup" file="meta.zcml" />
 
@@ -10,12 +10,12 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="MeetingCommunes"
+      title="MeetingNamur"
       directory="profiles/default"
-      description="Extension profile for MeetingCommunes."
+      description="Extension profile for MeetingNamur."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-
+  
   <!-- ##code-section profiles.zcml-bottom #fill in your manual code here -->
   <genericsetup:registerProfile
    name="demo"

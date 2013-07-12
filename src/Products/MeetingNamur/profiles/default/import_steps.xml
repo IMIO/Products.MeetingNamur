@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <import-steps>
 
+ 
 
 
-
- <import-step
-    id="MeetingCommunes-Update-RoleMappings"
-    handler="Products.MeetingCommunes.setuphandlers.updateRoleMappings"
-    title="Update Workflow role mappings for MeetingCommunes"
-    version="2013-03-15T13:46:07.890327">
-   <dependency step="MeetingCommunes-QI-dependencies"/>
-   updates the workflow role mappings for MeetingCommunes
+ <import-step 
+    id="MeetingNamur-Update-RoleMappings" 
+    handler="Products.MeetingNamur.setuphandlers.updateRoleMappings"
+    title="Update Workflow role mappings for MeetingNamur"
+    version="2013-07-12T14:29:17.270731">
+   <dependency step="MeetingNamur-QI-dependencies"/>
+   updates the workflow role mappings for MeetingNamur
  </import-step>
 
- <import-step
-    id="MeetingCommunes-postInstall"
-    handler="Products.MeetingCommunes.setuphandlers.postInstall"
-    title="manual coded post-install for MeetingCommunes"
-    version="2013-03-15T13:46:07.890327">
-   <dependency step="MeetingCommunes-QI-dependencies"/>
-   manual coded post-install for MeetingCommunes
+ <import-step 
+    id="MeetingNamur-postInstall" 
+    handler="Products.MeetingNamur.setuphandlers.postInstall"
+    title="manual coded post-install for MeetingNamur"
+    version="2013-07-12T14:29:17.270731">
+   <dependency step="MeetingNamur-QI-dependencies"/>
+   manual coded post-install for MeetingNamur
  </import-step>
 
 <!-- ##code-section ADDITIONALSTEPS -->
@@ -34,3 +34,4 @@
 <!-- ##/code-section ADDITIONALSTEPS -->
 
 </import-steps>
+ 
