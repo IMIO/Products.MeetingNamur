@@ -1,18 +1,18 @@
 # ------------------------------------------------------------------------------
 import logging
-logger = logging.getLogger('MeetingCommunes')
+logger = logging.getLogger('MeetingNamur')
 from Products.PloneMeeting.config import TOPIC_SEARCH_SCRIPT, POWEROBSERVERS_GROUP_SUFFIX
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 
 
 def migrate(context):
     '''Call every migration steps.'''
-    logger.info('Migrating to MeetingCommunes 3.0...')
+    logger.info('Migrating to MeetingNamur 3.0...')
     portal = context.portal_url.getPortalObject()
     _adaptItemsToValidateTopic(portal)
     _removeGlobalPowerObservers(portal)
     _adaptCouncilWorkflows(portal)
-    portal.portal_setup.runAllImportStepsFromProfile(u'profile-Products.MeetingCommunes:default')
+    portal.portal_setup.runAllImportStepsFromProfile(u'profile-Products.MeetingNamur:default')
 
 
 def _adaptItemsToValidateTopic(portal):
