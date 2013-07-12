@@ -11,7 +11,7 @@ Homepage:       http://www.plonegov.org/
 Project page:   http://plonegov.org/software/products/plonemeeting
 Mailing list:   https://lists.plonegov.org/cgi-bin/mailman/listinfo/
                 https://lists.communesplone.org/cgi-bin/mailman/listinfo
-SVN repository: http://svn.communesplone.org/svn/communesplone/Products.MeetingCommunes/
+SVN repository: http://svn.communesplone.org/svn/communesplone/Products.MeetingNamur/
 IRC:            irc://freenode.net/#plone.be
 
 3. License
