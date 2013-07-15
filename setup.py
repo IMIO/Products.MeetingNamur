@@ -5,7 +5,7 @@ version = '3.0.3dev'
 
 setup(name='Products.MeetingNamur',
       version=version,
-      description="Official meetings management for college and council of namen communes (PloneMeeting extension profile)",
+      description="PloneMeeting profile for city of namen",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
