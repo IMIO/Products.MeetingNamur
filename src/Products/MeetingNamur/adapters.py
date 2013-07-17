@@ -1522,6 +1522,7 @@ class CustomToolPloneMeeting(ToolPloneMeeting):
 # ------------------------------------------------------------------------------
 InitializeClass(CustomMeetingItem)
 InitializeClass(CustomMeeting)
+InitializeClass(CustomMeetingGroup)
 InitializeClass(MeetingNamurCollegeWorkflowActions)
 InitializeClass(MeetingNamurCollegeWorkflowConditions)
 InitializeClass(MeetingItemNamurCollegeWorkflowActions)
@@ -1530,4 +1531,5 @@ InitializeClass(MeetingItemNamurCouncilWorkflowActions)
 InitializeClass(MeetingItemNamurCouncilWorkflowConditions)
 InitializeClass(MeetingNamurCouncilWorkflowActions)
 InitializeClass(MeetingNamurCouncilWorkflowConditions)
+InitializeClass(CustomToolPloneMeeting)
 # ------------------------------------------------------------------------------
