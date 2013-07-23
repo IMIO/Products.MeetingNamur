@@ -67,7 +67,6 @@ if 'archiving' in customwfAdaptations:
 MeetingConfig.wfAdaptations = customwfAdaptations
 originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
-
 def customPerformWorkflowAdaptations(site, meetingConfig, logger, specificAdaptation=None):
     '''This function applies workflow changes as specified by the
        p_meetingConfig.'''
@@ -639,7 +638,7 @@ class CustomMeetingItem(MeetingItem):
 
     customItemPositiveDecidedStates = ('accepted', 'accepted_but_modified', )
     MeetingItem.itemPositiveDecidedStates = customItemPositiveDecidedStates
-
+    
     def __init__(self, item):
         self.context = item
 
@@ -811,6 +810,23 @@ class CustomMeetingItem(MeetingItem):
         return res
     MeetingItem.getDecision = getDecision
     MeetingItem.getRawDecision = getDecision
+
+    security.declarePublic('customshowDuplicateItemAction')
+    def customshowDuplicateItemAction(self):
+        '''Condition for displaying the 'duplicate' action in the interface.
+           Returns True if the user can duplicate the item.'''
+        # Conditions for being able to see the "duplicate an item" action:
+        # - the user is not Plone-disk-aware;
+        # - the user is creator in some group;
+        # - the user must be able to see the item if it is private.
+        # The user will duplicate the item in his own folder.
+        tool = self.portal_plonemeeting
+        item = self.getSelf()
+        ignoreDuplicateButton = item.queryState() == 'pre_accepted'
+        if tool.getPloneDiskAware() or not tool.userIsAmong('creators') or not self.isPrivacyViewable() or ignoreDuplicateButton:
+            return False
+        return True
+    MeetingItem.showDuplicateItemAction = customshowDuplicateItemAction
 
 class CustomMeetingGroup(MeetingGroup):
     '''Adapter that adapts a meeting group implementing IMeetingGroup to the
