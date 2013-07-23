@@ -51,6 +51,9 @@ from Products.PloneMeeting.utils import getCurrentMeetingObject
 from Products.PloneMeeting import PloneMeetingError
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.model.adaptations import *
+from Products.PloneMeeting.config import DEFAULT_COPIED_FIELDS
+import logging
+logger = logging.getLogger('PloneMeeting')
 
 # Names of available workflow adaptations.
 customwfAdaptations = list(MeetingConfig.wfAdaptations)
@@ -827,6 +830,64 @@ class CustomMeetingItem(MeetingItem):
             return False
         return True
     MeetingItem.showDuplicateItemAction = customshowDuplicateItemAction
+    
+    security.declarePublic('customclone')
+    def customclone(self, copyAnnexes=True, newOwnerId=None, cloneEventAction=None,
+              destFolder=None, copyFields=DEFAULT_COPIED_FIELDS, newPortalType=None):
+        '''Clones me in the PloneMeetingFolder of the current user, or
+           p_newOwnerId if given (this guy will also become owner of this
+           item). If there is a p_cloneEventAction, an event will be included
+           in the cloned item's history, indicating that is was created from
+           another item (useful for delayed items, but not when simply
+           duplicating an item).  p_copyFields will contains a list of fields
+           we want to keep value of, if not in this list, the new field value
+           will be the default value for this field.'''
+        # first check that we are not trying to clone an item the we
+        # can not access because of privacy status
+        item = self.getSelf()
+        if not item.isPrivacyViewable():
+            raise Unauthorized
+        # Get the PloneMeetingFolder of the current user as destFolder
+        tool = self.portal_plonemeeting
+        userId = self.portal_membership.getAuthenticatedMember().getId()
+        # Do not use "not destFolder" because destFolder is an ATBTreeFolder
+        # and an empty ATBTreeFolder will return False while testing destFolder.
+        if destFolder is None:
+            meetingConfigId = tool.getMeetingConfig(item).getId()
+            destFolder = tool.getPloneMeetingFolder(meetingConfigId, newOwnerId)
+        # Copy/paste item into the folder
+        sourceFolder = item.getParentNode()
+        copiedData = sourceFolder.manage_copyObjects(ids=[item.id])
+        # Check if an external plugin want to add some fieldsToCopy
+        copyFields = copyFields + item.adapted().getExtraFieldsToCopyWhenCloning()
+        res = tool.pasteItems(destFolder, copiedData, copyAnnexes=copyAnnexes,
+                              newOwnerId=newOwnerId, copyFields=copyFields,
+                              newPortalType=newPortalType)[0]
+        #copy decision from source items in destination's deliberation if item is accepted
+        import pdb;pdb.set_trace()
+        if item.queryState() in ['accepted', 'accepted_but_modified']:
+            res.setDescription(item.getDecision())
+        #clear decision for new item
+        res.setDecision('')
+        if cloneEventAction:
+            # We are sure that there is only one key in the workflow_history
+            # because it was cleaned by ToolPloneMeeting.pasteItems.
+            wfName = item.portal_workflow.getWorkflowsFor(res)[0].id
+            firstEvent = res.workflow_history[wfName][0]
+            cloneEvent = firstEvent.copy()
+            cLabel = cloneEventAction + '_comments'
+            cloneEvent['comments'] = translate(cLabel, domain='PloneMeeting', context=item.REQUEST)
+            cloneEvent['action'] = cloneEventAction
+            cloneEvent['actor'] = userId
+            res.workflow_history[wfName] = (firstEvent, cloneEvent)
+        # Call plugin-specific code when relevant
+        res.adapted().onDuplicated(item)
+        res.reindexObject()
+        logger.info('Item at %s cloned (%s) by "%s" from %s.' %
+                    (res.absolute_url_path(), cloneEventAction, userId,
+                     item.absolute_url_path()))
+        return res
+    MeetingItem.clone = customclone
 
 class CustomMeetingGroup(MeetingGroup):
     '''Adapter that adapts a meeting group implementing IMeetingGroup to the
@@ -1118,8 +1179,14 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
         DECISION_ERROR = 'There was an error in the TAL expression for defining the ' \
             'decision when an item is reported. Please check this in your meeting config. ' \
             'Original exception: %s'
-        # call PloneMeeting's doDelay then make our additional things
-        MeetingItemWorkflowActions.doDelay(self, stateChange)
+        creator = self.context.Creator()
+        # We create a copy in the initial item state, in the folder of creator.
+        clonedItem = self.context.clone(copyAnnexes=True, newOwnerId=creator,
+                                        cloneEventAction='create_from_predecessor')
+        clonedItem.setPredecessor(self.context)
+        clonedItem.setDecision('')
+        # Send, if configured, a mail to the person who created the item
+        clonedItem.sendMailIfRelevant('itemDelayed', 'Owner', isRole=True)
         # manage itemDecisionReportText
         meetingConfig = self.context.portal_plonemeeting.getMeetingConfig(self.context)
         itemDecisionReportText = meetingConfig.getRawItemDecisionReportText()
