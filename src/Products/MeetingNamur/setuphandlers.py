@@ -143,6 +143,21 @@ def reinstallPloneMeetingSkin(context, site):
         pass
 
 
+def addTaxControllerGroup(context):
+    """
+      Add a Plone group configured to receive MeetingTaxController
+      These users can modify the items since they are frozen
+      This group recieved the MeetingPowerObserverRôle
+    """
+    if isNotMeetingNamurProfile(context): return
+    logStep("addTaxControllerGroup", context)
+    portal = context.getSite()
+    groupId = "meetingtaxcontroller"
+    if not groupId in portal.portal_groups.listGroupIds():
+        portal.portal_groups.addGroup(groupId, title=portal.utranslate("taxControllerGroupTitle", domain='PloneMeeting'))
+        portal.portal_groups.setRolesForGroup(groupId, ('MeetingObserverGlobal','MeetingPowerObserverLocal','MeetingTaxController'))
+
+
 def finalizeExampleInstance(context):
     """
        Some parameters can not be handled by the PloneMeeting installation,
