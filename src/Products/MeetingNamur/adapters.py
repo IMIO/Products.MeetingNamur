@@ -20,7 +20,6 @@
 # 02110-1301, USA.
 #
 # ------------------------------------------------------------------------------
-import re
 from appy.gen import No
 from appy.gen.utils import Keywords
 from zope.interface import implements
@@ -40,12 +39,11 @@ from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
 from Products.PloneMeeting.interfaces import IMeetingCustom, IMeetingItemCustom, \
     IMeetingGroupCustom, IMeetingConfigCustom, IToolPloneMeetingCustom
 from Products.MeetingNamur.interfaces import \
-     IMeetingItemNamurCollegeWorkflowConditions, IMeetingItemNamurCollegeWorkflowActions,\
-     IMeetingNamurCollegeWorkflowConditions, IMeetingNamurCollegeWorkflowActions, \
-     IMeetingItemNamurCouncilWorkflowConditions, IMeetingItemNamurCouncilWorkflowActions,\
-     IMeetingNamurCouncilWorkflowConditions, IMeetingNamurCouncilWorkflowActions
+    IMeetingItemNamurCollegeWorkflowConditions, IMeetingItemNamurCollegeWorkflowActions,\
+    IMeetingNamurCollegeWorkflowConditions, IMeetingNamurCollegeWorkflowActions, \
+    IMeetingItemNamurCouncilWorkflowConditions, IMeetingItemNamurCouncilWorkflowActions,\
+    IMeetingNamurCouncilWorkflowConditions, IMeetingNamurCouncilWorkflowActions
 from Products.PloneMeeting.utils import checkPermission, sendMail, sendMailIfRelevant
-from Products.PloneMeeting.utils import checkPermission
 from Products.CMFCore.permissions import ReviewPortalContent, ModifyPortalContent
 from Products.PloneMeeting.utils import getCurrentMeetingObject
 from Products.PloneMeeting import PloneMeetingError
@@ -69,6 +67,7 @@ if 'archiving' in customwfAdaptations:
 
 MeetingConfig.wfAdaptations = customwfAdaptations
 originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
+
 
 def customPerformWorkflowAdaptations(site, meetingConfig, logger, specificAdaptation=None):
     '''This function applies workflow changes as specified by the
@@ -209,6 +208,7 @@ def validate_workflowAdaptations(self, v):
     if ('add_published_state' in v) and ('no_publication' in v):
         return msg
 MeetingConfig.validate_workflowAdaptations = validate_workflowAdaptations
+
 
 class CustomMeeting(Meeting):
     '''Adapter that adapts a meeting implementing IMeeting to the
@@ -359,9 +359,9 @@ class CustomMeeting(Meeting):
 
     security.declarePublic('getPrintableItemsByCategory')
     def getPrintableItemsByCategory(self, itemUids=[], late=False,
-        ignore_review_states=[], by_proposing_group=False, group_prefixes={},
-        oralQuestion='both',toDiscuss='both',
-        includeEmptyCategories=False, includeEmptyGroups=False):
+                                    ignore_review_states=[], by_proposing_group=False, group_prefixes={},
+                                    oralQuestion='both', toDiscuss='both',
+                                    includeEmptyCategories=False, includeEmptyGroups=False):
         '''Returns a list of (late-)items (depending on p_late) ordered by
            category. Items being in a state whose name is in
            p_ignore_review_state will not be included in the result.
@@ -392,7 +392,8 @@ class CustomMeeting(Meeting):
         previousCatId = None
         # Retrieve the list of items
         for elt in itemUids:
-            if elt == '': itemUids.remove(elt)
+            if elt == '':
+                itemUids.remove(elt)
         items = self.context.getItemsInOrder(late=late, uids=itemUids)
         if by_proposing_group:
             groups = self.context.portal_plonemeeting.getActiveGroups()
@@ -401,9 +402,12 @@ class CustomMeeting(Meeting):
         if items:
             for item in items:
                 # Check if the review_state has to be taken into account
-                if item.queryState() in ignore_review_states: continue
-                elif not (oralQuestion == 'both' or item.getOralQuestion() == oralQuestion): continue
-                elif not (toDiscuss == 'both' or item.getToDiscuss() == toDiscuss): continue
+                if item.queryState() in ignore_review_states:
+                    continue
+                elif not (oralQuestion == 'both' or item.getOralQuestion() == oralQuestion):
+                    continue
+                elif not (toDiscuss == 'both' or item.getToDiscuss() == toDiscuss):
+                    continue
                 currentCat = item.getCategory(theObject=True)
                 currentCatId = currentCat.getId()
                 if currentCatId != previousCatId:
@@ -415,17 +419,14 @@ class CustomMeeting(Meeting):
                             catExists = True
                             break
                     if catExists:
-                        self._insertItemInCategory(catList, item,
-                            by_proposing_group, group_prefixes, groups)
+                        self._insertItemInCategory(catList, item, by_proposing_group, group_prefixes, groups)
                     else:
                         res.append([currentCat])
-                        self._insertItemInCategory(res[-1], item,
-                            by_proposing_group, group_prefixes, groups)
-                    previousCatId = currentCatId                
+                        self._insertItemInCategory(res[-1], item, by_proposing_group, group_prefixes, groups)
+                    previousCatId = currentCatId
                 else:
                     # Append the item to the same category
-                    self._insertItemInCategory(res[-1], item,
-                        by_proposing_group, group_prefixes, groups)
+                    self._insertItemInCategory(res[-1], item, by_proposing_group, group_prefixes, groups)
         if includeEmptyCategories:
             meetingConfig = self.context.portal_plonemeeting.getMeetingConfig(
                 self.context)
@@ -444,11 +445,11 @@ class CustomMeeting(Meeting):
                                 dpt_empty = False
                                 break
                         if dpt_empty:
-                            continue 
+                            continue
                      # Insert the category among used categories at the right place.
                     categoryInserted = False
                     for i in range(len(usedCategories)):
-                        try: 
+                        try:
                             if allCategories.index(cat) < \
                                allCategories.index(usedCategories[i]):
                                 usedCategories.insert(i, cat)
@@ -464,7 +465,7 @@ class CustomMeeting(Meeting):
             # Include, in every category list, not already used groups.
             # But first, compute "macro-groups": we will put one group for
             # every existing macro-group.
-            macroGroups = [] # Contains only 1 group of every "macro-group"
+            macroGroups = []  # Contains only 1 group of every "macro-group"
             consumedPrefixes = []
             for group in groups:
                 prefix = self._getAcronymPrefix(group, group_prefixes)
@@ -633,6 +634,7 @@ class CustomMeeting(Meeting):
             return False
     Meeting.showAllItemsAtOnce = showAllItemsAtOnce
 
+
 class CustomMeetingItem(MeetingItem):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCustom.'''
@@ -641,7 +643,7 @@ class CustomMeetingItem(MeetingItem):
 
     customItemPositiveDecidedStates = ('accepted', 'accepted_but_modified', )
     MeetingItem.itemPositiveDecidedStates = customItemPositiveDecidedStates
-    
+
     def __init__(self, item):
         self.context = item
 
@@ -725,20 +727,22 @@ class CustomMeetingItem(MeetingItem):
     MeetingItem.listGrpBudgetInfosAdviser = listGrpBudgetInfosAdviser
 
     def giveMeetingBudgetImpactReviewerRole(self):
-        '''Add MeetingBudgetImpactReviewer role when on an item, a group is choosen in BudgetInfosAdviser and state is, at least, "itemFrozen".
-           Remove role for other grp_budgetimpactreviewers or remove all grp_budgetimpactreviewers in local role if state back in state before itemFrozen.
+        '''Add MeetingBudgetImpactReviewer role when on an item, a group is choosen in BudgetInfosAdviser and state is,
+           at least, "itemFrozen". Remove role for other grp_budgetimpactreviewers or remove all
+           grp_budgetimpactreviewers in local role if state back in state before itemFrozen.
         '''
         item = self.getSelf()
         grp_roles = []
-        if item.queryState() in ('itemfrozen','accepted','delayed','accepted_but_modified','pre_accepted','refused'):
+        if item.queryState() in ('itemfrozen', 'accepted', 'delayed', 'accepted_but_modified',
+                                 'pre_accepted', 'refused'):
             #add new MeetingBudgetImpactReviewerRole
             for grpBudgetInfo in item.grpBudgetInfos:
-                grp_role = '%s_budgetimpactreviewers'%grpBudgetInfo
+                grp_role = '%s_budgetimpactreviewers' % grpBudgetInfo
                 #for each group_budgetimpactreviewers add new local roles
                 if grpBudgetInfo:
                     grp_roles.append(grp_role)
-                    item.manage_addLocalRoles(grp_role, ('MeetingObserverLocal','MeetingBudgetImpactReviewer',))
-        #suppress old unused group_budgetimpactreviewers 
+                    item.manage_addLocalRoles(grp_role, ('MeetingObserverLocal', 'MeetingBudgetImpactReviewer',))
+        #suppress old unused group_budgetimpactreviewers
         toRemove = []
         for user, roles in item.get_local_roles():
             if user.endswith('_budgetimpactreviewers') and user not in grp_roles:
@@ -826,14 +830,15 @@ class CustomMeetingItem(MeetingItem):
         tool = self.portal_plonemeeting
         item = self.getSelf()
         ignoreDuplicateButton = item.queryState() == 'pre_accepted'
-        if tool.getPloneDiskAware() or not tool.userIsAmong('creators') or not self.isPrivacyViewable() or ignoreDuplicateButton:
+        if tool.getPloneDiskAware() or not tool.userIsAmong('creators') \
+                or not self.isPrivacyViewable() or ignoreDuplicateButton:
             return False
         return True
     MeetingItem.showDuplicateItemAction = customshowDuplicateItemAction
-    
+
     security.declarePublic('customclone')
     def customclone(self, copyAnnexes=True, newOwnerId=None, cloneEventAction=None,
-              destFolder=None, copyFields=DEFAULT_COPIED_FIELDS, newPortalType=None):
+                    destFolder=None, copyFields=DEFAULT_COPIED_FIELDS, newPortalType=None):
         '''Clones me in the PloneMeetingFolder of the current user, or
            p_newOwnerId if given (this guy will also become owner of this
            item). If there is a p_cloneEventAction, an event will be included
@@ -864,7 +869,6 @@ class CustomMeetingItem(MeetingItem):
                               newOwnerId=newOwnerId, copyFields=copyFields,
                               newPortalType=newPortalType)[0]
         #copy decision from source items in destination's deliberation if item is accepted
-        import pdb;pdb.set_trace()
         if item.queryState() in ['accepted', 'accepted_but_modified']:
             res.setDescription(item.getDecision())
         #clear decision for new item
@@ -889,6 +893,7 @@ class CustomMeetingItem(MeetingItem):
         return res
     MeetingItem.clone = customclone
 
+
 class CustomMeetingGroup(MeetingGroup):
     '''Adapter that adapts a meeting group implementing IMeetingGroup to the
        interface IMeetingGroupCustom.'''
@@ -910,7 +915,7 @@ class CustomMeetingGroup(MeetingGroup):
 
         return DisplayList(tuple(res))
     MeetingGroup.listEchevinServices = listEchevinServices
-    
+
     security.declareProtected('Modify portal content', 'onEdit')
     def onEdit(self, isCreated):
         '''Add group_budgetimpactreviewers if DGF group'''
@@ -924,8 +929,8 @@ class CustomMeetingGroup(MeetingGroup):
             meeting_group.portal_groups.addGroup(groupId, title=groupTitle)
             meeting_group.portal_groups.setRolesForGroup(groupId, ('MeetingObserverGlobal',))
             group = meeting_group.portal_groups.getGroupById(groupId)
-            group.setProperties(meetingRole='MeetingBudgetImpactReviewer',
-                            meetingGroupId=meeting_group.id)        
+            group.setProperties(meetingRole='MeetingBudgetImpactReviewer', meetingGroupId=meeting_group.id)
+
 
 class CustomMeetingConfig(MeetingConfig):
     '''Adapter that adapts a meetingConfig implementing IMeetingConfig to the
@@ -980,7 +985,6 @@ class MeetingNamurCollegeWorkflowActions(MeetingWorkflowActions):
     implements(IMeetingNamurCollegeWorkflowActions)
     security = ClassSecurityInfo()
 
-
     def _acceptEveryItems(self):
         """Helper method for accepting every items."""
         # Every item that is not decided will be automatically set to "accepted"
@@ -1017,7 +1021,7 @@ class MeetingNamurCollegeWorkflowActions(MeetingWorkflowActions):
             # If the decision field is empty, initialize it
             if not item.getDecision().strip() or \
                (item.getDecision().strip() in empty_values):
-                item.setDecision("%s" %item.Description())
+                item.setDecision("%s" % item.Description())
                 item.reindexObject()
 
     security.declarePrivate('doPublish_decisions')
@@ -1142,8 +1146,8 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
                         '<br />', '<br >')
         if not item.getDecision().strip() or \
            (item.getDecision().strip() in empty_values):
-            item.setDecision("%s" %item.Description())
-            item.reindexObject()        
+            item.setDecision("%s" % item.Description())
+            item.reindexObject()
 
     security.declarePrivate('doAccept_but_modify')
     def doAccept_but_modify(self, stateChange):
@@ -1164,7 +1168,7 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
             # Clear the decision field if item going back to creator
             item.setDecision("")
         #we have to remove the item of the meeting
-        if item.queryState() == "validated": 
+        if item.queryState() == "validated":
             # We may have to send a mail.
             item.sendMailIfRelevant('itemUnpresented', 'Owner', isRole=True)
             item.getMeeting().removeItem(item)
@@ -1213,7 +1217,8 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
             try:
                 res = Expression(itemDecisionRefuseText)(ctx)
             except Exception, e:
-                self.context.portal_plonemeeting.plone_utils.addPortalMessage(PloneMeetingError(DECISION_ERROR % str(e)))
+                self.context.portal_plonemeeting.plone_utils.addPortalMessage(PloneMeetingError(
+                    DECISION_ERROR % str(e)))
                 return
             self.context.setDecision(res)
 
@@ -1548,6 +1553,7 @@ class MeetingItemNamurCouncilWorkflowConditions(MeetingItemNamurCollegeWorkflowC
             res = True
         return res
 
+
 class CustomToolPloneMeeting(ToolPloneMeeting):
     '''Adapter that adapts a tool implementing ToolPloneMeeting to the
        interface IToolPloneMeetingCustom'''
@@ -1570,7 +1576,7 @@ class CustomToolPloneMeeting(ToolPloneMeeting):
         #Monsieur Y, Madame Z
         res = []
         tmp = ['<p class="mltAssembly">']
-        splitted_assembly = assembly.replace('<p>','').replace('</p>','').split('<br />')
+        splitted_assembly = assembly.replace('<p>', '').replace('</p>', '').split('<br />')
         start_text = startTxt == ''
         for assembly_line in splitted_assembly:
             assembly_line = assembly_line.strip()
@@ -1588,14 +1594,14 @@ class CustomToolPloneMeeting(ToolPloneMeeting):
             cpt = 1
             my_line = ''
             for line in lines:
-               if cpt == len(lines):
-                   my_line = "%s%s<br />"%(my_line,line)
-                   tmp.append(my_line)
-               else:
-                   my_line = "%s%s,"%(my_line,line)
-               cpt = cpt + 1
+                if cpt == len(lines):
+                    my_line = "%s%s<br />" % (my_line, line)
+                    tmp.append(my_line)
+                else:
+                    my_line = "%s%s," % (my_line, line)
+                cpt = cpt + 1
         if len(tmp) > 1:
-            tmp[-1] = tmp[-1].replace('<br />','')
+            tmp[-1] = tmp[-1].replace('<br />', '')
             tmp.append('</p>')
         else:
             return ''
