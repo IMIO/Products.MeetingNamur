@@ -362,7 +362,7 @@ class CustomMeeting(Meeting):
                                     ignore_review_states=[], by_proposing_group=False, group_prefixes={},
                                     oralQuestion='both', toDiscuss='both',
                                     includeEmptyCategories=False, includeEmptyGroups=False):
-        '''Returns a list of (late-)items (depending on p_late) ordered by
+        '''Returns a list of (late-)items (depending on p_late) with
            category. Items being in a state whose name is in
            p_ignore_review_state will not be included in the result.
            If p_by_proposing_group is True, items are grouped by proposing group
@@ -448,10 +448,13 @@ class CustomMeeting(Meeting):
                             continue
                      # Insert the category among used categories at the right place.
                     categoryInserted = False
-                    for i in range(len(usedCategories)):
+                    i = 0
+                    for obj in res:
                         try:
-                            if allCategories.index(cat) < \
-                               allCategories.index(usedCategories[i]):
+                            if not obj[0].getAcronym().startswith(cat.getAcronym()):
+                                i = i + 1
+                                continue
+                            else:
                                 usedCategories.insert(i, cat)
                                 res.insert(i, [cat])
                                 categoryInserted = True
