@@ -396,7 +396,7 @@ class CustomMeeting(Meeting):
                 itemUids.remove(elt)
         items = self.context.getItemsInOrder(late=late, uids=itemUids)
         if by_proposing_group:
-            groups = self.context.portal_plonemeeting.getActiveGroups()
+            groups = self.context.portal_plonemeeting.getMeetingGroups(onlyActive=True)
         else:
             groups = None
         if items:
@@ -661,7 +661,7 @@ class CustomMeetingItem(MeetingItem):
         # he is able to add a meetingitem to a 'decided' meeting.
         review_state = ['created', 'frozen', ]
         if self.context.portal_plonemeeting.isManager():
-            review_state.append('decided')
+            review_state += ['decided', 'published', ] 
         res = catalogtool.unrestrictedSearchResults(
             portal_type=meetingPortalType,
             review_state=review_state,
@@ -712,7 +712,7 @@ class CustomMeetingItem(MeetingItem):
         '''Returns all echevins defined for the proposing group'''
         res = []
         pmtool = getToolByName(self.context, "portal_plonemeeting")
-        for group in pmtool.getActiveGroups():
+        for group in pmtool.getMeetingGroups(onlyActive=True):
             if self.context.getProposingGroup() in group.getEchevinServices():
                 res.append(group.id)
         return res
@@ -723,7 +723,7 @@ class CustomMeetingItem(MeetingItem):
         res = []
         res.append(('', self.utranslate('make_a_choice', domain='PloneMeeting')))
         pmtool = getToolByName(self, "portal_plonemeeting")
-        for group in pmtool.getActiveGroups():
+        for group in pmtool.getMeetingGroups(onlyActive=True):
             if group.acronym.startswith('DGF'):
                 res.append((group.id, group.getProperty('title')))
         return DisplayList(tuple(res))
@@ -913,7 +913,7 @@ class CustomMeetingGroup(MeetingGroup):
         res = []
         pmtool = getToolByName(self, "portal_plonemeeting")
         # Get every Plone group related to a MeetingGroup
-        for group in pmtool.getActiveGroups():
+        for group in pmtool.getMeetingGroups(onlyActive=True):
             res.append((group.id, group.getProperty('title')))
 
         return DisplayList(tuple(res))

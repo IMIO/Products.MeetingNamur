@@ -95,6 +95,7 @@ collegeMeeting.meetingDocFormats = ('odt', 'pdf')
 collegeMeeting.useAdvices = True
 collegeMeeting.useCopies = True
 collegeMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), finances.getIdSuffixed('reviewers'),]
+collegeMeeting.meetingConfigsToCloneTo = ['meeting-config-council', ] 
 
 collegeMeeting.recurringItems = [
     RecurringItemDescriptor(

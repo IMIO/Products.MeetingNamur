@@ -115,12 +115,10 @@
         </div>
         <div id="budgetField" name="budgetField"
              tal:attributes="style python:test(cbChecked, 'display: block', 'display: none')">
-          <metal:field use-macro="python:here.widget('budgetInfos', mode='edit')"/>
-          <metal:field use-macro="python:here.widget('grpBudgetInfos', mode='edit')"/>
-          <tal:comment replace="nothing">XXX grpBudgetInfos</tal:comment>
-            <metal:field use-macro="python:here.widget('grpBudgetInfos', mode='edit')"/>
-          </tal  
-          <br/>
+                  <metal:field use-macro="python:here.widget('budgetInfos', mode='edit')"/>
+                  <tal:comment replace="nothing">XXX grpBudgetInfos</tal:comment>
+                  <metal:field use-macro="python:here.widget('grpBudgetInfos', mode='edit')"/>
+        <br />    
         </div>
         </tal:budget>
 

@@ -1,11 +1,17 @@
-from Products.Archetypes.atapi import *
+from Products.Archetypes.atapi import MultiSelectionWidget
+from Products.Archetypes.atapi import LinesField
+from Products.Archetypes.atapi import TextField
+from Products.Archetypes.atapi import TextAreaWidget
+from Products.Archetypes.atapi import StringField
+from Products.Archetypes.atapi import Schema
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingGroup import MeetingGroup
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 
+
 def update_group_schema(baseSchema):
-   
+
     specificSchema = Schema((
 
         # field used to define list of services for echevin for a MeetingGroup
@@ -23,7 +29,7 @@ def update_group_schema(baseSchema):
             multiValued=1,
             vocabulary='listEchevinServices',
         ),
-        
+
         # field used to define specific signatures for a MeetingGroup
         TextField(
             name='signatures',
@@ -39,40 +45,42 @@ def update_group_schema(baseSchema):
 
     completeSchema = baseSchema + specificSchema.copy()
     completeSchema['acronym'].widget.description = "Acronym"
-    completeSchema['acronym'].widget.description_msgid = "meetingNamur_acronym_descri_msgid"  
+    completeSchema['acronym'].widget.description_msgid = "meetingNamur_acronym_descri_msgid"
 
     return completeSchema
 MeetingGroup.schema = update_group_schema(MeetingGroup.schema)
 
+
 def update_item_schema(baseSchema):
     specificSchema = Schema((
 
-    StringField(
-        name='grpBudgetInfos',
-        widget=MultiSelectionWidget(
-            description="GrpBudgetInfos",
-            description_msgid="MeetingNamur_descr_grpBudgetInfos",
-            size=10,
-            label='GrpBudgetInfos',
-            label_msgid='MeetingNamur_label_grpBudgetInfos',
-            i18n_domain='PloneMeeting',
-        ),
-        vocabulary='listGrpBudgetInfosAdviser',
-        multiValued=1,        
-        enforceVocabulary=False,
+        StringField(
+            name='grpBudgetInfos',
+            widget=MultiSelectionWidget(
+                description="GrpBudgetInfos",
+                description_msgid="MeetingNamur_descr_grpBudgetInfos",
+                size=10,
+                label='GrpBudgetInfos',
+                label_msgid='MeetingNamur_label_grpBudgetInfos',
+                i18n_domain='PloneMeeting',
+            ),
+            vocabulary='listGrpBudgetInfosAdviser',
+            multiValued=1,
+            enforceVocabulary=False,
         ),
     ),)
 
     baseSchema['description'].write_permission = "MeetingNamur: Write description"
     baseSchema['description'].widget.label = "projectOfDecision"
     baseSchema['description'].widget.label_msgid = "projectOfDecision_label"
-    
+
     completeSchema = baseSchema + specificSchema.copy()
     return completeSchema
 MeetingItem.schema = update_item_schema(MeetingItem.schema)
-    
+
+
 def update_meeting_schema(baseSchema):
-   
+
     specificSchema = Schema((
     ),)
 
@@ -82,9 +90,10 @@ def update_meeting_schema(baseSchema):
     return completeSchema
 Meeting.schema = update_meeting_schema(Meeting.schema)
 
+
 def update_config_schema(baseSchema):
     specificSchema = Schema((
-    
+
         TextField(
             name='itemDecisionReportText',
             widget=TextAreaWidget(
@@ -95,7 +104,7 @@ def update_config_schema(baseSchema):
                 i18n_domain='PloneMeeting',
             ),
         ),
-        
+
         TextField(
             name='itemDecisionRefuseText',
             widget=TextAreaWidget(
@@ -107,7 +116,7 @@ def update_config_schema(baseSchema):
             ),
         )
     ),)
-    
+
     completeConfigSchema = baseSchema + specificSchema.copy()
     completeConfigSchema.moveField('itemDecisionReportText', after='budgetDefault')
     completeConfigSchema.moveField('itemDecisionRefuseText', after='itemDecisionReportText')

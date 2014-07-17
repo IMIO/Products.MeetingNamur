@@ -1,8 +1,11 @@
 Products.MeetingNamur Changelog
 =================================
 
-Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/PloneMeeting/tags/
-Version 1.x are for Plone2.5, 2.x are for Plone3.x and 3+ are for Plone4.x
+Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/ 
+The Products.MeetingNamur version must be the same as the Products.PloneMeeting version 
+
+3.1.0 (2014-07-15)
+- Simplified overrides now that PloneMeeting manage this correctly 
 
 3.0.3 (unreleased)
 ------------------

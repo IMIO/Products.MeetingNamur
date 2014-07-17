@@ -16,27 +16,26 @@ __docformat__ = 'plaintext'
 import logging
 logger = logging.getLogger('MeetingNamur: setuphandlers')
 from Products.MeetingNamur.config import PROJECTNAME
-from Products.MeetingNamur.config import DEPENDENCIES
 import os
 from Products.CMFCore.utils import getToolByName
-import transaction
 ##code-section HEAD
-from DateTime import DateTime
 from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 ##/code-section HEAD
+
 
 def isNotMeetingNamurProfile(context):
     return context.readDataFile("MeetingNamur_marker.txt") is None
 
 
-
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingNamurProfile(context): return
+    if isNotMeetingNamurProfile(context):
+        return
     wft = getToolByName(context.getSite(), 'portal_workflow')
     wft.updateRoleMappings()
+
 
 def postInstall(context):
     """Called as at the end of the setup process. """
@@ -51,7 +50,6 @@ def postInstall(context):
     reorderSkinsLayers(context, site)
 
 
-
 ##code-section FOOT
 def logStep(method, context):
     logger.info("Applying '%s' in profile '%s'" %
@@ -60,7 +58,8 @@ def logStep(method, context):
 
 def isMeetingNamurConfigureProfile(context):
     return context.readDataFile("MeetingNamur_examples_fr_marker.txt") or \
-           context.readDataFile("MeetingNamur_tests_marker.txt")
+        context.readDataFile("MeetingNamur_tests_marker.txt")
+
 
 def isMeetingNamurTestingProfile(context):
     return context.readDataFile("MeetingNamur_tests_marker.txt")
@@ -91,6 +90,7 @@ def initializeTool(context):
     #so install it manually
     _installPloneMeeting(context)
     return ToolInitializer(context, PROJECTNAME).run()
+
 
 def reinstallPloneMeeting(context, site):
     '''Reinstall PloneMeeting so after install methods are called and applied,
@@ -124,6 +124,7 @@ def showHomeTab(context, site):
     else:
         logger.info("The 'Home' tab does not exist !!!")
 
+
 def reorderSkinsLayers(context, site):
     """
        Re-apply MeetingNamur skins.xml step
@@ -149,13 +150,16 @@ def addTaxControllerGroup(context):
       These users can modify the items since they are frozen
       This group recieved the MeetingPowerObserverRôle
     """
-    if isNotMeetingNamurProfile(context): return
+    if isNotMeetingNamurProfile(context):
+        return
     logStep("addTaxControllerGroup", context)
     portal = context.getSite()
     groupId = "meetingtaxcontroller"
     if not groupId in portal.portal_groups.listGroupIds():
-        portal.portal_groups.addGroup(groupId, title=portal.utranslate("taxControllerGroupTitle", domain='PloneMeeting'))
-        portal.portal_groups.setRolesForGroup(groupId, ('MeetingObserverGlobal','MeetingPowerObserverLocal','MeetingTaxController'))
+        portal.portal_groups.addGroup(groupId,
+                                      title=portal.utranslate("taxControllerGroupTitle", domain='PloneMeeting'))
+        portal.portal_groups.setRolesForGroup(groupId, ('MeetingObserverGlobal', 'MeetingPowerObserverLocal',
+                                                        'MeetingTaxController'))
 
 
 def finalizeExampleInstance(context):
@@ -185,9 +189,7 @@ def finalizeExampleInstance(context):
         site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
 
     # define some parameters for 'meeting-config-college'
-    # items are sendable to the 'meeting-config-council'
     mc_college_or_bp = getattr(site.portal_plonemeeting, meetingConfig1Id)
-    mc_college_or_bp.setMeetingConfigsToCloneTo([meetingConfig2Id, ])
     # add some topcis to the portlet_todo
     mc_college_or_bp.setToDoListTopics(
         [getattr(mc_college_or_bp.topics, 'searchdecideditems'),
@@ -195,8 +197,6 @@ def finalizeExampleInstance(context):
          getattr(mc_college_or_bp.topics, 'searchallitemsincopy'),
          getattr(mc_college_or_bp.topics, 'searchallitemstoadvice'),
          ])
-    # call updateCloneToOtherMCActions inter alia
-    mc_college_or_bp.at_post_edit_script()
 
     # define some parameters for 'meeting-config-council'
     mc_council_or_cas = getattr(site.portal_plonemeeting, meetingConfig2Id)

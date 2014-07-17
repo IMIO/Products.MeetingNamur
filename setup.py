@@ -1,16 +1,14 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.0.3dev'
+version = '3.1.0'
 
 setup(name='Products.MeetingNamur',
       version=version,
       description="PloneMeeting profile for city of namen",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
-      classifiers=[
-        "Programming Language :: Python",
-        ],
+      classifiers=["Programming Language :: Python", ],
       keywords='',
       author='',
       author_email='',
@@ -22,12 +20,11 @@ setup(name='Products.MeetingNamur',
       include_package_data=True,
       zip_safe=False,
       extras_require=dict(
-            test=['unittest2', 'zope.testing', 'plone.testing',
-                  'plone.app.testing','communesplone.iconified_document_actions',
+              test=['unittest2', 'zope.testing', 'plone.testing',
+                  'plone.app.testing', 'communesplone.iconified_document_actions',
                   'Products.CMFPlacefulWorkflow', 'zope.testing',
                   'Products.PloneTestCase', 'collective.ckeditor', 'plonetheme.imioapps'],
-            templates=['Genshi',
-                  ]),
+              templates=['Genshi', ]),
       install_requires=[
           'setuptools',
           'appy',
