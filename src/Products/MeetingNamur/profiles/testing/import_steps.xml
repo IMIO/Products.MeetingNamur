@@ -3,12 +3,6 @@
  <import-step id="initializetool-MeetingNamur" version="20060707-01"
               handler="Products.MeetingNamur.setuphandlers.initializeTool"
               title="Initialize MeetingNamur with examples.">
-  <dependency step="installMeetingNamur"/>
-  Initialize portal_plonemeeting folders.
- </import-step>
- <import-step id="installMeetingNamur" version="20080501-01"
-              handler="Products.MeetingNamur.setuphandlers.installMeetingNamur"
-              title="Install MeetingNamur.">
-  Install MeetingNamur.
+  Initialize portal_plonemeeting folders for Namur.
  </import-step>
 </import-steps>

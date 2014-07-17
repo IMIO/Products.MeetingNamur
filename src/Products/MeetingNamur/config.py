@@ -2,7 +2,7 @@
 #
 # File: MeetingNamur.py
 #
-# Copyright (c) 2013 by CommunesPlone
+# Copyright (c) 2013 by Imio
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -46,7 +46,7 @@ PRODUCT_DEPENDENCIES = []
 ##code-section config-bottom #fill in your manual code here
 # Define PloneMeeting-specific permissions
 AddAnnex = 'PloneMeeting: Add annex'
-setDefaultRoles(AddAnnex, ('Manager','Owner'))
+setDefaultRoles(AddAnnex, ('Manager', 'Owner'))
 # We need 'AddAnnex', which is a more specific permission than
 # 'PloneMeeting: Add MeetingFile', because decision-related annexes, which are
 # also MeetingFile instances, must be secured differently.
@@ -65,35 +65,39 @@ from Products.PloneMeeting.MeetingConfig import MeetingConfig
 topicsInfo = (
     # Items in state 'proposed'
     ('searchproposeditems',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+     (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
+      ('review_state', 'ATListCriterion', ('proposed',),)
+      ),
      'created',
      '',
      "python: not here.portal_plonemeeting.userIsAmong('reviewers')",
-     ('proposed', ),
      ),
     # Items that need to be validated
     ('searchitemstovalidate',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+     (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
+      ('review_state', 'ATListCriterion', ('proposed',),)
+      ),
      'created',
      'searchItemsToValidate',
      "python: here.portal_plonemeeting.userIsAmong('reviewers')",
-     ('proposed', ),
      ),
     # Items in state 'validated'
     ('searchvalidateditems',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+     (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
+      ('review_state', 'ATListCriterion', ('validated',),)
+      ),
      'created',
      '',
      '',
-     ('validated', ),
      ),
     # All 'decided' items
     ('searchdecideditems',
-    (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+     (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
+      ('review_state', 'ATListCriterion', ('accepted', 'refused', 'delayed', 'accepted_but_modified',),)
+      ),
      'created',
      '',
      '',
-     ('accepted', 'refused', 'delayed', 'accepted_but_modified',),
      ),
 )
 existingTopicsInfo = MeetingConfig.topicsInfo

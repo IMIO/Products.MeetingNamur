@@ -5,21 +5,21 @@ from plone.app.testing import FunctionalTesting
 import Products.MeetingNamur
 
 
-MC_ZCML = zca.ZCMLSandbox(filename="testing.zcml",
-                          package=Products.MeetingCommunes,
-                          name='MC_ZCML')
+MNA_ZCML = zca.ZCMLSandbox(filename="testing.zcml",
+                           package=Products.MeetingNamur,
+                           name='MNA_ZCML')
 
-MC_Z2 = z2.IntegrationTesting(bases=(z2.STARTUP, MC_ZCML),
-                              name='MC_Z2')
+MNA_Z2 = z2.IntegrationTesting(bases=(z2.STARTUP, MNA_ZCML),
+                               name='MNA_Z2')
 
-MC_TEST_PROFILE = PloneWithPackageLayer(
+MNA_TEST_PROFILE = PloneWithPackageLayer(
     zcml_filename="testing.zcml",
-    zcml_package=Products.MeetingCommunes,
+    zcml_package=Products.MeetingNamur,
     additional_z2_products=('Products.MeetingNamur',
                             'Products.PloneMeeting',
                             'Products.CMFPlacefulWorkflow'),
     gs_profile_id='Products.MeetingNamur:testing',
-    name="MC_TEST_PROFILE")
+    name="MNA_TEST_PROFILE")
 
-MC_TEST_PROFILE_FUNCTIONAL = FunctionalTesting(
-    bases=(MC_TEST_PROFILE,), name="MC_TEST_PROFILE_FUNCTIONAL")
+MNA_TEST_PROFILE_FUNCTIONAL = FunctionalTesting(
+    bases=(MNA_TEST_PROFILE,), name="MNA_TEST_PROFILE_FUNCTIONAL")

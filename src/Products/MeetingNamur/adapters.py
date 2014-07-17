@@ -54,18 +54,11 @@ import logging
 logger = logging.getLogger('PloneMeeting')
 
 # Names of available workflow adaptations.
-customwfAdaptations = list(MeetingConfig.wfAdaptations)
-# add our own wfAdaptations
-if not 'add_published_state' in customwfAdaptations:
-    customwfAdaptations.append('add_published_state')
-# remove the 'creator_initiated_decisions' as this is always the case in our wfs
-if 'creator_initiated_decisions' in customwfAdaptations:
-    customwfAdaptations.remove('creator_initiated_decisions')
-# remove the 'archiving' as we do not handle archive in our wfs
-if 'archiving' in customwfAdaptations:
-    customwfAdaptations.remove('archiving')
-
-MeetingConfig.wfAdaptations = customwfAdaptations
+customWfAdaptations = ('no_global_observation', 'creator_initiated_decisions',
+                       'only_creator_may_delete', 'pre_validation',
+                       'no_proposal', 'everyone_reads_all',
+                       'creator_edits_unless_closed', 'local_meeting_managers', 'return_to_proposing_group',)
+MeetingConfig.wfAdaptations = customWfAdaptations
 originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
 
@@ -661,7 +654,7 @@ class CustomMeetingItem(MeetingItem):
         # he is able to add a meetingitem to a 'decided' meeting.
         review_state = ['created', 'frozen', ]
         if self.context.portal_plonemeeting.isManager():
-            review_state += ['decided', 'published', ] 
+            review_state += ['decided', 'published', ]
         res = catalogtool.unrestrictedSearchResults(
             portal_type=meetingPortalType,
             review_state=review_state,

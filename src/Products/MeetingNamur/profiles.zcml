@@ -25,13 +25,6 @@
    provides="Products.GenericSetup.interfaces.EXTENSION"
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
-  <genericsetup:registerProfile
-   name="tests"
-   title="PloneMeeting / Namur for unit tests : do not use manually"
-   description="PloneMeeting for Namur College and Council (Belgium) : unit test only"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFCore.interfaces.ISiteRoot"/>
-
   <genericsetup:upgradeStep
       title="Go to MeetingNamur 3.0"
       description=""
