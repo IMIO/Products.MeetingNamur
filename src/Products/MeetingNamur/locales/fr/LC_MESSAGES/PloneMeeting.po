@@ -212,3 +212,11 @@ msgstr "Décision du point lors d'un refus"
 #. Default: "When an item is refused, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
 msgid "item_decision_refuse_text_descr"
 msgstr "Lorsque le point est refusé, la décision sera remplacée par le texte défini ici, sous la forme d'une expression TAL (Tag Attribute Language) dans laquelle le nom 'here', représentant le point courant, peut être utilisé. Voici un exemple : python:'%sLe collège décide de refuser le point'%here.getDecision()"
+
+#. Default: "The item has been successfully transfered to the college."
+msgid "sendto_meeting-config-college_success"
+msgstr "Le point a été envoyé au Collège."
+
+#. Default: "The item has been successfully transfered to the council."
+msgid "sendto_meeting-config-council_success"
+msgstr "Le point a été envoyé au Conseil communal."

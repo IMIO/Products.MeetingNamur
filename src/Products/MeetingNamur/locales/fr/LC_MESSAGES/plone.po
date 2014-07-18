@@ -28,11 +28,11 @@ msgstr "Séance du Conseil Communal"
 
 #. Default: "MeetingItemCollege"
 msgid "MeetingItemCollege"
-msgstr "Point collège"
+msgstr "Point collège Communal"
 
 #. Default: "MeetingItemCouncil"
 msgid "MeetingItemCouncil"
-msgstr "Point Conseil"
+msgstr "Point Conseil Communal"
 
 #. Default: "Meeting item BP"
 msgid "MeetingItembp"
@@ -57,10 +57,6 @@ msgstr "Séance du Conseil de l'Action Sociale"
 #. Default: "Meeting Comitee"
 msgid "Meetingcomitee"
 msgstr "Séance du Comité de Concertation"
-
-#. Default: "UID not found!"
-msgid "UID not found!"
-msgstr "L'élément à déplacer n'a pas été trouvé!"
 
 #. Default: "accept but modify"
 msgid "accept_but_modify"

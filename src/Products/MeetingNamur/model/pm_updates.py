@@ -103,6 +103,8 @@ def update_config_schema(baseSchema):
                 label_msgid='PloneMeeting_label_itemDecisionReportText',
                 i18n_domain='PloneMeeting',
             ),
+            allowable_content_types=('text/plain', 'text/html', ),
+            default_output_type="text/plain",
         ),
 
         TextField(
@@ -114,6 +116,8 @@ def update_config_schema(baseSchema):
                 label_msgid='PloneMeeting_label_itemDecisionRefuseText',
                 i18n_domain='PloneMeeting',
             ),
+            allowable_content_types=('text/plain', 'text/html', ),
+            default_output_type="text/plain",
         )
     ),)
 

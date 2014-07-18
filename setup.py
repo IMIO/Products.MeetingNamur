@@ -1,13 +1,12 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.1.0'
+version = '3.2.0.1-dev'
 
 setup(name='Products.MeetingNamur',
       version=version,
       description="PloneMeeting profile for city of namen",
-      long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description=open("README.txt").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=["Programming Language :: Python", ],
       keywords='',
       author='',

@@ -4,6 +4,16 @@ Products.MeetingNamur Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/ 
 The Products.MeetingNamur version must be the same as the Products.PloneMeeting version 
 
+3.2.0.1 (2014-03-06)
+--------------------
+- Updated regarding changes in PloneMeeting
+- Moved some translations from the plone domain to the PloneMeeting domain
+
+3.2.0 (2014-02-12)
+------------------
+- Updated regarding changes in PloneMeeting
+- Use getToolByName where necessary
+
 3.1.0 (2014-07-15)
 - Simplified overrides now that PloneMeeting manage this correctly 
 

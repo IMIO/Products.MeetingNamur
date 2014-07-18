@@ -126,11 +126,3 @@ msgstr ""
 #. Default: "Advices and copies"
 msgid "advices"
 msgstr ""
-
-#. Default: "UID not found!"
-msgid "UID not found!"
-msgstr ""
-
-#. Default: "The item has been successfully transfered to the council."
-msgid "sendto_meeting-config-council_success"
-msgstr ""
