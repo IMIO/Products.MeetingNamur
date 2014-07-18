@@ -22,20 +22,19 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingNamur.config import *
-from Products.MeetingNamur.tests.MeetingNamurTestCase import \
-    MeetingNamurTestCase
-from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as pmtmi
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 
 
-class testMeetingItem(MeetingNamurTestCase, pmtmi):
+class testMeetingItem(MeetingNamurTestCase, mctmi):
     """
         Tests the MeetingItem class methods.
     """
 
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    # launch only tests prefixed by 'test_mc_' to avoid launching the tests coming from pmtmi
+    # launch only tests prefixed by 'test_mc_' to avoid launching the tests coming from mctmi
     suite.addTest(makeSuite(testMeetingItem, prefix='test_subproduct_'))
     return suite

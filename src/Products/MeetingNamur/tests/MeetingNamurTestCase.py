@@ -36,6 +36,27 @@ class MeetingNamurTestCase(MeetingCommunesTestCase, MeetingNamurTestingHelpers):
 
     layer = MNA_TEST_PROFILE_FUNCTIONAL
 
+    def _createFinanceGroups(self):
+        """
+           Create the finance groups.
+        """
+        financeGroupsData = ({'id': 'finances',
+                              'title': 'Finances',
+                              'acronym': 'DGF', },
+                             {'id': 'taxes',
+                              'title': 'Taxes',
+                              'acronym': 'DGF - Taxes', },
+                             )
+
+        for financeGroup in financeGroupsData:
+            if not hasattr(self.tool, financeGroup['id']):
+                newGroupId = self.tool.invokeFactory('MeetingGroup',
+                                                     id=financeGroup['id'],
+                                                     title=financeGroup['title'],
+                                                     acronym=financeGroup['acronym'], )
+                newGroup = getattr(self.tool, newGroupId)
+                newGroup.processForm(values={'dummy': None})
+
 
 # this is necessary to execute base test
 # test_tescasesubproduct_VerifyTestFiles from PloneMeeting

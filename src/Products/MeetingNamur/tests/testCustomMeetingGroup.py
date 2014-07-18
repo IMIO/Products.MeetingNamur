@@ -22,22 +22,23 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingNamur.tests.MeetingNamurTestCase import \
-    MeetingNamurTestCase
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+
 
 class testMeetingGroup(MeetingNamurTestCase):
     '''Tests the MeetingGroup adapted methods.'''
 
     def testListEchevinServices(self):
         self.changeUser('admin')
-        from Products.Archetypes.atapi import DisplayList
-        les = DisplayList([('developers', u'Developers'), ('vendors', u'Vendors'), ('finances', u'Finances'), ('taxes', u'Taxes')])
         meetingGroups = self.tool.objectValues('MeetingGroup')
-        self.assertEquals(meetingGroups[0].listEchevinServices(),les)
+        mg = meetingGroups[0]
+        self.assertEquals(mg.listEchevinServices().keys(), ['developers', 'vendors'])
 
     def testOnEdit(self):
         '''Add group_budgetimpactreviewers if DGF group'''
         self.changeUser('admin')
+        #add financial group
+        self._createFinanceGroups()
         #acronym of finance group is DGF, we must have budgetimpactreviewers groupe (in users and group)
         self.failUnless(self.tool.portal_groups.getGroupById('finances_budgetimpactreviewers'))
         #acronym of vendors group is devil, we must not have budgetimpactreviewers groupe (in users and group)

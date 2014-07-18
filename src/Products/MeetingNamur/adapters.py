@@ -51,13 +51,11 @@ from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.model.adaptations import *
 from Products.PloneMeeting.config import DEFAULT_COPIED_FIELDS
 import logging
+from zope.component import getMultiAdapter
 logger = logging.getLogger('PloneMeeting')
 
 # Names of available workflow adaptations.
-customWfAdaptations = ('no_global_observation', 'creator_initiated_decisions',
-                       'only_creator_may_delete', 'pre_validation',
-                       'no_proposal', 'everyone_reads_all',
-                       'creator_edits_unless_closed', 'local_meeting_managers', 'return_to_proposing_group',)
+customWfAdaptations = ('archiving', 'local_meeting_managers', 'return_to_proposing_group', )
 MeetingConfig.wfAdaptations = customWfAdaptations
 originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
@@ -995,12 +993,10 @@ class MeetingNamurCollegeWorkflowActions(MeetingWorkflowActions):
         '''Accept every items that are not still decided and manage
            first/last item number.'''
         self._acceptEveryItems()
-        meetingConfig = self.context.portal_plonemeeting.getMeetingConfig(self.context)
-        self.context.setFirstItemNumber(meetingConfig.getLastItemNumber()+1)
-        # Update the item counter which is global to the meeting config
-        meetingConfig.setLastItemNumber(meetingConfig.getLastItemNumber() +
-                                        len(self.context.getItems()) +
-                                        len(self.context.getLateItems()))
+        # Set the firstItemNumber
+        unrestrictedMethodsView = getMultiAdapter((self.context, self.context.REQUEST),
+                                                  name='pm_unrestricted_methods')
+        self.context.setFirstItemNumber(unrestrictedMethodsView.findFirstItemNumberForMeeting(self.context))
 
     security.declarePrivate('doDecide')
     def doDecide(self, stateChange):

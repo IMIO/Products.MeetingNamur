@@ -44,30 +44,31 @@ class testCustomMeeting(MeetingNamurTestCase):
         self.changeUser('admin')
         self.meetingConfig.setUseGroupsAsCategories(False)
         self.meetingConfig.setSortingMethodOnAddItem('on_categories')
-        m = self.create('Meeting', date='2007/12/11 09:00:00')
+        self._removeRecurringItems(self.meetingConfig)
         #add a Meeting and present several items in different categories
         self.changeUser('pmManager')
+        m = self.create('Meeting', date='2007/12/11 09:00:00')
         i1 = self.create('MeetingItem', title='Item1')
         i1.setProposingGroup('developers')
-        i1.setCategory('travaux')
+        i1.setCategory('deployment')
         i2 = self.create('MeetingItem', title='Item2')
         i2.setProposingGroup('developers')
-        i2.setCategory('travaux')
+        i2.setCategory('deployment')
         i3 = self.create('MeetingItem', title='Item3')
         i3.setProposingGroup('developers')
-        i3.setCategory('travaux')
+        i3.setCategory('deployment')
         i4 = self.create('MeetingItem', title='Item4')
         i4.setProposingGroup('developers')
-        i4.setCategory('personnel')
+        i4.setCategory('research')
         i5 = self.create('MeetingItem', title='Item5')
         i5.setProposingGroup('developers')
-        i5.setCategory('personnel')
+        i5.setCategory('research')
         i6 = self.create('MeetingItem', title='Item6')
         i6.setProposingGroup('developers')
-        i6.setCategory('locations')
+        i6.setCategory('projects')
         i7 = self.create('MeetingItem', title='Item7')
         i7.setProposingGroup('developers')
-        i7.setCategory('locations')
+        i7.setCategory('projects')
         items = (i1, i2, i3, i4, i5, i6, i7)
         #present every items in a meeting
         for item in items:
@@ -80,16 +81,14 @@ class testCustomMeeting(MeetingNamurTestCase):
             itemUids.append(item.UID())
         #test on the meeting
         #we should have a list containing 3 lists, 1 list by category
-        self.assertEquals(len(m.adapted().getPrintableItemsByCategory(itemUids)), 4)
+        self.assertEquals(len(m.adapted().getPrintableItemsByCategory(itemUids)), 3)
         #the order and the type should be kept, the first element of inner list is a MeetingCategory
-        self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[0][0].getId(), 'recurrents')
-        self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[1][0].getId(), 'travaux')
-        self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[2][0].getId(), 'personnel')
-        self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[3][0].getId(), 'locations')
+        self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[0][0].getId(), 'deployment')
+        self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[1][0].getId(), 'research')
+        self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[2][0].getId(), 'projects')
         self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[0][0].meta_type, 'MeetingCategory')
         self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[1][0].meta_type, 'MeetingCategory')
         self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[2][0].meta_type, 'MeetingCategory')
-        self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[3][0].meta_type, 'MeetingCategory')
         #other element of the list are MeetingItems...
         self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[0][1].meta_type, 'MeetingItem')
         self.assertEquals(m.adapted().getPrintableItemsByCategory(itemUids)[0][2].meta_type, 'MeetingItem')
@@ -111,9 +110,10 @@ class testCustomMeeting(MeetingNamurTestCase):
         self.changeUser('admin')
         self.meetingConfig.setUseGroupsAsCategories(True)
         self.meetingConfig.setSortingMethodOnAddItem('on_proposing_groups')
-        m = self.create('Meeting', date='2007/12/11 09:00:00')
+        self._removeRecurringItems(self.meetingConfig)
         #add a Meeting and present several items in different categories
         self.changeUser('pmManager')
+        m = self.create('Meeting', date='2007/12/11 09:00:00')
         i1 = self.create('MeetingItem', title='Item1')
         i1.setProposingGroup('developers')
         i2 = self.create('MeetingItem', title='Item2')
@@ -163,8 +163,9 @@ class testCustomMeeting(MeetingNamurTestCase):
         #check that it works
         #check that if the field contains something, it is not intialized again
         self.changeUser('admin')
-        m = self.create('Meeting', date='2007/12/11 09:00:00')
+        self._removeRecurringItems(self.meetingConfig)
         self.changeUser('pmManager')
+        m = self.create('Meeting', date='2007/12/11 09:00:00')
         #create some items
         #empty decision
         i1 = self.create('MeetingItem', title='Item1')
