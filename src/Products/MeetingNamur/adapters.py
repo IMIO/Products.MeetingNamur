@@ -48,10 +48,9 @@ from Products.PloneMeeting.utils import getCurrentMeetingObject
 from Products.PloneMeeting import PloneMeetingError
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.model.adaptations import *
-from Products.PloneMeeting.config import DEFAULT_COPIED_FIELDS
 
 # Names of available workflow adaptations.
-customWfAdaptations = ('no_publication', 'local_meeting_managers', 'return_to_proposing_group', )
+customWfAdaptations = ('return_to_proposing_group', )
 MeetingConfig.wfAdaptations = customWfAdaptations
 originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
@@ -700,62 +699,16 @@ class CustomMeetingItem(MeetingItem):
         return True
     MeetingItem.showDuplicateItemAction = customshowDuplicateItemAction
 
-    security.declarePublic('customclone')
-    def customclone(self, copyAnnexes=True, newOwnerId=None, cloneEventAction=None,
-                    destFolder=None, copyFields=DEFAULT_COPIED_FIELDS, newPortalType=None):
-        '''Clones me in the PloneMeetingFolder of the current user, or
-           p_newOwnerId if given (this guy will also become owner of this
-           item). If there is a p_cloneEventAction, an event will be included
-           in the cloned item's history, indicating that is was created from
-           another item (useful for delayed items, but not when simply
-           duplicating an item).  p_copyFields will contains a list of fields
-           we want to keep value of, if not in this list, the new field value
-           will be the default value for this field.'''
-        # first check that we are not trying to clone an item the we
-        # can not access because of privacy status
+    def onDuplicated(self, orig):
+        '''After item's cloning, we copy in description field the decision field
+           and clear decision field.
+        '''
         item = self.getSelf()
-        if not item.isPrivacyViewable():
-            raise Unauthorized
-        # Get the PloneMeetingFolder of the current user as destFolder
-        tool = self.portal_plonemeeting
-        userId = self.portal_membership.getAuthenticatedMember().getId()
-        # Do not use "not destFolder" because destFolder is an ATBTreeFolder
-        # and an empty ATBTreeFolder will return False while testing destFolder.
-        if destFolder is None:
-            meetingConfigId = tool.getMeetingConfig(item).getId()
-            destFolder = tool.getPloneMeetingFolder(meetingConfigId, newOwnerId)
-        # Copy/paste item into the folder
-        sourceFolder = item.getParentNode()
-        copiedData = sourceFolder.manage_copyObjects(ids=[item.id])
-        # Check if an external plugin want to add some fieldsToCopy
-        copyFields = copyFields + item.adapted().getExtraFieldsToCopyWhenCloning()
-        res = tool.pasteItems(destFolder, copiedData, copyAnnexes=copyAnnexes,
-                              newOwnerId=newOwnerId, copyFields=copyFields,
-                              newPortalType=newPortalType)[0]
         #copy decision from source items in destination's deliberation if item is accepted
         if item.queryState() in ['accepted', 'accepted_but_modified']:
-            res.setDescription(item.getDecision())
+            item.setDescription(orig.getDecision())
         #clear decision for new item
-        res.setDecision('')
-        if cloneEventAction:
-            # We are sure that there is only one key in the workflow_history
-            # because it was cleaned by ToolPloneMeeting.pasteItems.
-            wfName = item.portal_workflow.getWorkflowsFor(res)[0].id
-            firstEvent = res.workflow_history[wfName][0]
-            cloneEvent = firstEvent.copy()
-            cLabel = cloneEventAction + '_comments'
-            cloneEvent['comments'] = translate(cLabel, domain='PloneMeeting', context=item.REQUEST)
-            cloneEvent['action'] = cloneEventAction
-            cloneEvent['actor'] = userId
-            res.workflow_history[wfName] = (firstEvent, cloneEvent)
-        # Call plugin-specific code when relevant
-        res.adapted().onDuplicated(item)
-        res.reindexObject()
-        logger.info('Item at %s cloned (%s) by "%s" from %s.' %
-                    (res.absolute_url_path(), cloneEventAction, userId,
-                     item.absolute_url_path()))
-        return res
-    MeetingItem.clone = customclone
+        item.setDecision('')
 
 
 class CustomMeetingGroup(MeetingGroup):
@@ -805,6 +758,7 @@ class CustomMeetingConfig(MeetingConfig):
 
     def __init__(self, item):
         self.context = item
+
 
 class MeetingNamurCollegeWorkflowActions(MeetingWorkflowActions):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -889,7 +843,6 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
 
     implements(IMeetingItemNamurCollegeWorkflowActions)
     security = ClassSecurityInfo()
-
 
     security.declarePrivate('doValidate')
     def doValidate(self, stateChange):
@@ -1131,6 +1084,14 @@ class MeetingNamurCouncilWorkflowConditions(MeetingNamurCollegeWorkflowCondition
                 return True
         return res
 
+    security.declarePublic('mayDecide')
+    def mayDecide(self):
+        res = False
+        if checkPermission(ReviewPortalContent, self.context) and \
+           (not self._allItemsAreDelayed()):
+            res = True
+        return res
+
 
 class MeetingItemNamurCouncilWorkflowActions(MeetingItemNamurCollegeWorkflowActions):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1149,12 +1110,12 @@ class MeetingItemNamurCouncilWorkflowActions(MeetingItemNamurCollegeWorkflowActi
         if meetingState == 'frozen':
             # We are inserting an item in a frozen meeting
             # We need to freeze the item too...
-            wTool.doActionFor(self.context, 'itemfreeze')
+            wfTool.doActionFor(self.context, 'itemfreeze')
         elif meetingState in ['published', 'decided']:
             # We are inserting an item in a published or decided meeting
             # We need to freeze and publish the item...
-            wTool.doActionFor(self.context, 'itemfreeze')
-            wTool.doActionFor(self.context, 'itempublish')
+            wfTool.doActionFor(self.context, 'itemfreeze')
+            wfTool.doActionFor(self.context, 'itempublish')
 
 
 class MeetingItemNamurCouncilWorkflowConditions(MeetingItemNamurCollegeWorkflowConditions):
