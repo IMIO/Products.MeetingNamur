@@ -48,6 +48,7 @@ from Products.PloneMeeting.utils import getCurrentMeetingObject
 from Products.PloneMeeting import PloneMeetingError
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.model.adaptations import *
+from Products.PloneMeeting.config import DEFAULT_COPIED_FIELDS
 
 # Names of available workflow adaptations.
 customWfAdaptations = ('no_publication', 'local_meeting_managers', 'return_to_proposing_group', )
