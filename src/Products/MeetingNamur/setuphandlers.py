@@ -2,7 +2,7 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2013 by CommunesPlone
+# Copyright (c) 2014 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -16,26 +16,26 @@ __docformat__ = 'plaintext'
 import logging
 logger = logging.getLogger('MeetingNamur: setuphandlers')
 from Products.MeetingNamur.config import PROJECTNAME
+from Products.MeetingNamur.config import DEPENDENCIES
 import os
 from Products.CMFCore.utils import getToolByName
+import transaction
 ##code-section HEAD
 from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 ##/code-section HEAD
 
-
 def isNotMeetingNamurProfile(context):
     return context.readDataFile("MeetingNamur_marker.txt") is None
+
 
 
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingNamurProfile(context):
-        return
+    if isNotMeetingNamurProfile(context): return
     wft = getToolByName(context.getSite(), 'portal_workflow')
     wft.updateRoleMappings()
-
 
 def postInstall(context):
     """Called as at the end of the setup process. """
@@ -48,6 +48,7 @@ def postInstall(context):
     reinstallPloneMeeting(context, site)
     showHomeTab(context, site)
     reorderSkinsLayers(context, site)
+
 
 
 ##code-section FOOT

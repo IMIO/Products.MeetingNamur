@@ -9,11 +9,16 @@ itemAnnex = MeetingFileTypeDescriptor('item-annex', 'Other annex(es)', 'attach.p
 annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe a la decision', 'attach.png', '', 'item_decision')
 # Some type of annexes taken from the default PloneMeeting test profile
 marketingAnalysis = MeetingFileTypeDescriptor(
-    'marketing-annex', 'Marketing annex(es)', 'attach.png', '', True,
+    'marketing-annex', 'Marketing annex(es)', 'attach.png', '', 'item_decision',
     active=False)
 overheadAnalysis = MeetingFileTypeDescriptor(
     'overhead-analysis', 'Administrative overhead analysis',
     'attach.png', '')
+# Advice annexes types
+adviceAnnex = MeetingFileTypeDescriptor(
+    'advice-annex', 'Advice annex(es)', 'attach.png', '', 'advice')
+adviceLegalAnalysis = MeetingFileTypeDescriptor(
+    'advice-legal-analysis', 'Advice legal analysis', 'attach.png', '', 'advice')
 
 # Pod templates ----------------------------------------------------------------
 agendaTemplate = PodTemplateDescriptor('agendaTemplate', 'Meeting agenda')
@@ -66,7 +71,7 @@ plonemeeting_assembly_powerobservers = PloneGroupDescriptor('meeting-config-coun
 powerobserver1.ploneGroups = [plonemeeting_assembly_powerobservers, ]
 powerobserver2 = UserDescriptor('powerobserver2', [], fullname='M. Power Observer2')
 
-developers = GroupDescriptor('developers', 'Developers', 'Devel', givesMandatoryAdviceOn="python:False")
+developers = GroupDescriptor('developers', 'Developers', 'Devel')
 developers.creators.append(pmCreator1)
 developers.creators.append(pmCreator1b)
 developers.creators.append(pmManager)
@@ -80,7 +85,7 @@ setattr(developers, 'signatures', 'developers signatures')
 setattr(developers, 'echevinServices', 'developers')
 
 #give an advice on recurring items
-vendors = GroupDescriptor('vendors', 'Vendors', 'Devil', givesMandatoryAdviceOn="python: item.id == 'recurringagenda1'")
+vendors = GroupDescriptor('vendors', 'Vendors', 'Devil')
 vendors.creators.append(pmCreator2)
 vendors.reviewers.append(pmReviewer2)
 vendors.observers.append(pmReviewer2)
@@ -124,7 +129,8 @@ collegeMeeting.certifiedSignatures = 'Mr Présent Actuellement, Bourgmestre ff -
 collegeMeeting.categories = categories
 collegeMeeting.shortName = 'College'
 collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex,
-                                   annexeDecision, overheadAnalysis, marketingAnalysis]
+                                   annexeDecision, overheadAnalysis, marketingAnalysis,
+                                   adviceAnnex, adviceLegalAnalysis]
 collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
 collegeMeeting.xhtmlTransformFields = ('MeetingItem.description',
                                        'MeetingItem.detailedDescription',
@@ -148,9 +154,9 @@ collegeMeeting.maxDaysDecisions = 60
 collegeMeeting.meetingAppDefaultView = 'topic_searchmyitems'
 collegeMeeting.itemDocFormats = ('odt', 'pdf')
 collegeMeeting.meetingDocFormats = ('odt', 'pdf')
-collegeMeeting.useAdvices = True
+collegeMeeting.useAdvices = False
 collegeMeeting.itemAdviceStates = ['proposed', 'validated']
-collegeMeeting.itemAdviceEditStates = ['proposed', ]
+collegeMeeting.itemAdviceEditStates = ['proposed', 'validated']
 collegeMeeting.itemAdviceViewStates = ['presented', ]
 collegeMeeting.enforceAdviceMandatoriness = False
 collegeMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
@@ -234,7 +240,8 @@ councilMeeting.signatures = 'Default signatures'
 councilMeeting.certifiedSignatures = 'Mr Présent Actuellement, Bourgmestre ff - Charles Exemple, Secrétaire communal'
 councilMeeting.categories = categories
 councilMeeting.shortName = 'Council'
-councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex, annexeDecision]
+councilMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier,
+                                   itemAnnex, annexeDecision, adviceAnnex, adviceLegalAnalysis]
 councilMeeting.xhtmlTransformFields = ('MeetingItem.description',
                                        'MeetingItem.detailedDescription',
                                        'MeetingItem.decision',
@@ -263,8 +270,9 @@ councilMeeting.sortingMethodOnAddItem = 'on_categories'
 councilMeeting.useGroupsAsCategories = False
 councilMeeting.useAdvices = True
 councilMeeting.itemAdviceStates = ['proposed', 'validated']
-councilMeeting.itemAdviceEditStates = ['proposed', ]
+councilMeeting.itemAdviceEditStates = ['proposed', 'validated']
 councilMeeting.itemAdviceViewStates = ['presented', ]
+councilMeeting.transitionReinitializingDelays = 'backToItemCreated'
 councilMeeting.enforceAdviceMandatoriness = False
 councilMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
 councilMeeting.itemPowerObserversStates = collegeMeeting.itemPowerObserversStates

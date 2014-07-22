@@ -8,7 +8,7 @@
     id="MeetingNamur-Update-RoleMappings" 
     handler="Products.MeetingNamur.setuphandlers.updateRoleMappings"
     title="Update Workflow role mappings for MeetingNamur"
-    version="2013-01-08T14:58:30.881371">
+    version="2014-07-22T11:08:29.855483">
    <dependency step="MeetingNamur-QI-dependencies"/>
    updates the workflow role mappings for MeetingNamur
  </import-step>
@@ -17,7 +17,7 @@
     id="MeetingNamur-postInstall" 
     handler="Products.MeetingNamur.setuphandlers.postInstall"
     title="manual coded post-install for MeetingNamur"
-    version="2013-01-08T14:58:30.881371">
+    version="2014-07-22T11:08:29.855483">
    <dependency step="MeetingNamur-QI-dependencies"/>
    manual coded post-install for MeetingNamur
  </import-step>

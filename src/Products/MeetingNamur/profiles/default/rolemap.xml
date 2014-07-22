@@ -1,15 +1,12 @@
 <?xml version="1.0"?>
 <rolemap>
   <roles>
-    <role name="MeetingBudgetImpactEditor"/> 
+    <role name="MeetingBudgetImpactEditor"/>
     <role name="MeetingBudgetImpactReviewer"/>
     <role name="MeetingManager"/>
     <role name="MeetingMember"/>
     <role name="MeetingObserverGlobal"/>
     <role name="MeetingObserverLocal"/>
-    <role name="MeetingObserverLocalCopy"/>
-    <role name="MeetingPowerObserverLocal"/>
-    <role name="MeetingPowerObserverLocalCopy"/>
     <role name="MeetingReviewer"/>
     <role name="MeetingTaxController"/>
 <!-- ##code-section roles -->
