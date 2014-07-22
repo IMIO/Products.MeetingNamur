@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testMeeting.py
+# File: testPodTemplates.py
 #
-# Copyright (c) 2007-2010 by PloneGov
+# Copyright (c) 2013 by Imio.be
 #
 # GNU General Public License (GPL)
 #
@@ -22,18 +22,17 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.MeetingNamur.tests.MeetingNamurTestCase import \
+    MeetingNamurTestCase
+from Products.MeetingCommunes.tests.testPodTemplates import testPodTemplates as mctpt
 
 
-class testMeeting(MeetingNamurTestCase, mctm):
-    """
-        Tests the Meeting class methods.
-    """
+class testPodTemplates(MeetingNamurTestCase, mctpt):
+    '''Tests various aspects of document generation through POD templates.'''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeeting, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testPodTemplates, prefix='test_subproduct_'))
     return suite

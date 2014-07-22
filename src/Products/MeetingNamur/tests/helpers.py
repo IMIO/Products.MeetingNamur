@@ -35,13 +35,13 @@ class MeetingNamurTestingHelpers(MeetingCommunesTestingHelpers):
                                          'validate',)
     TRANSITIONS_FOR_PRESENTING_ITEM_1 = ('propose', 'validate', 'present',)
     TRANSITIONS_FOR_PRESENTING_ITEM_2 = ('propose', 'validate', 'present',)
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = ('itemfreeze', 'accept',)
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('itemfreeze', 'accept',)
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = ('freeze', 'decide',)
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('freeze', 'publish', 'decide',)
 
     TRANSITIONS_FOR_DECIDING_MEETING_1 = ('freeze', 'decide',)
-    TRANSITIONS_FOR_DECIDING_MEETING_2 = ('freeze', 'decide',)
+    TRANSITIONS_FOR_DECIDING_MEETING_2 = ('freeze', 'publish', 'decide',)
     TRANSITIONS_FOR_CLOSING_MEETING_1 = ('freeze', 'decide', 'close',)
-    TRANSITIONS_FOR_CLOSING_MEETING_2 = ('freeze', 'decide', 'close',)
+    TRANSITIONS_FOR_CLOSING_MEETING_2 = ('freeze', 'publish', 'decide', 'close',)
     BACK_TO_WF_PATH_1 = {
         # Meeting
         'created': ('backToDecided',
@@ -61,21 +61,32 @@ class MeetingNamurTestingHelpers(MeetingCommunesTestingHelpers):
                       'backToPresented',
                       'backToValidated',)}
     BACK_TO_WF_PATH_2 = {
-        'itemcreated': ('backToItemFrozen',
+        # Meeting
+        'created': ('backToDecided',
+                    'backToPublished',
+                    'backToFrozen',
+                    'backToCreated',),
+        # MeetingItem
+        'itemcreated': ('backToItemPublished',
+                        'backToItemFrozen',
                         'backToPresented',
                         'backToValidated',
+                        'backToProposed',
                         'backToItemCreated',),
-        'proposed': ('backToItemFrozen',
+        'proposed': ('backToItemPublished',
+                     'backToItemFrozen',
                      'backToPresented',
                      'backToValidated',
-                     'backToItemCreated',
-                     'propose',),
-        'validated': ('backToItemFrozen',
+                     'backToProposed',),
+        'validated': ('backToItemPublished',
+                      'backToItemFrozen',
                       'backToPresented',
                       'backToValidated',)}
 
-    WF_STATE_NAME_MAPPINGS = {'proposed': 'proposed',
-                              'validated': 'validated'}
+    WF_STATE_NAME_MAPPINGS = {'itemcreated': 'itemcreated',
+                              'proposed': 'proposed',
+                              'validated': 'validated',
+                              'presented': 'presented'}
 
     def _createMeetingWithItems(self, withItems=True, meetingDate=DateTime()):
         '''Create a meeting with a bunch of items.

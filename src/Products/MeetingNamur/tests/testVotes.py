@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testMeeting.py
+# File: testVotes.py
 #
-# Copyright (c) 2007-2010 by PloneGov
+# Copyright (c) 2012-2013 by PloneGov
 #
 # GNU General Public License (GPL)
 #
@@ -23,17 +23,17 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.MeetingCommunes.tests.testVotes import testVotes as mctv
 
 
-class testMeeting(MeetingNamurTestCase, mctm):
-    """
-        Tests the Meeting class methods.
-    """
+class testVotes(MeetingNamurTestCase, mctv):
+    '''Tests various aspects of votes management.
+       Advices are enabled for PloneMeeting Assembly, not for PloneGov Assembly.
+       By default, vote are encoded by 'theVoterHimself'.'''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeeting, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testVotes, prefix='test_subproduct_'))
     return suite

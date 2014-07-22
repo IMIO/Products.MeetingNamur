@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testMeeting.py
+# File: testMeetingConfig.py
 #
-# Copyright (c) 2007-2010 by PloneGov
+# Copyright (c) 2007-2013 by Imio.be
 #
 # GNU General Public License (GPL)
 #
@@ -23,17 +23,15 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
 
 
-class testMeeting(MeetingNamurTestCase, mctm):
-    """
-        Tests the Meeting class methods.
-    """
+class testMeetingConfig(MeetingNamurTestCase, mctmc):
+    '''Tests the MeetingConfig class methods.'''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeeting, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testMeetingConfig, prefix='test_subproduct_'))
     return suite

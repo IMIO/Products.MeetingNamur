@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testMeeting.py
+# File: testAdvices.py
 #
-# Copyright (c) 2007-2010 by PloneGov
+# Copyright (c) 2007-2012 by CommunesPlone.org
 #
 # GNU General Public License (GPL)
 #
@@ -23,17 +23,16 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
 
 
-class testMeeting(MeetingNamurTestCase, mctm):
-    """
-        Tests the Meeting class methods.
-    """
+class testAdvices(MeetingNamurTestCase, mcta):
+    '''Tests various aspects of advices management.
+       Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeeting, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testAdvices, prefix='test_subproduct_'))
     return suite

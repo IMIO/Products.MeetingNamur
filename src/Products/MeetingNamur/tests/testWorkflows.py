@@ -26,11 +26,12 @@ from AccessControl import Unauthorized
 from Products.MeetingNamur.config import *
 from Products.MeetingNamur.tests.MeetingNamurTestCase import \
     MeetingNamurTestCase
-from Products.PloneMeeting.tests.testWorkflows import testWorkflows as pmtw
+from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 from DateTime import DateTime
+from Products.PloneMeeting.interfaces import IAnnexable
 
 
-class testWorkflows(MeetingNamurTestCase, pmtw):
+class testWorkflows(MeetingNamurTestCase, mctw):
     """Tests the default workflows implemented in MeetingNamur.
 
        WARNING:
@@ -42,68 +43,11 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
        (self.assertRaise). Instead, we check that the user has the permission
        to do so (getSecurityManager().checkPermission)."""
 
-    def afterSetUp(self):
-        MeetingNamurTestCase.afterSetUp(self)
-
-    def afterSetUpPM(self):
-        """
-            The afterSetUp method from PloneMeeting must be called in each test and not in
-            afterSetUp method of this class. If not, this test transaction doesn't contain
-            what's done in plonemeeting afterSetUp and it is not cleared
-        """
-        pass
-
-    def test_namur_VerifyTestNumbers(self):
-        """
-            We verify that there are the same test methods in original product and this sub-product
-        """
-        tpm = self.getTestMethods(pmtw, 'test')
-        tmc = self.getTestMethods(testWorkflows, 'test_namur_call_')
-        missing = []
-        for key in tpm:
-            key2 = key.replace('test', 'test_namur_call_')
-            if key2 not in tmc:
-                missing.append(key)
-        if len(missing):
-            self.fail("missing test methods %s from PloneMeeting test class '%s'" % (missing, 'testWorkflows'))
-
-    def test_namur_call_CreateItem(self):
-        """
-            Creates an item (in "created" state) and checks that only
-            allowed persons may see this item.
-        """
-        #we do the test for the college config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
-        pmtw.testCreateItem(self)
-        #we do the test for the council config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-council')
-        pmtw.testCreateItem(self)
-
-    def test_namur_call_RemoveObjects(self):
-        """
-            Tests objects removal (items, meetings, annexes...).
-        """
-        #we do the test for the college config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
-        pmtw.testRemoveObjects(self)
-        #we do the test for the council config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-council')
-        pmtw.testRemoveObjects(self)
-
-    def test_namur_call_WholeDecisionProcess(self):
-        """
-            This test covers the whole decision workflow. It begins with the
-            creation of some items, and ends by closing a meeting.
-            This call 2 sub tests for each process : college and council
-        """
-        self._testWholeDecisionProcessCollege()
-        self._testWholeDecisionProcessCouncil()
-
     def _testWholeDecisionProcessCollege(self):
         '''This test covers the whole decision workflow. It begins with the
            creation of some items, and ends by closing a meeting.'''
         # pmCreator1 creates an item with 1 annex and proposes it
-        self.login('pmCreator1')
+        self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
         self.addAnnex(item1)
         self.addAnnex(item1, decisionRelated=True)
@@ -129,7 +73,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         # pmManager inserts item1 into the meeting and publishes it
         self.changeUser('pmManager')
         managerAnnex = self.addAnnex(item1)
-        self.portal.delete_givenuid(managerAnnex.UID())
+        self.portal.restrictedTraverse('@@delete_givenuid')(managerAnnex.UID())
         self.do(item1, 'present')
         # Now reviewers can't add annexes anymore
         self.changeUser('pmReviewer1')
@@ -146,7 +90,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         self.do(item2, 'present')
         self.addAnnex(item2)
         # So now we should have 4 normal item (3 recurring + 1) and one late item in the meeting
-        self.failUnless(len(meeting.getItems()) == 4)
+        self.failUnless(len(meeting.getItems()) == 3)
         self.failUnless(len(meeting.getLateItems()) == 1)
         # pmReviewer1 now adds an annex to item1
 #        self.changeUser('pmReviewer1')
@@ -163,7 +107,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         # pmManager adds a decision for item2, decides and closes the meeting
         self.changeUser('pmManager')
         item2.setDecision(self.decisionText)
-        self.addAnnex(item2, annexPath='profiles/default/metadata.xml', decisionRelated=True)
+        self.addAnnex(item2, decisionRelated=True)
         self.do(meeting, 'decide')
         self.failIf(len(self.transitions(meeting)) != 2)
         self.do(meeting, 'close')
@@ -177,7 +121,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         #we do the test for the council config
         self.meetingConfig = getattr(self.tool, 'meeting-config-council')
         # pmCreator1 creates an item with 1 annex and proposes it
-        self.login('pmCreator1')
+        self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
         self.addAnnex(item1)
         # The creator can add a decision annex on created item
@@ -206,7 +150,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         # pmManager inserts item1 into the meeting and freezes it
         self.changeUser('pmManager')
         managerAnnex = self.addAnnex(item1)
-        self.portal.delete_givenuid(managerAnnex.UID())
+        self.portal.restrictedTraverse('@@delete_givenuid')(managerAnnex.UID())
         self.do(item1, 'present')
         self.changeUser('pmCreator1')
         # The creator cannot add any kind of annex on presented item
@@ -250,8 +194,8 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         duplicatedItem = item1.getBRefs('ItemPredecessor')[0]
         self.assertEquals(duplicatedItem.getPredecessor().UID(), item1.UID())
         # when duplicated on delay, annexes are kept
-        self.assertEquals(len(duplicatedItem.getAnnexes()), 1)
-        self.addAnnex(item2, annexPath='profiles/default/metadata.xml', decisionRelated=True)
+        self.assertEquals(len(IAnnexable(duplicatedItem).getAnnexes()), 1)
+        self.addAnnex(item2, decisionRelated=True)
         self.failIf(len(self.transitions(meeting)) != 2)
         # When a meeting is closed, items without a decision are automatically 'accepted'
         self.do(meeting, 'close')
@@ -259,92 +203,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         # An already decided item keep his given decision
         self.assertEquals(item1.queryState(), 'delayed')
 
-    def test_namur_call_WorkflowPermissions(self):
-        """
-            This test checks whether workflow permissions are correct while
-            creating and changing state of items and meetings. During the test,
-            some users go from one group to the other. The test checks that in
-            this case local roles (whose permissions depend on) are correctly
-            updated.
-        """
-        #we do the test for the college config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
-        pmtw.testWorkflowPermissions(self)
-        #we do the test for the council config => in a separate method : a rollback is needed
-
-    def test_namur_WorkflowPermissionsCouncil(self):
-        """
-            This test checks whether workflow permissions are correct while
-            creating and changing state of items and meetings. During the test,
-            some users go from one group to the other. The test checks that in
-            this case local roles (whose permissions depend on) are correctly
-            updated.
-        """
-        #we do the test for the council config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-council')
-        pmtw.testWorkflowPermissions(self)
-
-    def test_namur_call_RecurringItems(self):
-        """
-            Tests the recurring items system.
-        """
-        #we do the test for the college config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
-        #pmtw.testRecurringItems(self) workflow is different
-        self.test_namur_RecurringItemsCollege()
-        #we do the test for the council config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-council')
-        #there are no recurring items for council
-        #while creating a meeting, no extra items are created...
-        meeting = self.create('Meeting', date='2007/12/11 09:00:00')
-        self.assertEquals(len(meeting.getItems()), 0)
-
-    def test_namur_RecurringItemsCollege(self):
-        '''Tests the recurring items system.'''
-        # First, define recurring items in the meeting config
-        self.login('admin')
-        #3 recurring items are already existing by default
-        self.create('RecurringMeetingItem', title='Rec item 1',
-                    proposingGroup='developers',
-                    meetingTransitionInsertingMe='_init_')
-        #backToCreated is not in MeetingItem.meetingTransitionsAcceptingRecurringItems
-        #so it will not be added...
-        self.create('RecurringMeetingItem', title='Rec item 2',
-                    proposingGroup='developers',
-                    meetingTransitionInsertingMe='backToCreated')
-        self.create('RecurringMeetingItem', title='Rec item 3',
-                    proposingGroup='developers',
-                    meetingTransitionInsertingMe='freeze')
-        self.create('RecurringMeetingItem', title='Rec item 4',
-                    proposingGroup='developers',
-                    meetingTransitionInsertingMe='decide')
-        self.changeUser('pmManager')
-        meeting = self.create('Meeting', date='2007/12/11 09:00:00')
-        # The recurring items must have as owner the meeting creator
-        for item in meeting.getItems():
-            self.assertEquals(item.getOwner().getId(), 'pmManager')
-        # The meeting must contain a copy of the first recurring item
-        # and the 3 default ones too...
-        self.failUnless(len(meeting.getItems()) == 4)
-        self.failUnless(len(meeting.getLateItems()) == 0)
-        # After freeze, the meeting must have one recurring item more
-        self.do(meeting, 'freeze')
-        self.failUnless(len(meeting.getItems()) == 4)
-        self.failUnless(len(meeting.getLateItems()) == 1)
-        # Back to created: rec item 2 is not inserted because
-        # only some transitions can add a recurring item (see MeetingItem).
-        self.do(meeting, 'backToCreated')
-        self.failUnless(len(meeting.getItems()) == 4)
-        self.failUnless(len(meeting.getLateItems()) == 1)
-        # Recurring items can be added twice...
-        self.do(meeting, 'freeze')
-        self.failUnless(len(meeting.getItems()) == 4)
-        self.failUnless(len(meeting.getLateItems()) == 2)
-        self.do(meeting, 'decide')
-        self.failUnless(len(meeting.getItems()) == 4)
-        self.failUnless(len(meeting.getLateItems()) == 3)
-
-    def test_namur_FreezeMeeting(self):
+    def test_subproduct_FreezeMeeting(self):
         """
            When we freeze a meeting, every presented items will be frozen
            too and their state will be set to 'itemfrozen'.  When the meeting
@@ -352,7 +211,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
            'presented' state
         """
         # First, define recurring items in the meeting config
-        self.login('pmManager')
+        self.changeUser('pmManager')
         #create a meeting
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
         #create 2 items and present them to the meeting
@@ -380,13 +239,13 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
 
-    def test_namur_CloseMeeting(self):
+    def test_subproduct_CloseMeeting(self):
         """
            When we close a meeting, every items are set to accepted if they are still
            not decided...
         """
         # First, define recurring items in the meeting config
-        self.login('pmManager')
+        self.changeUser('pmManager')
         #create a meeting (with 7 items)
         meetingDate = DateTime().strftime('%y/%m/%d %H:%M:00')
         meeting = self.create('Meeting', date=meetingDate)
@@ -441,25 +300,6 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         self.assertEquals('accepted', wftool.getInfoFor(item6, 'review_state'))
         #presented change into accepted
         self.assertEquals('accepted', wftool.getInfoFor(item7, 'review_state'))
-
-    def test_namur_call_RemoveContainer(self):
-        """
-          We avoid a strange behaviour of Plone.  Removal of a container
-          does not check inner objects security...
-          Check that removing an item or a meeting by is container fails.
-        """
-        #we do the test for the college config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
-        pmtw.testRemoveContainer(self)
-        #we do the test for the council config
-        self.meetingConfig = getattr(self.tool, 'meeting-config-council')
-        pmtw.testRemoveContainer(self)
-
-    def test_namur_call_DeactivateMeetingGroup(self):
-        '''Deactivating a MeetingGroup will transfer every users of every
-           sub Plone groups to the '_observers' Plone group'''
-        #we do the test for the college config
-        pmtw.testDeactivateMeetingGroup(self)
 
 
 def test_suite():
