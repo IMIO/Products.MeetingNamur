@@ -137,3 +137,11 @@ msgstr "Le point a été envoyé au Conseil communal."
 #. Default: "validated"
 msgid "validated"
 msgstr "validé"
+
+#. Default: "Accepted >>> Approved"
+msgid "approved"
+msgstr "Approuvé"
+
+#. Default: "Accepted but modified >>> Approved with a modification"
+msgid "approved_but_modified"
+msgstr "Approuvé moyennant une modification"

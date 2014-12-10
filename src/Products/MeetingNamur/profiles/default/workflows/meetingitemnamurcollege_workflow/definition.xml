@@ -21,7 +21,6 @@
  <permission>PloneMeeting: Write decision annex</permission>
  <permission>PloneMeeting: Read item observations</permission>
  <permission>PloneMeeting: Write item observations</permission>
- <permission>MeetingNamur: Write description</permission>
  <permission>PloneMeeting: Read budget infos</permission>
  <permission>PloneMeeting: Write budget infos</permission>
  <state state_id="accepted"
@@ -46,10 +45,6 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-  </permission-map>
-  <permission-map name="MeetingNamur: Write description"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -179,10 +174,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
-  <permission-map name="MeetingNamur: Write description"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-  </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -309,10 +300,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
-  <permission-map name="MeetingNamur: Write description"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-  </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -434,12 +421,6 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingMember</permission-role>
   </permission-map>
-  <permission-map name="MeetingNamur: Write description"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -555,10 +536,6 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-  </permission-map>
-  <permission-map name="MeetingNamur: Write description"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -692,10 +669,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
-  <permission-map name="MeetingNamur: Write description"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-  </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -822,10 +795,6 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-  </permission-map>
-  <permission-map name="MeetingNamur: Write description"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -958,12 +927,6 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingReviewer</permission-role>
   </permission-map>
-  <permission-map name="MeetingNamur: Write description"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -1088,10 +1051,6 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-  </permission-map>
-  <permission-map name="MeetingNamur: Write description"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -1220,10 +1179,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingReviewer</permission-role>
-  </permission-map>
-  <permission-map name="MeetingNamur: Write description"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
