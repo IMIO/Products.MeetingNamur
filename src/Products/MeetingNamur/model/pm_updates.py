@@ -70,7 +70,6 @@ def update_item_schema(baseSchema):
         ),
     ),)
 
-    baseSchema['description'].write_permission = "MeetingNamur: Write description"
     baseSchema['description'].widget.label = "projectOfDecision"
     baseSchema['description'].widget.label_msgid = "projectOfDecision_label"
 

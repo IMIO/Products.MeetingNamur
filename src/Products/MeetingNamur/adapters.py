@@ -54,6 +54,59 @@ customWfAdaptations = ('return_to_proposing_group', )
 MeetingConfig.wfAdaptations = customWfAdaptations
 originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
+RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
+    # view permissions
+    'Access contents information':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
+     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'View':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
+     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'PloneMeeting: Read decision':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
+     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'PloneMeeting: Read optional advisers':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
+     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'PloneMeeting: Read decision annex':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
+     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'PloneMeeting: Read item observations':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
+     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    'PloneMeeting: Read budget infos':
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
+     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
+    # edit permissions
+    'Modify portal content':
+    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
+    'PloneMeeting: Write decision':
+    ('Manager', ),
+    'Review portal content':
+    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
+    'Add portal content':
+    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
+    'PloneMeeting: Add annex':
+    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
+    'PloneMeeting: Add MeetingFile':
+    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
+    'PloneMeeting: Write decision annex':
+    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
+    'PloneMeeting: Write optional advisers':
+    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
+    'PloneMeeting: Write optional advisers':
+    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
+    'PloneMeeting: Write budget infos':
+    ('Manager', 'MeetingMember', 'MeetingBudgetImpactEditor', 'MeetingManager', 'MeetingBudgetImpactReviewer', ),
+    # MeetingManagers edit permissions
+    'Delete objects':
+    ['Manager', ],
+    'PloneMeeting: Write item observations':
+    ('Manager', 'MeetingManager', ),
+}
+
+adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
+
 
 def customPerformWorkflowAdaptations(site, meetingConfig, logger, specificAdaptation=None):
     '''This function applies workflow changes as specified by the
@@ -133,6 +186,7 @@ class CustomMeeting(Meeting):
 
     # Implements here methods that will be used by templates
     security.declarePublic('getPrintableItems')
+
     def getPrintableItems(self, itemUids, late=False, ignore_review_states=[],
                           privacy='*', oralQuestion='both', toDiscuss='both', categories=[],
                           excludedCategories=[], firstNumber=1, renumber=False):
@@ -264,6 +318,7 @@ class CustomMeeting(Meeting):
             self._insertGroupInCategory(categoryList, group, groupPrefixes, groups, item)
 
     security.declarePublic('getPrintableItemsByCategory')
+
     def getPrintableItemsByCategory(self, itemUids=[], late=False,
                                     ignore_review_states=[], by_proposing_group=False, group_prefixes={},
                                     oralQuestion='both', toDiscuss='both',
@@ -396,6 +451,7 @@ class CustomMeeting(Meeting):
         return res
 
     security.declarePublic('getPrintableItemsByNumCategory')
+
     def getPrintableItemsByNumCategory(self, late=False, uids=[],
                                        catstoexclude=[], exclude=True, allItems=False):
         '''Returns a list of items ordered by category number. If there are many
@@ -493,6 +549,7 @@ class CustomMeeting(Meeting):
         return ressort
 
     security.declarePublic('getPreviousMeeting')
+
     def getPreviousMeeting(self, searchMeetingsInterval=60):
         '''Gets the previous meeting based on meeting date. We only search among
            meetings in the previous p_searchMeetingsInterval, which is a number
@@ -517,11 +574,13 @@ class CustomMeeting(Meeting):
         return res
 
     security.declarePublic('showItemAdvices')
+
     def showItemAdvices(self):
         '''See doc in interfaces.py.'''
         return True
 
     security.declarePublic('showAllItemsAtOnce')
+
     def showAllItemsAtOnce(self):
         '''Must I show the Kupu field that allows to edit all "normal" and
            "late" items at once ?'''
@@ -559,6 +618,7 @@ class CustomMeetingItem(MeetingItem):
         self.context = item
 
     security.declarePublic('getMeetingsAcceptingItems')
+
     def getMeetingsAcceptingItems(self):
         '''Overrides the default method so we only display meetings that are
            in the 'created' or 'frozen' state.'''
@@ -578,6 +638,7 @@ class CustomMeetingItem(MeetingItem):
         return res
 
     security.declarePublic('mayBeLinkedToTasks')
+
     def mayBeLinkedToTasks(self):
         '''See doc in interfaces.py.'''
         item = self.getSelf()
@@ -587,6 +648,7 @@ class CustomMeetingItem(MeetingItem):
         return res
 
     security.declarePublic('getCertifiedSignatures')
+
     def getCertifiedSignatures(self, forceUseCertifiedSignaturesField=False):
         '''Gets the certified signatures for this item.
            Either use signatures defined on the proposing MeetingGroup if exists,
@@ -617,6 +679,8 @@ class CustomMeetingItem(MeetingItem):
                 signature = '\n'.join(res)
         return signature, hasGroupSignature
 
+    security.declarePublic('getEchevinsForProposingGroup')
+
     def getEchevinsForProposingGroup(self):
         '''Returns all echevins defined for the proposing group'''
         res = []
@@ -625,6 +689,8 @@ class CustomMeetingItem(MeetingItem):
             if self.context.getProposingGroup() in group.getEchevinServices():
                 res.append(group.id)
         return res
+
+    security.declarePublic('listGrpBudgetInfosAdviser')
 
     def listGrpBudgetInfosAdviser(self):
         '''Returns a list of groups that can be selected on an item to modify budgetInfos field.
@@ -637,6 +703,8 @@ class CustomMeetingItem(MeetingItem):
                 res.append((group.id, group.getProperty('title')))
         return DisplayList(tuple(res))
     MeetingItem.listGrpBudgetInfosAdviser = listGrpBudgetInfosAdviser
+
+    security.declarePublic('giveMeetingBudgetImpactReviewerRole')
 
     def giveMeetingBudgetImpactReviewerRole(self):
         '''Add MeetingBudgetImpactReviewer role when on an item, a group is choosen in BudgetInfosAdviser and state is,
@@ -662,12 +730,14 @@ class CustomMeetingItem(MeetingItem):
         item.manage_delLocalRoles(toRemove)
 
     security.declareProtected('Modify portal content', 'onEdit')
+
     def onEdit(self, isCreated):
         item = self.getSelf()
         #adapt MeetingBudgetImpactReviewerRole if needed
         item.adapted().giveMeetingBudgetImpactReviewerRole()
 
     security.declarePublic('getIcons')
+
     def getIcons(self, inMeeting, meeting):
         '''Check docstring in PloneMeeting interfaces.py.'''
         item = self.getSelf()
@@ -682,6 +752,7 @@ class CustomMeetingItem(MeetingItem):
         return res
 
     security.declarePublic('customshowDuplicateItemAction')
+
     def customshowDuplicateItemAction(self):
         '''Condition for displaying the 'duplicate' action in the interface.
            Returns True if the user can duplicate the item.'''
@@ -710,6 +781,27 @@ class CustomMeetingItem(MeetingItem):
         #clear decision for new item
         item.setDecision('')
 
+    security.declarePublic('getMappingDecision')
+
+    def getMappingDecision(self):
+        '''
+            In model : list of decisions, we must map some traductions
+            accepted : approuved
+            removed : removed
+            delay : delay
+            pre_accepted : /
+            accepted_but_modified : Approved with a modification
+        '''
+        item = self.getSelf()
+        state = item.queryState()
+        if state == 'accepted_but_modified':
+            state = 'approved_but_modified'
+        elif state == 'accepted':
+            state = 'approved'
+        elif state == 'pre_accepted':
+            return '/'
+        return item.i18n(state, domain='plone')
+
 
 class CustomMeetingGroup(MeetingGroup):
     '''Adapter that adapts a meeting group implementing IMeetingGroup to the
@@ -722,6 +814,7 @@ class CustomMeetingGroup(MeetingGroup):
         self.context = item
 
     security.declarePublic('listEchevinServices')
+
     def listEchevinServices(self):
         '''Returns a list of groups that can be selected on an group (without isEchevin).'''
         res = []
@@ -734,6 +827,7 @@ class CustomMeetingGroup(MeetingGroup):
     MeetingGroup.listEchevinServices = listEchevinServices
 
     security.declareProtected('Modify portal content', 'onEdit')
+
     def onEdit(self, isCreated):
         '''Add group_budgetimpactreviewers if DGF group'''
         meeting_group = self.getSelf()
@@ -778,6 +872,7 @@ class MeetingNamurCollegeWorkflowActions(MeetingWorkflowActions):
                 wfTool.doActionFor(item, 'accept')
 
     security.declarePrivate('doDecide')
+
     def doDecide(self, stateChange):
         '''We pass every item that is 'presented' in the 'itemfrozen'
            state.  It is the case for late items. We initialize the decision
@@ -797,6 +892,7 @@ class MeetingNamurCollegeWorkflowActions(MeetingWorkflowActions):
                 item.reindexObject()
 
     security.declarePrivate('doBackToCreated')
+
     def doBackToCreated(self, stateChange):
         '''When a meeting go back to the "created" state, for example the
            meeting manager wants to add an item, we do not do anything.'''
@@ -811,6 +907,7 @@ class MeetingNamurCollegeWorkflowConditions(MeetingWorkflowConditions):
     security = ClassSecurityInfo()
 
     security.declarePublic('mayFreeze')
+
     def mayFreeze(self):
         res = False
         if checkPermission(ReviewPortalContent, self.context):
@@ -820,6 +917,7 @@ class MeetingNamurCollegeWorkflowConditions(MeetingWorkflowConditions):
         return res
 
     security.declarePublic('mayClose')
+
     def mayClose(self):
         res = False
         # The user just needs the "Review portal content" permission on the
@@ -829,6 +927,7 @@ class MeetingNamurCollegeWorkflowConditions(MeetingWorkflowConditions):
         return res
 
     security.declarePublic('mayDecide')
+
     def mayDecide(self):
         res = False
         if checkPermission(ReviewPortalContent, self.context) and \
@@ -845,6 +944,7 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
     security = ClassSecurityInfo()
 
     security.declarePrivate('doValidate')
+
     def doValidate(self, stateChange):
         # If it is a "late" item, we must potentially send a mail to warn MeetingManagers.
         item = self.context
@@ -876,32 +976,48 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
             item.reindexObject()
 
     security.declarePrivate('doAccept_but_modify')
+
     def doAccept_but_modify(self, stateChange):
         pass
 
     security.declarePrivate('doPre_accept')
+
     def doPre_accept(self, stateChange):
         pass
 
     security.declarePrivate('doCorrect')
+
     def doCorrect(self, stateChange):
-        '''Suppress _budgetimpactreviewers role for this Item'''
+        ''' If needed, suppress _budgetimpactreviewers role for this Item and
+            clean decision field or copy description field in decision field.'''
+        MeetingItemWorkflowActions.doCorrect(self, stateChange)
         item = self.context
         #send mail to creator if item return to owner
-        if item.queryState() == "itemcreated":
+        if (item.queryState() == "itemcreated") or \
+           (stateChange.old_state.id == "presented" and stateChange.new_state.id == "validated"):
             recipients = (item.portal_membership.getMemberById(str(item.Creator())).getProperty('email'),)
             sendMail(recipients, item, "itemMustBeCorrected")
             # Clear the decision field if item going back to creator
             item.setDecision("")
-        #we have to remove the item of the meeting
-        if item.queryState() == "validated":
-            # We may have to send a mail.
-            item.sendMailIfRelevant('itemUnpresented', 'Owner', isRole=True)
-            item.getMeeting().removeItem(item)
+            item.reindexObject()
+        if stateChange.old_state.id == "returned_to_proposing_group":
+            # copy the description field into decision field
+            item.setDecision("%s" % item.Description())
+            item.reindexObject()
         #adapt MeetingBudgetImpactReviewerRole if needed
         item.adapted().giveMeetingBudgetImpactReviewerRole()
 
+    security.declarePrivate('doReturn_to_proposing_group')
+
+    def doReturn_to_proposing_group(self, stateChange):
+        '''Cleaning decision field'''
+        MeetingItemWorkflowActions.doReturn_to_proposing_group(self, stateChange)
+        item = self.context
+        item.setDecision("")
+        item.reindexObject()
+
     security.declarePrivate('doDelay')
+
     def doDelay(self, stateChange):
         '''When an item is delayed, we will duplicate it: the copy is back to
            the initial state and will be linked to this one.
@@ -928,6 +1044,7 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
             self.context.setDecision(res)
 
     security.declarePrivate('doRefuse')
+
     def doRefuse(self, stateChange):
         '''When an item is refused, the decision will be change'''
         meetingConfig = self.context.portal_plonemeeting.getMeetingConfig(self.context)
@@ -945,6 +1062,7 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
             self.context.setDecision(res)
 
     security.declarePrivate('doItemFreeze')
+
     def doItemFreeze(self, stateChange):
         '''When an item is frozen, we must add local role MeetingBudgetReviewer '''
         item = self.context
@@ -962,6 +1080,7 @@ class MeetingItemNamurCollegeWorkflowConditions(MeetingItemWorkflowConditions):
         self.context = item  # Implements IMeetingItem
 
     security.declarePublic('mayDecide')
+
     def mayDecide(self):
         '''We may decide an item if the linked meeting is in relevant state.'''
         res = False
@@ -972,6 +1091,7 @@ class MeetingItemNamurCollegeWorkflowConditions(MeetingItemWorkflowConditions):
         return res
 
     security.declarePublic('mayCorrect')
+
     def mayCorrect(self):
         '''If the item is not linked to a meeting, the user just need the
            'Review portal content' permission, if it is linked to a meeting, an item
@@ -1012,6 +1132,7 @@ class MeetingNamurCouncilWorkflowActions(MeetingNamurCollegeWorkflowActions):
                 wfTool.doActionFor(item, 'accept')
 
     security.declarePrivate('doDecide')
+
     def doDecide(self, stateChange):
         '''We pass every item that is 'presented' in the 'itemfrozen'
            state.  It is the case for late items. We initialize the decision
@@ -1039,6 +1160,7 @@ class MeetingNamurCouncilWorkflowActions(MeetingNamurCollegeWorkflowActions):
                 item.reindexObject()
 
     security.declarePrivate('doPublish')
+
     def doPublish(self, stateChange):
         '''When publishing the meeting, every items must be automatically set to
            "itempublished".'''
@@ -1050,6 +1172,7 @@ class MeetingNamurCouncilWorkflowActions(MeetingNamurCollegeWorkflowActions):
                 wfTool.doActionFor(item, 'itempublish')
 
     security.declarePrivate('doBackToPublished')
+
     def doBackToPublished(self, stateChange):
         '''We do not impact items while going back from decided.'''
         pass
@@ -1063,6 +1186,7 @@ class MeetingNamurCouncilWorkflowConditions(MeetingNamurCollegeWorkflowCondition
     security = ClassSecurityInfo()
 
     security.declarePublic('mayClose')
+
     def mayClose(self):
         res = False
         # The user just needs the "Review portal content" permission on the
@@ -1085,6 +1209,7 @@ class MeetingNamurCouncilWorkflowConditions(MeetingNamurCollegeWorkflowCondition
         return res
 
     security.declarePublic('mayDecide')
+
     def mayDecide(self):
         res = False
         if checkPermission(ReviewPortalContent, self.context) and \
@@ -1101,6 +1226,7 @@ class MeetingItemNamurCouncilWorkflowActions(MeetingItemNamurCollegeWorkflowActi
     security = ClassSecurityInfo()
 
     security.declarePrivate('doPresent')
+
     def doPresent(self, stateChange):
         '''Manage what to do when we present an item in a meeting.'''
         meeting = getCurrentMeetingObject(self.context)
@@ -1126,6 +1252,7 @@ class MeetingItemNamurCouncilWorkflowConditions(MeetingItemNamurCollegeWorkflowC
     security = ClassSecurityInfo()
 
     security.declarePublic('mayFreeze')
+
     def mayFreeze(self):
         """
           A MeetingManager may freeze an item if the meeting is at least frozen
@@ -1142,6 +1269,7 @@ class MeetingItemNamurCouncilWorkflowConditions(MeetingItemNamurCollegeWorkflowC
         return res
 
     security.declarePublic('mayPublish')
+
     def mayPublish(self):
         """
           A MeetingManager may publish (itempublish) an item if the meeting is at least published
@@ -1154,6 +1282,7 @@ class MeetingItemNamurCouncilWorkflowConditions(MeetingItemNamurCollegeWorkflowC
         return res
 
     security.declarePublic('mayCorrect')
+
     def mayCorrect(self):
         # Check with the default PloneMeeting method and our test if res is
         # False. The diffence here is when we correct an item from itemfrozen to
@@ -1181,6 +1310,7 @@ class MeetingItemNamurCouncilWorkflowConditions(MeetingItemNamurCollegeWorkflowC
         return res
 
     security.declarePublic('mayDecide')
+
     def mayDecide(self):
         '''We may decide an item if the linked meeting is in relevant state.'''
         res = False
@@ -1199,6 +1329,7 @@ class CustomToolPloneMeeting(ToolPloneMeeting):
     security = ClassSecurityInfo()
 
     security.declarePublic('getSpecificAssemblyFor')
+
     def getSpecificAssemblyFor(self, assembly, startTxt=''):
         ''' Return the Assembly between two tag.
             This method is use in template
