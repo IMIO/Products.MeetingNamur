@@ -213,3 +213,31 @@ msgstr ""
 #. Default: "The item has been successfully transfered to the college."
 msgid "sendto_meeting-config-college_success"
 msgstr ""
+
+#. Default: "Leave empty to use the certified signatures defined on the meeting or MeetingGroup"
+msgid "MeetingNamur_descr_certified_signatures"
+msgstr ""
+
+#. Default: "This item is Confidential"
+msgid "MeetingNamur_isConfidentialItem"
+msgstr ""
+
+#. Default: "This item is Confidential"
+msgid "isConfidentialYes"
+msgstr ""
+
+#. Default: "This item certified signatures"
+msgid "item_certifiedSignatures"
+msgstr ""
+
+#. Default: "Enter the item certified signatures to be applied."
+msgid "Enter the item certified signatures to be applied."
+msgstr ""
+
+#. Default: "This item certified signatures to apply"
+msgid "Item certified signatures to apply"
+msgstr ""
+
+#. Default: "Manage item certified signatures"
+msgid "Manage item certified signatures"
+msgstr ""

@@ -1,5 +1,6 @@
 from Products.Archetypes.atapi import MultiSelectionWidget
 from Products.Archetypes.atapi import LinesField
+from Products.Archetypes.atapi import BooleanField
 from Products.Archetypes.atapi import TextField
 from Products.Archetypes.atapi import TextAreaWidget
 from Products.Archetypes.atapi import StringField
@@ -68,8 +69,38 @@ def update_item_schema(baseSchema):
             multiValued=1,
             enforceVocabulary=False,
         ),
+
+        # field used to define specific certified signatures for a MeetingItem
+        TextField(
+            name='itemCertifiedSignatures',
+            widget=TextAreaWidget(
+                label='Signatures',
+                label_msgid='PloneMeeting_label_certifiedSignatures',
+                description='Leave empty to use the certified signatures defined on the meeting or MeetingGroup',
+                description_msgid='MeetingNamur_descr_certified_signatures',
+                i18n_domain='PloneMeeting',
+            ),
+            write_permission='MeetingNamur: Write certified signatures',
+            allowable_content_types=('text/plain',),
+            default_output_type='text/plain',
+            default_content_type='text/plain',
+        ),
+
+        # field use to specify if this item is privacy (in this case, it's not visible in public pv)
+        BooleanField(
+            name='isConfidentialItem',
+            default=False,
+            widget=BooleanField._properties['widget'](
+                condition="python: here.portal_plonemeeting.isManager()",
+                label='IsConfidentialItem',
+                label_msgid='MeetingNamur_isConfidentialItem',
+                i18n_domain='PloneMeeting',
+            ),
+            optional=True,
+        ),
     ),)
 
+    baseSchema['description'].write_permission = "MeetingNamur: Write description"
     baseSchema['description'].widget.label = "projectOfDecision"
     baseSchema['description'].widget.label_msgid = "projectOfDecision_label"
 

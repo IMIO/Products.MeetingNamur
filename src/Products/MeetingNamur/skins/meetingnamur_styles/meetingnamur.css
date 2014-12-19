@@ -200,3 +200,8 @@
 .highlight-red {
 color:red;
 }
+
+/* make the textarea displayed in the manage itemCertifiedSignatures having a higher height */
+#form-widgets-item_certified_signatures {
+    height: 100px;
+}

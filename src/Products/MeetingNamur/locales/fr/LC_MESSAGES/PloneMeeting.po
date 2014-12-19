@@ -220,3 +220,31 @@ msgstr "Le point a été envoyé au Collège."
 #. Default: "The item has been successfully transfered to the council."
 msgid "sendto_meeting-config-council_success"
 msgstr "Le point a été envoyé au Conseil communal."
+
+#. Default: "Leave empty to use the certified signatures defined on the meeting or MeetingGroup"
+msgid "MeetingNamur_descr_certified_signatures"
+msgstr "Laisser vide pour utiliser les signatures certifiées définies dans la configuration."
+
+#. Default: "This item is Confidential"
+msgid "MeetingNamur_isConfidentialItem"
+msgstr "Ce point est confidentiel"
+
+#. Default: "This item is Confidential"
+msgid "isConfidentialYes"
+msgstr "Ce point est confidentiel"
+
+#. Default: "This item certified signatures"
+msgid "item_certifiedSignatures"
+msgstr "Signatures certifiées"
+
+#. Default: "Enter the item certified signatures to be applied."
+msgid "Enter the item certified signatures to be applied."
+msgstr "Encodez les signatures certifiées qui devront être appliquées.  Veuillez respecter la forme suivante:<BR/> Titre chef <BR/>  Nom chef <BR/>  Titre échevin <BR/>  Nom échevin"
+
+#. Default: "This item certified signatures to apply"
+msgid "Item certified signatures to apply"
+msgstr "Les signatures certifiées à encoder."
+
+#. Default: "Manage item certified signatures"
+msgid "Manage item certified signatures"
+msgstr "Gestion des signatures certifiées spécifiques pour ce point"

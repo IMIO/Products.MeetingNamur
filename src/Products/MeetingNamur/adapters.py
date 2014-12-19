@@ -97,7 +97,12 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     'PloneMeeting: Write optional advisers':
     ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
     'PloneMeeting: Write budget infos':
-    ('Manager', 'MeetingMember', 'MeetingBudgetImpactEditor', 'MeetingManager', 'MeetingBudgetImpactReviewer', ),
+    ('Manager', 'MeetingMember', 'MeetingReviewer', 'MeetingBudgetImpactEditor', 'MeetingManager',
+     'MeetingBudgetImpactReviewer', ),
+    'MeetingNamur: Write description':
+    ('Manager', 'MeetingMember', 'MeetingReviewer',),
+    'MeetingNamur: Write certified signatures':
+    ('Manager',),
     # MeetingManagers edit permissions
     'Delete objects':
     ['Manager', ],
@@ -322,7 +327,8 @@ class CustomMeeting(Meeting):
     def getPrintableItemsByCategory(self, itemUids=[], late=False,
                                     ignore_review_states=[], by_proposing_group=False, group_prefixes={},
                                     oralQuestion='both', toDiscuss='both',
-                                    includeEmptyCategories=False, includeEmptyGroups=False):
+                                    includeEmptyCategories=False, includeEmptyGroups=False,
+                                    allNoConfidentialItems=False):
         '''Returns a list of (late-)items (depending on p_late) with
            category. Items being in a state whose name is in
            p_ignore_review_state will not be included in the result.
@@ -361,6 +367,7 @@ class CustomMeeting(Meeting):
             groups = tool.getMeetingGroups()
         else:
             groups = None
+        #import ipdb; ipdb.set_trace()
         if items:
             for item in items:
                 # Check if the review_state has to be taken into account
@@ -370,6 +377,11 @@ class CustomMeeting(Meeting):
                     continue
                 elif not (toDiscuss == 'both' or item.getToDiscuss() == toDiscuss):
                     continue
+                elif allNoConfidentialItems:
+                    user = self.context.portal_membership.getAuthenticatedMember()
+                    userCanView = user.has_permission('View', item)
+                    if item.getIsConfidentialItem() and not userCanView:
+                        continue
                 currentCat = item.getCategory(theObject=True)
                 currentCatId = currentCat.getId()
                 if currentCatId != previousCatId:
@@ -721,7 +733,7 @@ class CustomMeetingItem(MeetingItem):
                 #for each group_budgetimpactreviewers add new local roles
                 if grpBudgetInfo:
                     grp_roles.append(grp_role)
-                    item.manage_addLocalRoles(grp_role, ('MeetingObserverLocal', 'MeetingBudgetImpactReviewer',))
+                    item.manage_addLocalRoles(grp_role, ('Reader', 'MeetingBudgetImpactReviewer',))
         #suppress old unused group_budgetimpactreviewers
         toRemove = []
         for user, roles in item.get_local_roles():
@@ -749,6 +761,8 @@ class CustomMeetingItem(MeetingItem):
             res.append(('accepted_but_modified.png', 'icon_help_accepted_but_modified'))
         elif itemState == 'pre_accepted':
             res.append(('pre_accepted.png', 'icon_help_pre_accepted'))
+        if item.getIsConfidentialItem():
+            res.append(('isConfidentialYes.png', 'isConfidentialYes'))
         return res
 
     security.declarePublic('customshowDuplicateItemAction')
@@ -801,6 +815,24 @@ class CustomMeetingItem(MeetingItem):
         elif state == 'pre_accepted':
             return '/'
         return item.i18n(state, domain='plone')
+
+    security.declarePublic('viewFullFieldInItemEdit')
+
+    def viewFullFieldInItemEdit(self):
+        '''
+            This method is used in MeetingItem_edit.cpt
+        '''
+        item = self.getSelf()
+        roles = item.portal_membership.getAuthenticatedMember().getRolesInContext(item)
+        res = False
+        for role in roles:
+            if (role == 'Authenticated') or (role == 'Member') or \
+               (role == 'MeetingTaxController') or (role == 'MeetingBudgetImpactReviewer') or \
+               (role == 'MeetingObserverGlobal') or (role == 'Reader'):
+                continue
+            res = True
+            break
+        return res
 
 
 class CustomMeetingGroup(MeetingGroup):

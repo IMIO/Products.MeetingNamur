@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    >
+
+    <!-- Form that manage item certified signatories -->
+    <browser:page
+        for="Products.PloneMeeting.interfaces.IMeetingItem"
+        layer="Products.PloneMeeting.interfaces.IPloneMeetingLayer"
+        name="manage_item_certified_signatures_form"
+        class=".itemcertifiedsignatures.ManageItemCertifiedSignaturesFormWrapper"
+        permission="zope2.View"
+      />
+
+</configure>

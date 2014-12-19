@@ -190,6 +190,26 @@
           <span tal:condition="python: not meeting">-</span>
         </div>
 
+        <tal:comment replace="nothing">Item certified signatures</tal:comment>
+        <div class="discreet"
+             tal:condition="meeting">
+          <tal:defines define="redefinedItemCertifiedSignatures python: context.getItemCertifiedSignatures();
+                               mayQuickEdit python: member.has_permission('MeetingNamur: Write certified signatures', context);
+                               class_if_highlighted python: redefinedItemCertifiedSignatures and 'highlightRedefinedValue' or '';
+                               class_to_use python: mayQuickEdit and (class_if_highlighted and class_if_highlighted + ' itemAssemblyEditable' or 'itemAssemblyEditable') or class_if_highlighted">
+          <div tal:attributes="class class_to_use"><i>
+              <a tal:condition="mayQuickEdit" href="manage_item_certified_signatures_form" class="link-overlay-pm">
+              <span i18n:translate="item_certifiedSignatures"></span>
+              </a>
+              <span tal:condition="not: mayQuickEdit"
+                    tal:attributes="class class_to_use"
+                    i18n:translate="item_certified"></span>
+          </i>:&nbsp;&nbsp;
+          </div>
+          <div tal:content="structure context/getItemCertifiedSignatures"/>
+          </tal:defines>
+        </div>
+
         <tal:comment replace="nothing">Other MeetingConfigs Clonable To</tal:comment>
         <div class="discreet"
              tal:condition="python: otherMCs or context.isClonableToOtherMeetingConfigs()"
@@ -218,6 +238,15 @@
           </tal:not_oral_question>
          </tal:defines>
         </div>
+ 
+        <tal:comment replace="nothing">Confidential item ?</tal:comment>
+        <div class="discreet">
+            <i> <div tal:condition="python: context.getIsConfidentialItem()">
+                    <span i18n:translate="MeetingNamur_isConfidentialItem"></span>
+                </div>
+            </i>
+        </div>       
+        
         <tal:comment replace="nothing">Item initiator</tal:comment>
         <div class="discreet" tal:condition="python: 'itemInitiator' in usedAttrs">
          <tal:defines define="itemInitiator context/getItemInitiator">
@@ -250,7 +279,7 @@
         </td>
       </tr>
     </table>
-
+  
     <tal:comment replace="nothing">People (item attendees, signers and votes)</tal:comment>
     <metal:people use-macro="here/@@pm-macros/itemPeople"/>
 
