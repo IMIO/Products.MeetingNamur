@@ -720,12 +720,12 @@ class CustomMeetingItem(MeetingItem):
 
     def giveMeetingBudgetImpactReviewerRole(self):
         '''Add MeetingBudgetImpactReviewer role when on an item, a group is choosen in BudgetInfosAdviser and state is,
-           at least, "itemFrozen". Remove role for other grp_budgetimpactreviewers or remove all
-           grp_budgetimpactreviewers in local role if state back in state before itemFrozen.
+           at least, "presented". Remove role for other grp_budgetimpactreviewers or remove all
+           grp_budgetimpactreviewers in local role if state back in state before presented.
         '''
         item = self.getSelf()
         grp_roles = []
-        if item.queryState() in ('itemfrozen', 'accepted', 'delayed', 'accepted_but_modified',
+        if item.queryState() in ('presented', 'itemfrozen', 'accepted', 'delayed', 'accepted_but_modified',
                                  'pre_accepted', 'refused'):
             #add new MeetingBudgetImpactReviewerRole
             for grpBudgetInfo in item.grpBudgetInfos:
