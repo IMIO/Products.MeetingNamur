@@ -31,14 +31,6 @@ msgstr "Point(s) lié(s)"
 msgid "app_name"
 msgstr "PloneMeeting"
 
-#. Default: "Decision"
-msgid "decision"
-msgstr "Extrait du Procès-verbal"
-
-#. Default: "Decisions"
-msgid "decisions"
-msgstr "Procès-verbal"
-
 #. Default: "For every field you select here, PloneMeeting will keep track of any change on any item, if it is in one of the 'historizable' states as defined below."
 msgid "historized_item_attrs_descr"
 msgstr "Pour chaque champ que vous sélectionnez ici, PloneMeeting conservera la trace de tout changement sur chaque point qui est dans un des états listés ci-dessous."
@@ -54,11 +46,6 @@ msgstr "Configurer PloneMeeting"
 #. Default: "Welcome to PloneMeeting!"
 msgid "hs_welcome_title"
 msgstr "Bienvenue sur PloneMeeting"
-
-# Other
-#. Default: "Late items"
-msgid "late_presented_items"
-msgstr "Points ajoutés à la séance après gel de celle-ci"
 
 #. Default: "Description"
 msgid "meeting_item_description"
@@ -84,14 +71,6 @@ msgstr "Attention, pour les groupes dont l'acronyme commence par DGF un rôle sp
 msgid "optional_advisers_item_descr"
 msgstr "Sélectionnez les groupes qui pourront remettre un avis sur ce point. Sélectionnez plusieurs groupes à l'aide de CTRL+clic"
 
-#. Default: "Decision"
-msgid "portletdecisions_title"
-msgstr "Procès-verbaux"
-
-#. Default: "Meeting"
-msgid "portletmeetings_title"
-msgstr "Ordres du jour"
-
 #. Default: "PowerObservers"
 msgid "powerObserversGroupTitle"
 msgstr "Echevins"
@@ -108,14 +87,6 @@ msgstr "Présenter tous les points sélectionnés"
 msgid "search_advanced"
 msgstr "Configurer PloneMeeting"
 
-#. Default: "Every decisions"
-msgid "searchalldecisions"
-msgstr "tous les PVs"
-
-#. Default: "decided items"
-msgid "searchdecideditems"
-msgstr "les points décidés"
-
 #. Default: "Items of my group"
 msgid "searchgroupitems"
 msgstr "points de mon service"
@@ -130,20 +101,12 @@ msgid "searchvalidateditems"
 msgstr "les points validés"
 
 #. Default: "Alderman of the following services(departments)"
-msgid "MeetingCommune_label_echevinServices"
+msgid "MeetingCommunes_label_echevinServices"
 msgstr "Echevin des services suivants"
 
 #. Default: "Leave empty if he is not an echevin"
-msgid "MeetingCommune_descr_echevinServices"
+msgid "MeetingCommunes_descr_echevinServices"
 msgstr "Laisser vide si ce n'est pas un échevin"
-
-#. Default: "Leave empty to use the signatures defined on the meeting"
-msgid "MeetingCommune_descr_signatures"
-msgstr "Laisser ce champ vide pour utiliser les signatures qui seront définies sur la séance"
-
-#. Default: "Signatures Delegation"
-msgid "MeetingCommune_label_signatures"
-msgstr "Délégation de signatures"
 
 #. Default: "Gives mandatory advice on"
 msgid "PloneMeeting_label_givesMandatoryAdviceOn"
@@ -197,10 +160,6 @@ msgstr "Observations de l'OJ"
 msgid "PloneMeeting_meetingObservations2"
 msgstr "Observations de l'OJ"
 
-#. Default: "Décision used when the item is reported"
-msgid "PloneMeeting_label_itemDecisionReportText"
-msgstr "Décision du point lors d'un report"
-
 #. Default: "When an item is delay, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
 msgid "item_decision_report_text_descr"
 msgstr "Lorsque le point est reporté, la décision sera remplacée par le texte défini ici, sous la forme d'une expression TAL (Tag Attribute Language) dans laquelle le nom 'here', représentant le point courant, peut être utilisé. Voici un exemple : python:'%sLe collège décide de reporter le point'%here.getDecision()"
@@ -248,3 +207,16 @@ msgstr "Les signatures certifiées à encoder."
 #. Default: "Manage item certified signatures"
 msgid "Manage item certified signatures"
 msgstr "Gestion des signatures certifiées spécifiques pour ce point"
+
+#searches
+#. Default: "cdld synthesis"
+msgid "searchcdlditems"
+msgstr "Synthèse CDLD"
+
+#. Default: "Proposing group to keep for CDLD synthesis"
+msgid "MeetingCommunes_label_cdldProposingGroup"
+msgstr "Groupes repris pour la synthèse des avis de légalité (CDLD)"
+
+#. Default: "Choose proposing group for cdld advice"
+msgid "MeetingCommunes_descr_cdldProposingGroup"
+msgstr "Choississez les groupes concernés par l'avis de légalité (CDLD)"

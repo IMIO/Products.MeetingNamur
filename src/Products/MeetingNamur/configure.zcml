@@ -10,9 +10,6 @@
   <i18n:registerTranslations directory="locales" />
 
   <include package="Products.CMFPlacefulWorkflow"/>
-  <include package="communesplone.iconified_document_actions"/>
-  <include package="plonetheme.imioapps"/>
-  <include package="collective.ckeditor"/>
   <include package="Products.PloneMeeting"/>
   <include package=".browser"/>
 
@@ -58,7 +55,11 @@
            
   <adapter for="Products.PloneMeeting.interfaces.IMeetingGroup"
            factory="Products.MeetingNamur.adapters.CustomMeetingGroup"
-           provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>           
+           provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingConfig"
+           factory="Products.MeetingCommunes.adapters.CustomMeetingConfig"
+           provides="Products.PloneMeeting.interfaces.IMeetingConfigCustom"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
            factory="Products.MeetingNamur.adapters.CustomToolPloneMeeting"

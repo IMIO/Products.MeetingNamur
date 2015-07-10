@@ -36,33 +36,8 @@ msgstr ""
 msgid "projectOfDecision_label"
 msgstr ""
 
-# Other
-#. Default: "Late items"
-msgid "late_presented_items"
-msgstr ""
-
-#. Default: "Decisions"
-msgid "decisions"
-msgstr ""
-
 #. Default: "Items of my group"
 msgid "searchgroupitems"
-msgstr ""
-
-#. Default: "Decision"
-msgid "decision"
-msgstr ""
-
-#. Default: "Decision"
-msgid "portletdecisions_title"
-msgstr ""
-
-#. Default: "Meeting"
-msgid "portletmeetings_title"
-msgstr ""
-
-#. Default: "Every decisions"
-msgid "searchalldecisions"
 msgstr ""
 
 #. Default: "Present every selected items"
@@ -76,10 +51,6 @@ msgstr ""
 
 #. Default: "validated items"
 msgid "searchvalidateditems"
-msgstr ""
-
-#. Default: "decided items"
-msgid "searchdecideditems"
 msgstr ""
 
 #. Default: "PowerObservers"
@@ -123,19 +94,11 @@ msgid "PloneMeeting_label_predecessor"
 msgstr ""
 
 #. Default: "Alderman of the following services(departments)"
-msgid "MeetingCommune_label_echevinServices"
+msgid "MeetingCommunes_label_echevinServices"
 msgstr ""
 
 #. Default: "Leave empty if he is not an echevin"
-msgid "MeetingCommune_descr_echevinServices"
-msgstr ""
-
-#. Default: "Leave empty to use the signatures defined on the meeting"
-msgid "MeetingCommune_descr_signatures"
-msgstr ""
-
-#. Default: "Signatures Delegation"
-msgid "MeetingCommune_label_signatures"
+msgid "MeetingCommunes_descr_echevinServices"
 msgstr ""
 
 #. Default: "Gives mandatory advice on"
@@ -191,21 +154,6 @@ msgstr ""
 msgid "PloneMeeting_meetingObservations2"
 msgstr ""
 
-#. Default: "Décision used when the item is reported"
-msgid "PloneMeeting_label_itemDecisionReportText"
-msgstr ""
-
-#. Default: "When an item is delay, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
-msgid "item_decision_report_text_descr"
-msgstr ""
-
-#. Default: "Décision used when the item is refused"
-msgid "PloneMeeting_label_itemDecisionRefuseText"
-msgstr ""
-
-#. Default: "When an item is refused, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
-msgid "item_decision_refuse_text_descr"
-msgstr ""
 #. Default: "The item has been successfully transfered to the council."
 msgid "sendto_meeting-config-council_success"
 msgstr ""
@@ -240,4 +188,17 @@ msgstr ""
 
 #. Default: "Manage item certified signatures"
 msgid "Manage item certified signatures"
+msgstr ""
+
+#searches
+#. Default: "cdld synthesis"
+msgid "searchcdlditems"
+msgstr ""
+
+#. Default: "Proposing group to keep for CDLD synthesis"
+msgid "MeetingCommunes_label_cdldProposingGroup"
+msgstr ""
+
+#. Default: "Choose proposing group for cdld advice"
+msgid "MeetingCommunes_descr_cdldProposingGroup"
 msgstr ""

@@ -135,14 +135,7 @@ def reorderSkinsLayers(context, site):
         return
 
     logStep("reorderSkinsLayers", context)
-    try:
-        site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingNamur:default', 'skins')
-        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:default')
-        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin')
-    except KeyError:
-        # if the Products.MeetingNamur profile is not available
-        # (not using MeetingNamur or in testing?) we pass...
-        pass
+    site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingNamur:default', 'skins')
 
 
 def addTaxControllerGroup(context):
@@ -172,52 +165,86 @@ def finalizeExampleInstance(context):
         return
 
     # finalizeExampleInstance on namur instance
-    specialUserId = 'bourgmestre'
     meetingConfig1Id = 'meeting-config-college'
     meetingConfig2Id = 'meeting-config-council'
 
     site = context.getSite()
 
     logStep("finalizeExampleInstance", context)
-    # add the test user 'bourgmestre' to every '_powerobservers' groups
-    member = site.portal_membership.getMemberById(specialUserId)
-    if member:
-        site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig1Id)
-        site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
-    # add the test user 'conseiller' to only the every 'meeting-config-council_powerobservers' groups
+    # add the test users 'dfin' and 'bourgmestre' to every '_powerobservers' groups
+    for memberId in ('dfin', 'bourgmestre', ):
+        member = site.portal_membership.getMemberById(memberId)
+        if member:
+            site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig1Id)
+            site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
+    # add the test user 'conseiller' only to the 'meeting-config-council_powerobservers' group
+
     member = site.portal_membership.getMemberById('conseiller')
     if member:
         site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
 
-    # define some parameters for 'meeting-config-college'
-    mc_college_or_bp = getattr(site.portal_plonemeeting, meetingConfig1Id)
-    # add some topcis to the portlet_todo
-    mc_college_or_bp.setToDoListTopics(
-        [getattr(mc_college_or_bp.topics, 'searchdecideditems'),
-         getattr(mc_college_or_bp.topics, 'searchitemstovalidate'),
-         getattr(mc_college_or_bp.topics, 'searchallitemsincopy'),
-         getattr(mc_college_or_bp.topics, 'searchallitemstoadvice'),
-         ])
+    # add the test user 'dfin' and 'chefCompta' to the 'meeting-config-xxx_budgetimpacteditors' groups
+    for memberId in ('dfin', 'chefCompta', ):
+        member = site.portal_membership.getMemberById(memberId)
+        if member:
+            site.portal_groups.addPrincipalToGroup(memberId, '%s_budgetimpacteditors' % meetingConfig1Id)
+            site.portal_groups.addPrincipalToGroup(memberId, '%s_budgetimpacteditors' % meetingConfig2Id)
 
-    # define some parameters for 'meeting-config-council'
-    mc_council_or_cas = getattr(site.portal_plonemeeting, meetingConfig2Id)
-    # add some topcis to the portlet_todo
-    mc_council_or_cas.setToDoListTopics(
-        [getattr(mc_council_or_cas.topics, 'searchdecideditems'),
-         getattr(mc_council_or_cas.topics, 'searchitemstovalidate'),
-         getattr(mc_council_or_cas.topics, 'searchallitemsincopy'),
+    # add some extra topics to each MeetingConfig
+    topicsInfo = (
+        # Items in state 'proposed'
+        ('searchproposeditems',
+         (('portal_type', 'ATPortalTypeCriterion', ('MeetingItem',)),
+          ('review_state', 'ATListCriterion', ('proposed',),)
+          ),
+         'created',
+         '',
+         "python: not here.portal_plonemeeting.userIsAmong('reviewers')",
+         ),
+        # Items in state 'validated'
+        ('searchvalidateditems',
+         (('portal_type', 'ATPortalTypeCriterion', ('MeetingItem',)),
+         ('review_state', 'ATListCriterion', ('validated',),)
+          ),
+         'created',
+         '',
+         '',
+         ),
+        # Items for cdld synthesis
+        ('searchcdlditems',
+        (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
+         ),
+        'created',
+        'searchCDLDItems',
+        "python: '%s_budgetimpacteditors' % here.portal_plonemeeting.getMeetingConfig(here)"
+        ".getId() in member.getGroups() or here.portal_plonemeeting.isManager(here)", ),
+    )
+    mc_college = getattr(site.portal_plonemeeting, meetingConfig1Id)
+    mc_college.createTopics(topicsInfo)
+    mc_council = getattr(site.portal_plonemeeting, meetingConfig2Id)
+    mc_council.createTopics(topicsInfo)
+
+    # add some topics to the portlet_todo
+    mc_college.setToDoListTopics(
+        [getattr(mc_college.topics, 'searchdecideditems'),
+         getattr(mc_college.topics, 'searchallitemsincopy'),
+         getattr(mc_college.topics, 'searchitemstoadvicewithdelay'),
+         getattr(mc_college.topics, 'searchallitemstoadvice'),
+         ])
+    # add some topics to the portlet_todo
+    mc_council.setToDoListTopics(
+        [getattr(mc_council.topics, 'searchdecideditems'),
+         getattr(mc_council.topics, 'searchallitemsincopy'),
          ])
 
     # finally, re-launch plonemeetingskin and MeetingNamur skins step
     # because PM has been installed before the import_data profile and messed up skins layers
     site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingNamur:default', 'skins')
-    site.portal_setup.runImportStepFromProfile(u'profile-plonetheme.imioapps:default', 'skins')
-    site.portal_setup.runImportStepFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin', 'skins')
     # define default workflowAdaptations for council
     # due to some weird problems, the wfAdaptations can not be defined
     # thru the import_data...
-    mc_council_or_cas.setWorkflowAdaptations(['no_global_observation', 'no_publication'])
-    performWorkflowAdaptations(site, mc_council_or_cas, logger)
+    mc_council.setWorkflowAdaptations(['no_global_observation', 'no_publication'])
+    performWorkflowAdaptations(site, mc_council, logger)
 
 
 def reorderCss(context):

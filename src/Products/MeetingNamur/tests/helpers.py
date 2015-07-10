@@ -88,6 +88,8 @@ class MeetingNamurTestingHelpers(MeetingCommunesTestingHelpers):
                               'validated': 'validated',
                               'presented': 'presented'}
 
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = ('freeze', 'decide', )
+
     def _createMeetingWithItems(self, withItems=True, meetingDate=DateTime()):
         '''Create a meeting with a bunch of items.
            Overrided to do it as 'Manager' to be able

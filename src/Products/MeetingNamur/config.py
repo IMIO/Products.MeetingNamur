@@ -60,51 +60,6 @@ setDefaultRoles(WriteDecision, ('Manager',))
 STYLESHEETS = [{'id': 'meetingnamur.css',
                 'title': 'MeetingNamur CSS styles'}]
 
-# define some more value in MeetingConfig.topicsInfo so extra topics are created for each MeetingConfig
-from Products.PloneMeeting.MeetingConfig import MeetingConfig
-topicsInfo = (
-    # Items in state 'proposed'
-    ('searchproposeditems',
-     (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
-      ('review_state', 'ATListCriterion', ('proposed',),)
-      ),
-     'created',
-     '',
-     "python: not here.portal_plonemeeting.userIsAmong('reviewers')",
-     ),
-    # Items that need to be validated
-    ('searchitemstovalidate',
-     (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
-      ('review_state', 'ATListCriterion', ('proposed',),)
-      ),
-     'created',
-     'searchItemsToValidate',
-     "python: here.portal_plonemeeting.userIsAmong('reviewers')",
-     ),
-    # Items in state 'validated'
-    ('searchvalidateditems',
-     (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
-      ('review_state', 'ATListCriterion', ('validated',),)
-      ),
-     'created',
-     '',
-     '',
-     ),
-    # All 'decided' items
-    ('searchdecideditems',
-     (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
-      ('review_state', 'ATListCriterion', ('accepted', 'refused', 'delayed', 'accepted_but_modified',),)
-      ),
-     'created',
-     '',
-     '',
-     ),
-)
-existingTopicsInfo = MeetingConfig.topicsInfo
-existingTopicsInfo = list(existingTopicsInfo)
-existingTopicsInfo.extend(topicsInfo)
-MeetingConfig.topicsInfo = tuple(existingTopicsInfo)
-
 ##/code-section config-bottom
 
 
