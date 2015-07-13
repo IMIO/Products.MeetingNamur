@@ -13,7 +13,6 @@
  <permission>PloneMeeting: Write decision</permission>
  <permission>View</permission>
  <permission>Review portal content</permission>
- <permission>Add portal content</permission>
  <permission>PloneMeeting: Add MeetingFile</permission>
  <permission>PloneMeeting: Read optional advisers</permission>
  <permission>PloneMeeting: Write optional advisers</permission>
@@ -39,13 +38,6 @@
    <permission-role>MeetingTaxController</permission-role>
    <permission-role>MeetingBudgetImpactReviewer</permission-role>
    <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-   <permission-role>MeetingMember</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
@@ -187,13 +179,6 @@
    <permission-role>MeetingBudgetImpactReviewer</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-  </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -334,13 +319,6 @@
    <permission-role>MeetingBudgetImpactReviewer</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-  </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -475,11 +453,6 @@
    <permission-role>MeetingObserverLocal</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-  </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -600,11 +573,6 @@
    <permission-role>MeetingTaxController</permission-role>
    <permission-role>Reader</permission-role>
    <permission-role>MeetingBudgetImpactReviewer</permission-role>
-  </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
@@ -752,11 +720,6 @@
    <permission-role>MeetingBudgetImpactReviewer</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -903,11 +866,6 @@
    <permission-role>MeetingTaxController</permission-role>
    <permission-role>MeetingBudgetImpactReviewer</permission-role>
   </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -1051,11 +1009,6 @@
    <permission-role>Reader</permission-role>
    <permission-role>MeetingTaxController</permission-role>
   </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
-  </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -1188,13 +1141,6 @@
    <permission-role>MeetingTaxController</permission-role>
    <permission-role>MeetingBudgetImpactReviewer</permission-role>
    <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingMember</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
@@ -1334,11 +1280,6 @@
    <permission-role>Reader</permission-role>
    <permission-role>MeetingTaxController</permission-role>
    <permission-role>MeetingBudgetImpactReviewer</permission-role>
-  </permission-map>
-  <permission-map name="Add portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">

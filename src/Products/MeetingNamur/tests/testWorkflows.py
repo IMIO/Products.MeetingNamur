@@ -23,7 +23,6 @@
 #
 
 from AccessControl import Unauthorized
-from Products.MeetingNamur.config import *
 from Products.MeetingNamur.tests.MeetingNamurTestCase import \
     MeetingNamurTestCase
 from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
@@ -50,15 +49,15 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
         self.addAnnex(item1)
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         self.do(item1, 'propose')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # pmManager creates a meeting
         self.changeUser('pmManager')
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         # pmCreator2 creates and proposes an item
         self.changeUser('pmCreator2')
         item2 = self.create('MeetingItem', title='The second item',
@@ -66,9 +65,9 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         self.do(item2, 'propose')
         # pmReviewer1 validates item1 and adds an annex to it
         self.changeUser('pmReviewer1')
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         self.do(item1, 'validate')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # pmManager inserts item1 into the meeting and publishes it
         self.changeUser('pmManager')
@@ -92,22 +91,13 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         # So now we should have 4 normal item (3 recurring + 1) and one late item in the meeting
         self.failUnless(len(meeting.getItems()) == 3)
         self.failUnless(len(meeting.getLateItems()) == 1)
-        # pmReviewer1 now adds an annex to item1
-#        self.changeUser('pmReviewer1')
-#        self.addAnnex(item1)
         # pmManager adds a decision to item1 and freezes the meeting
         self.changeUser('pmManager')
         item1.setDecision(self.decisionText)
-#        self.do(meeting, 'freeze')
-        # Now reviewers can't add annexes anymore
-#        self.changeUser('pmReviewer2')
-#        self.failIf(self.hasPermission('PloneMeeting: Add annex', item2))
-#        self.changeUser('pmReviewer1')
-#        self.assertRaises(Unauthorized, self.addAnnex, item2)
         # pmManager adds a decision for item2, decides and closes the meeting
         self.changeUser('pmManager')
         item2.setDecision(self.decisionText)
-        self.addAnnex(item2, decisionRelated=True)
+        self.addAnnex(item2, relatedTo='item_decision')
         self.do(meeting, 'decide')
         self.failIf(len(self.transitions(meeting)) != 2)
         self.do(meeting, 'close')
@@ -125,16 +115,16 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         item1 = self.create('MeetingItem', title='The first item')
         self.addAnnex(item1)
         # The creator can add a decision annex on created item
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         self.do(item1, 'propose')
         # The creator cannot add a decision annex on proposed item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         # pmManager creates a meeting
         self.changeUser('pmManager')
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
         # The meetingManager can add a decision annex
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         # pmCreator2 creates and proposes an item
         self.changeUser('pmCreator2')
         item2 = self.create('MeetingItem', title='The second item',
@@ -143,10 +133,10 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         # pmReviewer1 validates item1 and adds an annex to it
         self.changeUser('pmReviewer1')
         # The reviewer can add a decision annex on proposed item
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         self.do(item1, 'validate')
         # The reviewer cannot add a decision annex on validated item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         # pmManager inserts item1 into the meeting and freezes it
         self.changeUser('pmManager')
         managerAnnex = self.addAnnex(item1)
@@ -154,7 +144,7 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         self.do(item1, 'present')
         self.changeUser('pmCreator1')
         # The creator cannot add any kind of annex on presented item
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.assertRaises(Unauthorized, self.addAnnex, item1)
         self.changeUser('pmManager')
         self.do(meeting, 'freeze')
@@ -179,10 +169,10 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         # Now reviewers can't add annexes anymore
         self.changeUser('pmReviewer2')
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item2))
-        self.assertRaises(Unauthorized, self.addAnnex, item2, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item2, relatedTo='item_decision')
         self.changeUser('pmReviewer1')
         self.assertRaises(Unauthorized, self.addAnnex, item2)
-        self.assertRaises(Unauthorized, self.addAnnex, item2, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item2, relatedTo='item_decision')
         # pmManager adds a decision for item2, decides and closes the meeting
         self.changeUser('pmManager')
         item2.setDecision(self.decisionText)
@@ -194,8 +184,9 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         duplicatedItem = item1.getBRefs('ItemPredecessor')[0]
         self.assertEquals(duplicatedItem.getPredecessor().UID(), item1.UID())
         # when duplicated on delay, annexes are kept
-        self.assertEquals(len(IAnnexable(duplicatedItem).getAnnexes()), 1)
-        self.addAnnex(item2, decisionRelated=True)
+        self.assertEquals(len(IAnnexable(duplicatedItem).getAnnexes(relatedTo='item')), 1)
+        self.assertEquals(len(IAnnexable(duplicatedItem).getAnnexes(relatedTo='item_decision')), 3)
+        self.addAnnex(item2, relatedTo='item_decision')
         self.failIf(len(self.transitions(meeting)) != 2)
         # When a meeting is closed, items without a decision are automatically 'accepted'
         self.do(meeting, 'close')
@@ -234,10 +225,10 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         #when correcting the meeting back to created, the items must be corrected
         #back to "presented"
         self.do(meeting, 'backToCreated')
-        #when a point is in 'itemfrozen' it's must rest in this state
-        #because normally we backToCreated for add new point
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
+        #when a point is in 'itemfrozen' it's must return in presented state
+        #because in import_datea we define a transition if meeting  return in created state
+        self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
+        self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
 
     def test_subproduct_CloseMeeting(self):
         """

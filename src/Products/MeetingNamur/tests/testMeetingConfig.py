@@ -29,6 +29,18 @@ from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig a
 class testMeetingConfig(MeetingNamurTestCase, mctmc):
     '''Tests the MeetingConfig class methods.'''
 
+    def test_subproduct_call_SearchItemsToValidateOfEveryReviewerLevelsAndLowerLevels(self):
+        '''Not sense... One validation level and prevalidation wfadaptation is not avalaible'''
+        pass
+
+    def test_subproduct_call_SearchItemsToValidateOfHighestHierarchicLevel(self):
+        '''Not sense... One validation level and prevalidation wfadaptation is not avalaible'''
+        pass
+
+    def test_subproduct_call_SearchItemsToValidateOfMyReviewerGroups(self):
+        '''Not sense... One validation level and prevalidation wfadaptation is not avalaible'''
+        pass
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

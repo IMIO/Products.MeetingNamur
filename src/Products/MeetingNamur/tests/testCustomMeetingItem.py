@@ -46,38 +46,6 @@ class testCustomMeetingItem(MeetingNamurTestCase):
             self.do(item, 'present')
         return meeting
 
-    def test_GetMeetingsAcceptingItems(self):
-        """
-           We have to test this adapted method.
-           It should only return meetings that are "created" or "frozen"
-        """
-        self.changeUser('admin')
-        #create 4 meetings with items so we can play the workflow
-        #will stay 'created'
-        m1 = self._createMeetingWithItems()
-        #go to state 'frozen'
-        m2 = self._createMeetingWithItems()
-        self.do(m2, 'freeze')
-        #go to state 'decided'
-        m3 = self._createMeetingWithItems()
-        self.do(m3, 'freeze')
-        self.do(m3, 'decide')
-        #go to state 'closed'
-        m4 = self._createMeetingWithItems()
-        self.do(m4, 'freeze')
-        self.do(m4, 'decide')
-        self.do(m4, 'close')
-        self.changeUser('pmManager')
-        item = self.create('MeetingItem')
-        #getMeetingsAcceptingItems should only return meetings
-        #that are 'created', 'frozen' or 'decided' for the meetingManager
-        self.assertEquals(set([m.id for m in item.adapted().getMeetingsAcceptingItems()]), set([m3.id, m2.id, m1.id]))
-        #getMeetingsAcceptingItems should only return meetings
-        #that are 'created' or 'frozen' for the meetingMember
-        self.changeUser('pmCreator1')
-        item = self.create('MeetingItem')
-        self.assertEquals(set([m.id for m in item.adapted().getMeetingsAcceptingItems()]), set([m2.id, m1.id]))
-
     def test_GetCertifiedSignatures(self):
         '''Check that the certified signature is defined on developers group but not defined on vendors.'''
         #create an item for test
@@ -88,35 +56,27 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         self.changeUser('pmCreator1')
         i1 = self.create('MeetingItem')
         i1.setProposingGroup('vendors')
-        #before present in meeting, certfiedSignatures must be empty
-        res, isGrpSign = i1.adapted().getCertifiedSignatures()
-        self.assertEquals(res, '')
-        self.assertEquals(isGrpSign, False)
         self.do(i1, 'propose')
         self.changeUser('pmReviewer1')
         self.do(i1, 'validate')
         self.changeUser('pmManager')
         self.do(i1, 'present')
+        res = i1.getCertifiedSignatures()
         #no signatures defined for vendors group, get meetingconfig signature
-        res, isGrpSign = i1.adapted().getCertifiedSignatures()
-        self.assertEquals(res, 'Mr Présent Actuellement, Bourgmestre ff - Charles Exemple, Secrétaire communal')
-        self.assertEquals(isGrpSign, False)
+        res = i1.getCertifiedSignatures()
+        self.assertEquals(res, [u'Le Secr\xe9taire communal', u'Mr Vraiment Pr\xe9sent', u'Le Bourgmestre', u'Mr Charles Exemple'])
         self.changeUser('pmCreator1')
         i2 = self.create('MeetingItem')
         i2.setProposingGroup('developers')
-        #before present in meeting, certfiedSignatures must be empty
-        res, isGrpSign = i2.adapted().getCertifiedSignatures()
-        self.assertEquals(res, '')
-        self.assertEquals(isGrpSign, False)
         self.do(i2, 'propose')
         self.changeUser('pmReviewer1')
         self.do(i2, 'validate')
         self.changeUser('pmManager')
         self.do(i2, 'present')
+        res = i2.getCertifiedSignatures()
         #signatures defined for developers group, get it
-        res, isGrpSign = i2.adapted().getCertifiedSignatures()
-        self.assertEquals(res, 'developers signatures')
-        self.assertEquals(isGrpSign, True)
+        res = i2.getCertifiedSignatures()
+        self.assertEquals(res, [u'Le Secrétaire communal ff', u'Remplaçant', u'Le 1er échevin', u'Remplaçant 2'])
 
     def test_GetEchevinsForProposingGroup(self):
         '''Check a meetingItem for developers group return an echevin (the Same group in our case)
@@ -190,9 +150,9 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         """
         self.changeUser('admin')
         # make items inserted in a meeting inserted in this order
-        self.meetingConfig.setSortingMethodOnAddItem('at_the_end')
+        self.meetingConfig.insertingMethodsOnAddItem = ({'insertingMethod': 'at_the_end', 'reverse': '0'}, )
         # remove recurring items if any as we are playing with item number here under
-        self._removeRecurringItems(self.meetingConfig)
+        self._removeConfigObjectsFor(self.meetingConfig)
         # a user create an item and we insert it into a meeting
         self.changeUser('pmCreator1')
         item = self.create('MeetingItem')

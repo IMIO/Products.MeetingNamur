@@ -21,7 +21,7 @@
 #
 
 from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
-from Products.MeetingNamur.testing import MNA_TEST_PROFILE_FUNCTIONAL
+from Products.MeetingNamur.testing import MNA_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingNamur.tests.helpers import MeetingNamurTestingHelpers
 
 # monkey patch the MeetingConfig.wfAdaptations again because it is done in
@@ -34,7 +34,7 @@ MeetingConfig.wfAdaptations = customWfAdaptations
 class MeetingNamurTestCase(MeetingCommunesTestCase, MeetingNamurTestingHelpers):
     """Base class for defining MeetingNamur test cases."""
 
-    layer = MNA_TEST_PROFILE_FUNCTIONAL
+    layer = MNA_TESTING_PROFILE_FUNCTIONAL
 
     def _createFinanceGroups(self):
         """

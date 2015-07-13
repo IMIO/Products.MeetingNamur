@@ -43,8 +43,8 @@ class testCustomMeeting(MeetingNamurTestCase):
         #insert items in the meeting depending on the category
         self.changeUser('admin')
         self.meetingConfig.setUseGroupsAsCategories(False)
-        self.meetingConfig.setSortingMethodOnAddItem('on_categories')
-        self._removeRecurringItems(self.meetingConfig)
+        self.meetingConfig.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories', 'reverse': '0'}, )
+        self._removeConfigObjectsFor(self.meetingConfig)
         #add a Meeting and present several items in different categories
         self.changeUser('pmManager')
         m = self.create('Meeting', date='2007/12/11 09:00:00')
@@ -109,8 +109,8 @@ class testCustomMeeting(MeetingNamurTestCase):
         #insert items in the meeting depending on the category
         self.changeUser('admin')
         self.meetingConfig.setUseGroupsAsCategories(True)
-        self.meetingConfig.setSortingMethodOnAddItem('on_proposing_groups')
-        self._removeRecurringItems(self.meetingConfig)
+        self.meetingConfig.insertingMethodsOnAddItem = ({'insertingMethod': 'on_proposing_groups', 'reverse': '0'}, )
+        self._removeConfigObjectsFor(self.meetingConfig)
         #add a Meeting and present several items in different categories
         self.changeUser('pmManager')
         m = self.create('Meeting', date='2007/12/11 09:00:00')
@@ -163,7 +163,7 @@ class testCustomMeeting(MeetingNamurTestCase):
         #check that it works
         #check that if the field contains something, it is not intialized again
         self.changeUser('admin')
-        self._removeRecurringItems(self.meetingConfig)
+        self._removeConfigObjectsFor(self.meetingConfig)
         self.changeUser('pmManager')
         m = self.create('Meeting', date='2007/12/11 09:00:00')
         #create some items
@@ -179,7 +179,7 @@ class testCustomMeeting(MeetingNamurTestCase):
         i2.setProposingGroup('developers')
         #create an item with the default Kupu empty value
         i3 = self.create('MeetingItem', title='Item3')
-        i3.setDecision("<p><br /></p>")
+        i3.setDecision("<p></p>")
         i3.setDescription("<p>Description Item3</p>")
         i3.setProposingGroup('developers')
         #present every items in the meeting
@@ -187,7 +187,7 @@ class testCustomMeeting(MeetingNamurTestCase):
         #check the decision field of every item
         self.assertEquals(i1.getDecision(), "")
         self.assertEquals(i2.getDecision(), "<p>Decision Item2</p>")
-        self.assertEquals(i3.getDecision(), "<p><br /></p>")
+        self.assertEquals(i3.getDecision(), "<p></p>")
         for item in items:
             self.do(item, 'propose')
             self.do(item, 'validate')

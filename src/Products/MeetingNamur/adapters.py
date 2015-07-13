@@ -370,7 +370,6 @@ class CustomMeeting(Meeting):
             groups = tool.getMeetingGroups()
         else:
             groups = None
-        #import ipdb; ipdb.set_trace()
         if items:
             for item in items:
                 # Check if the review_state has to be taken into account
@@ -653,17 +652,17 @@ class CustomMeetingItem(MeetingItem):
             res.append(('isConfidentialYes.png', 'isConfidentialYes'))
         return res
 
-    def _initDecisionFieldIfEmpty(self):
+    def _initCustomDecisionFieldIfEmpty(self):
         '''
           If decision field is empty, it will be initialized
           with data coming from title and description.
         '''
         # set keepWithNext to False as it will add a 'class' and so
         # xhtmlContentIsEmpty will never consider it empty...
-        if xhtmlContentIsEmpty(self.getDeliberation(keepWithNext=False)):
-            self.setDecision("%s" % self.Description())
-            self.reindexObject()
-    MeetingItem._initDecisionFieldIfEmpty = _initDecisionFieldIfEmpty
+        item = self.getSelf()
+        if xhtmlContentIsEmpty(item.getDeliberation(keepWithNext=False)):
+            item.setDecision("%s" % item.Description())
+            item.reindexObject()
 
     security.declarePublic('getAllAnnexes')
 
@@ -685,16 +684,16 @@ class CustomMeetingItem(MeetingItem):
         ''' Printing Method use in templates :
             return formated advice'''
         res = []
-        meetingItem = self.context
-        keys = meetingItem.getAdvicesByType().keys()
+        item = self.getSelf()
+        keys = item.getAdvicesByType().keys()
         for key in keys:
-            for advice in meetingItem.getAdvicesByType()[key]:
+            for advice in item.getAdvicesByType()[key]:
                 if advice['type'] == 'not_given':
                     continue
                 comment = ''
                 if advice['comment']:
                     comment = advice['comment']
-                res.append({'type': meetingItem.i18n(key).encode('utf-8'), 'name': advice['name'].encode('utf-8'),
+                res.append({'type': item.i18n(key).encode('utf-8'), 'name': advice['name'].encode('utf-8'),
                             'comment': comment})
         return res
 
@@ -708,11 +707,11 @@ class CustomMeetingItem(MeetingItem):
         # - the user is creator in some group;
         # - the user must be able to see the item if it is private.
         # The user will duplicate the item in his own folder.
-        tool = self.portal_plonemeeting
+        tool = getToolByName(self, 'portal_plonemeeting')
         item = self.getSelf()
         ignoreDuplicateButton = item.queryState() == 'pre_accepted'
-        if tool.getPloneDiskAware() or not tool.userIsAmong('creators') \
-                or not self.isPrivacyViewable() or ignoreDuplicateButton:
+        if self.isDefinedInTool() or not tool.userIsAmong('creators') \
+           or not self.isPrivacyViewable() or ignoreDuplicateButton:
             return False
         return True
     MeetingItem.showDuplicateItemAction = customshowDuplicateItemAction
@@ -765,6 +764,15 @@ class CustomMeetingItem(MeetingItem):
                 continue
             res = True
             break
+        return res
+
+    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc):
+        '''
+          Keep some new fields when item is cloned (to another mc or from itemtemplate).
+        '''
+        res = ['grpBudgetInfos', 'itemCertifiedSignatures', 'isConfidentialItem']
+        if cloned_to_same_mc:
+            res = res + []
         return res
 
 
@@ -943,7 +951,7 @@ class MeetingNamurCollegeWorkflowActions(MeetingWorkflowActions):
            been written.'''
         for item in self.context.getAllItems(ordered=True):
             # If the decision field is empty, initialize it
-            item._initDecisionFieldIfEmpty()
+            item.adapted()._initCustomDecisionFieldIfEmpty()
 
 
 class MeetingNamurCollegeWorkflowConditions(MeetingWorkflowConditions):
@@ -1013,7 +1021,7 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
         oa = tuple(oal)
         item.setOptionalAdvisers(oa)
         # If the decision field is empty, initialize it
-        item._initDecisionFieldIfEmpty()
+        item.adapted()._initCustomDecisionFieldIfEmpty()
 
     security.declarePrivate('doAccept_but_modify')
 
@@ -1102,7 +1110,7 @@ class MeetingNamurCouncilWorkflowActions(MeetingNamurCollegeWorkflowActions):
            been written.'''
         for item in self.context.getAllItems(ordered=True):
             # If the decision field is empty, initialize it
-            item._initDecisionFieldIfEmpty()
+            item.adapted()._initCustomDecisionFieldIfEmpty()
 
     security.declarePrivate('doBackToPublished')
 
