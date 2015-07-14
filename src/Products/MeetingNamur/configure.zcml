@@ -58,7 +58,7 @@
            provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingConfig"
-           factory="Products.MeetingCommunes.adapters.CustomMeetingConfig"
+           factory="Products.MeetingNamur.adapters.CustomMeetingConfig"
            provides="Products.PloneMeeting.interfaces.IMeetingConfigCustom"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
