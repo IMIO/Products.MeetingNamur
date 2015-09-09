@@ -725,7 +725,7 @@ class CustomMeetingItem(MeetingItem):
         if item.queryState() in ['accepted', 'accepted_but_modified']:
             item.setDescription(orig.getDecision())
         #clear decision for new item
-        item.setDecision('')
+        item.setDecision('<p>&nbsp;</p>')
 
     security.declarePublic('getMappingDecision')
 
@@ -942,13 +942,12 @@ class MeetingNamurCollegeWorkflowActions(MeetingWorkflowActions):
     implements(IMeetingNamurCollegeWorkflowActions)
     security = ClassSecurityInfo()
 
-    security.declarePrivate('doDecide')
+    security.declarePrivate('doClose')
 
-    def doDecide(self, stateChange):
-        '''We pass every item that is 'presented' in the 'itemfrozen'
-           state.  It is the case for late items. We initialize the decision
-           field with content of Title+Description if no decision has already
-           been written.'''
+    def doClose(self, stateChange):
+        '''We initialize the decision field with content of Title+Description
+           if no decision has already been written.'''
+        MeetingWorkflowActions.doClose(self, stateChange)
         for item in self.context.getAllItems(ordered=True):
             # If the decision field is empty, initialize it
             item.adapted()._initCustomDecisionFieldIfEmpty()
@@ -1023,6 +1022,14 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
         # If the decision field is empty, initialize it
         item.adapted()._initCustomDecisionFieldIfEmpty()
 
+    security.declarePrivate('doPresent')
+
+    def doPresent(self, stateChange):
+        MeetingItemWorkflowActions.doPresent(self, stateChange)
+        item = self.context
+        # If the decision field is empty, initialize it
+        item.adapted()._initCustomDecisionFieldIfEmpty()
+
     security.declarePrivate('doAccept_but_modify')
 
     def doAccept_but_modify(self, stateChange):
@@ -1045,9 +1052,10 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
            (stateChange.old_state.id == "presented" and stateChange.new_state.id == "validated"):
             recipients = (item.portal_membership.getMemberById(str(item.Creator())).getProperty('email'),)
             sendMail(recipients, item, "itemMustBeCorrected")
-            # Clear the decision field if item going back to creator
-            item.setDecision("")
-            item.reindexObject()
+            # Clear the decision field if item going back to service
+            if item.queryState() == "itemcreated":
+                item.setDecision("<p>&nbsp;</p>")
+                item.reindexObject()
         if stateChange.old_state.id == "returned_to_proposing_group":
             # copy the description field into decision field
             item.setDecision("%s" % item.Description())
@@ -1061,7 +1069,7 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
         '''Cleaning decision field'''
         MeetingItemWorkflowActions.doReturn_to_proposing_group(self, stateChange)
         item = self.context
-        item.setDecision("")
+        item.setDecision("<p>&nbsp;</p>")
         item.reindexObject()
 
     security.declarePrivate('doItemFreeze')
@@ -1069,7 +1077,10 @@ class MeetingItemNamurCollegeWorkflowActions(MeetingItemWorkflowActions):
     def doItemFreeze(self, stateChange):
         '''When an item is frozen, we must add local role MeetingBudgetReviewer '''
         item = self.context
+        #adapt MeetingBudgetImpactReviewerRole if needed
         item.adapted().giveMeetingBudgetImpactReviewerRole()
+        # If the decision field is empty, initialize it
+        item.adapted()._initCustomDecisionFieldIfEmpty()
 
 
 class MeetingItemNamurCollegeWorkflowConditions(MeetingItemWorkflowConditions):
@@ -1100,17 +1111,6 @@ class MeetingNamurCouncilWorkflowActions(MeetingNamurCollegeWorkflowActions):
 
     implements(IMeetingNamurCouncilWorkflowActions)
     security = ClassSecurityInfo()
-
-    security.declarePrivate('doDecide')
-
-    def doDecide(self, stateChange):
-        '''We pass every item that is 'presented' in the 'itemfrozen'
-           state.  It is the case for late items. We initialize the decision
-           field with content of Title+Description if no decision has already
-           been written.'''
-        for item in self.context.getAllItems(ordered=True):
-            # If the decision field is empty, initialize it
-            item.adapted()._initCustomDecisionFieldIfEmpty()
 
     security.declarePrivate('doBackToPublished')
 
