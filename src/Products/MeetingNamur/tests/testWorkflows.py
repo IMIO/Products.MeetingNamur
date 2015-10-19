@@ -45,11 +45,15 @@ class testWorkflows(MeetingNamurTestCase, mctw):
     def _testWholeDecisionProcessCollege(self):
         '''This test covers the whole decision workflow. It begins with the
            creation of some items, and ends by closing a meeting.'''
-        # pmCreator1 creates an item with 1 annex and proposes it
+        # pmCreator1 creates an item
         self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.addAnnex(item1)
+        # manager add decision annex because only manager or meeting manager can add it
+        self.changeUser('pmManager')
         self.addAnnex(item1, relatedTo='item_decision')
+        self.changeUser('pmCreator1')
         self.do(item1, 'propose')
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
@@ -63,9 +67,12 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         item2 = self.create('MeetingItem', title='The second item',
                             preferredMeeting=meeting.UID())
         self.do(item2, 'propose')
-        # pmReviewer1 validates item1 and adds an annex to it
+        # pmReviewer1 validates item1
         self.changeUser('pmReviewer1')
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
+        self.changeUser('pmManager')
         self.addAnnex(item1, relatedTo='item_decision')
+        self.changeUser('pmReviewer1')
         self.do(item1, 'validate')
         self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))

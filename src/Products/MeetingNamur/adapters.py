@@ -716,17 +716,6 @@ class CustomMeetingItem(MeetingItem):
         return True
     MeetingItem.showDuplicateItemAction = customshowDuplicateItemAction
 
-    def onDuplicated(self, orig):
-        '''After item's cloning, we copy in description field the decision field
-           and clear decision field.
-        '''
-        item = self.getSelf()
-        #copy decision from source items in destination's deliberation if item is accepted
-        if item.queryState() in ['accepted', 'accepted_but_modified']:
-            item.setDescription(orig.getDecision())
-        #clear decision for new item
-        item.setDecision('<p>&nbsp;</p>')
-
     security.declarePublic('getMappingDecision')
 
     def getMappingDecision(self):
