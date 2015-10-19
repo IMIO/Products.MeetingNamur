@@ -65,10 +65,6 @@ msgstr ""
 msgid "app_name"
 msgstr ""
 
-#. Default: "Configure PloneMeeting"
-msgid "search_advanced"
-msgstr ""
-
 #. Default: "Choose advisers that will have to issue an optional advice for this item"
 msgid "optional_advisers_item_descr"
 msgstr ""
