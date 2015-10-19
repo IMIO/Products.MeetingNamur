@@ -30,6 +30,42 @@ from Products.MeetingCommunes.tests.testPortlets import testPortlets as mctp
 class testPortlets(MeetingNamurTestCase, mctp):
     '''Tests the portlets methods.'''
 
+    def test_subproduct_call_CreateItemFromTemplate(self):
+        '''
+          Test the createItemFromTemplate functionnality triggered from the plonemeeting portlet.
+        '''
+        self.changeUser('pmCreator1')
+        self.getMeetingFolder()
+        folder = getattr(self.portal.Members.pmCreator1.mymeetings, self.meetingConfig.getId())
+        itemTemplateView = folder.restrictedTraverse('createitemfromtemplate')
+        # the template we will use
+        itemTemplate = itemTemplateView.getItemTemplates()[0]
+        itemTemplateUID = itemTemplate.UID()
+        # for now, no items in the user folder
+        self.assertTrue(not folder.objectIds())
+        newItem = itemTemplateView.createItemFromTemplate(itemTemplateUID)
+        # the new item is the itemTemplate clone
+        self.assertTrue(newItem.Title() == itemTemplate.Title())
+        self.assertTrue(newItem.Description() == itemTemplate.Description())
+        self.assertTrue(newItem.getDecision() == '<p>&nbsp;</p>')
+        # and it has been created in the user folder
+        self.assertTrue(newItem.getId() in folder.objectIds())
+        # now check that the user can use a 'secret' item template if no proposing group is selected on it
+        self.changeUser('admin')
+        itemTemplate.setPrivacy('secret')
+        # an itemTemplate can have no proposingGroup, it does validate
+        itemTemplate.setProposingGroup('')
+        self.failIf(itemTemplate.validate_proposingGroup(''))
+        # use this template
+        self.changeUser('pmCreator1')
+        newItem2 = itemTemplateView.createItemFromTemplate(itemTemplateUID)
+        # item has been created with a filled proposing group
+        # and privacy is still ok
+        self.assertTrue(newItem2.getId() in folder.objectIds())
+        userGroups = self.tool.getGroupsForUser(suffix="creators")
+        self.assertTrue(newItem2.getProposingGroup() == userGroups[0].getId())
+        self.assertTrue(newItem2.getPrivacy() == itemTemplate.getPrivacy())
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
