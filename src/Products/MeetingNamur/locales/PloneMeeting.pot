@@ -198,3 +198,7 @@ msgstr ""
 #. Default: "Choose proposing group for cdld advice"
 msgid "MeetingCommunes_descr_cdldProposingGroup"
 msgstr ""
+
+#. Default: "Detailed description"
+msgid "PloneMeeting_label_detailedDescription"
+msgstr ""
