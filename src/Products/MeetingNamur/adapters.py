@@ -100,7 +100,7 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     ('Manager', 'MeetingMember', 'MeetingReviewer', 'MeetingBudgetImpactEditor', 'MeetingManager',
      'MeetingBudgetImpactReviewer', ),
     'MeetingNamur: Write description':
-    ('Manager', 'MeetingMember', 'MeetingReviewer',),
+    ('Manager', 'MeetingMember', 'MeetingManager', 'MeetingReviewer',),
     'MeetingNamur: Write certified signatures':
     ('Manager',),
     # MeetingManagers edit permissions

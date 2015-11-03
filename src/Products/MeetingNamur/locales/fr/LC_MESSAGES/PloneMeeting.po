@@ -216,3 +216,7 @@ msgstr "Groupes repris pour la synthèse des avis de légalité (CDLD)"
 #. Default: "Choose proposing group for cdld advice"
 msgid "MeetingCommunes_descr_cdldProposingGroup"
 msgstr "Choississez les groupes concernés par l'avis de légalité (CDLD)"
+
+#. Default: "Detailed description"
+msgid "PloneMeeting_label_detailedDescription"
+msgstr "Interpellation"
