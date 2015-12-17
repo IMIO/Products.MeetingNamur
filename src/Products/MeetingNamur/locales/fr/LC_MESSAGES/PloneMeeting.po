@@ -220,3 +220,7 @@ msgstr "Choississez les groupes concernés par l'avis de légalité (CDLD)"
 #. Default: "Detailed description"
 msgid "PloneMeeting_label_detailedDescription"
 msgstr "Interpellation"
+
+#. Default: "Item created from a college item"
+msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
+msgstr "Point Conseil Communal créé depuis un point Collège Communal"
