@@ -329,7 +329,7 @@ class CustomMeeting(Meeting):
 
     def getPrintableItemsByCategory(self, itemUids=[], late=False,
                                     ignore_review_states=[], by_proposing_group=False, group_prefixes={},
-                                    oralQuestion='both', toDiscuss='both',
+                                    privacy='*',  oralQuestion='both', toDiscuss='both',
                                     includeEmptyCategories=False, includeEmptyGroups=False,
                                     allNoConfidentialItems=False):
         '''Returns a list of (late-)items (depending on p_late) with
@@ -340,7 +340,7 @@ class CustomMeeting(Meeting):
            allow to consider all groups whose acronym starts with a prefix from
            this param prefix as a unique group. p_group_prefixes is a dict whose
            keys are prefixes and whose values are names of the logical big
-           groups. A toDiscuss and oralQuestion can also be given, the item is a
+           groups. A privacy, a toDiscuss and oralQuestion can also be given, the item is a
            toDiscuss (oralQuestion) or not (or both) item.
            If p_includeEmptyCategories is True, categories for which no
            item is defined are included nevertheless. If p_includeEmptyGroups
@@ -374,6 +374,8 @@ class CustomMeeting(Meeting):
             for item in items:
                 # Check if the review_state has to be taken into account
                 if item.queryState() in ignore_review_states:
+                    continue
+                elif not (privacy == '*' or item.getPrivacy() == privacy):
                     continue
                 elif not (oralQuestion == 'both' or item.getOralQuestion() == oralQuestion):
                     continue
