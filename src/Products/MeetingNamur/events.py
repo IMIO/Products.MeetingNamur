@@ -21,3 +21,6 @@ def onItemDuplicated(original, event):
         newItem.setDescription(original.getDecision())
     #clear decision for new item
     newItem.setDecision('<p>&nbsp;</p>')
+    #when item send in other config, we must clean modification style
+    if newItem.portal_plonemeeting.getMeetingConfig(newItem) != original.portal_plonemeeting.getMeetingConfig(original):
+        newItem.setDescription(newItem.Description().replace('class="mltcorrection"', ''))
