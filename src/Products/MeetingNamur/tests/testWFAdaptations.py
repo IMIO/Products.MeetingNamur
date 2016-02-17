@@ -82,6 +82,10 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
         '''No sense...'''
         pass
 
+    def test_subproduct_call_WFA_return_to_proposing_group_with_hide_decisions_when_under_writing(self):
+        '''No sense...'''
+        pass
+
     def test_subproduct_call_WFA_return_to_proposing_group(self):
         '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
         mctwfa.test_pm_WFA_return_to_proposing_group(self)
