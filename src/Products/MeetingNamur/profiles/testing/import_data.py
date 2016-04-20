@@ -33,19 +33,106 @@ adviceLegalAnalysis = MeetingFileTypeDescriptor(
     'advice-legal-analysis', 'Advice legal analysis', 'attach.png', '', 'advice')
 
 # Pod templates ----------------------------------------------------------------
-agendaTemplate = PodTemplateDescriptor('agendaTemplate', 'Meeting agenda')
-agendaTemplate.podTemplate = 'Agenda.odt'
-agendaTemplate.podCondition = 'python:here.meta_type=="Meeting"'
+agendaTemplate = PodTemplateDescriptor('oj', 'Ordre du jour')
+agendaTemplate.podTemplate = 'college-oj.odt'
+agendaTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
+                              'here.portal_plonemeeting.isManager()'
 
-decisionsTemplate = PodTemplateDescriptor('decisionsTemplate',
-                                          'Meeting decisions')
-decisionsTemplate.podTemplate = 'Decisions.odt'
-decisionsTemplate.podCondition = 'python:here.meta_type=="Meeting" and ' \
-                                 'here.adapted().isDecided()'
+agendaTemplatePDF = PodTemplateDescriptor('oj-pdf', 'Ordre du jour')
+agendaTemplatePDF.podTemplate = 'college-oj.odt'
+agendaTemplatePDF.podFormat = 'pdf'
+agendaTemplatePDF.podCondition = 'python:(here.meta_type=="Meeting") and ' \
+                                 'here.portal_plonemeeting.isManager()'
 
-itemTemplate = PodTemplateDescriptor('itemTemplate', 'Meeting item')
-itemTemplate.podTemplate = 'Item.odt'
-itemTemplate.podCondition = 'python:here.meta_type=="MeetingItem"'
+decisionsTemplate = PodTemplateDescriptor('pv', 'ProcÃ¨s-verbal')
+decisionsTemplate.podTemplate = 'college-pv.odt'
+decisionsTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
+                                 'here.portal_plonemeeting.isManager()'
+
+decisionsTemplatePDF = PodTemplateDescriptor('pv-pdf', 'ProcÃ¨s-verbal')
+decisionsTemplatePDF.podTemplate = 'college-pv.odt'
+decisionsTemplatePDF.podFormat = 'pdf'
+decisionsTemplatePDF.podCondition = 'python:(here.meta_type=="Meeting") and ' \
+                                    'here.portal_plonemeeting.isManager()'
+
+itemProjectTemplate = PodTemplateDescriptor('projet-deliberation', 'Projet dÃ©libÃ©ration')
+itemProjectTemplate.podTemplate = 'projet-deliberation.odt'
+itemProjectTemplate.podCondition = 'python:here.meta_type=="MeetingItem" and not here.hasMeeting()'
+
+itemProjectTemplatePDF = PodTemplateDescriptor('projet-deliberation-pdf', 'Projet dÃ©libÃ©ration')
+itemProjectTemplatePDF.podTemplate = 'projet-deliberation.odt'
+itemProjectTemplatePDF.podFormat = 'pdf'
+itemProjectTemplatePDF.podCondition = 'python:here.meta_type=="MeetingItem" and not here.hasMeeting()'
+
+itemTemplate = PodTemplateDescriptor('deliberation', 'DÃ©libÃ©ration')
+itemTemplate.podTemplate = 'deliberation.odt'
+itemTemplate.podCondition = 'python:here.meta_type=="MeetingItem" and here.hasMeeting()'
+
+itemTemplatePDF = PodTemplateDescriptor('deliberation-pdf', 'DÃ©libÃ©ration')
+itemTemplatePDF.podTemplate = 'deliberation.odt'
+itemTemplatePDF.podFormat = 'pdf'
+itemTemplatePDF.podCondition = 'python:here.meta_type=="MeetingItem" and here.hasMeeting()'
+
+collegeTemplates = [agendaTemplate, agendaTemplatePDF,
+                    decisionsTemplate, decisionsTemplatePDF,
+                    itemProjectTemplate, itemProjectTemplatePDF,
+                    itemTemplate, itemTemplatePDF]
+
+# Pod templates ----------------------------------------------------------------
+agendaCouncilTemplate = PodTemplateDescriptor('oj', 'Ordre du jour')
+agendaCouncilTemplate.podTemplate = 'council-oj.odt'
+agendaCouncilTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
+                                     'here.portal_plonemeeting.isManager()'
+
+agendaCouncilTemplatePDF = PodTemplateDescriptor('oj-pdf', 'Ordre du jour')
+agendaCouncilTemplatePDF.podTemplate = 'council-oj.odt'
+agendaCouncilTemplatePDF.podFormat = 'pdf'
+agendaCouncilTemplatePDF.podCondition = 'python:(here.meta_type=="Meeting") and ' \
+                                        'here.portal_plonemeeting.isManager()'
+
+decisionsCouncilTemplate = PodTemplateDescriptor('pv', 'ProcÃ¨s-verbal')
+decisionsCouncilTemplate.podTemplate = 'council-pv.odt'
+decisionsCouncilTemplate.podCondition = 'python:(here.meta_type=="Meeting") and ' \
+                                        'here.portal_plonemeeting.isManager()'
+
+decisionsCouncilTemplatePDF = PodTemplateDescriptor('pv-pdf', 'ProcÃ¨s-verbal')
+decisionsCouncilTemplatePDF.podTemplate = 'council-pv.odt'
+decisionsCouncilTemplatePDF.podFormat = 'pdf'
+decisionsCouncilTemplatePDF.podCondition = 'python:(here.meta_type=="Meeting") and ' \
+                                           'here.portal_plonemeeting.isManager()'
+
+itemCouncilRapportTemplate = PodTemplateDescriptor('rapport', 'Rapport')
+itemCouncilRapportTemplate.podTemplate = 'council-rapport.odt'
+itemCouncilRapportTemplate.podCondition = 'python:here.meta_type=="MeetingItem"'
+
+itemCouncilRapportTemplatePDF = PodTemplateDescriptor('rapport-pdf', 'Rapport')
+itemCouncilRapportTemplatePDF.podTemplate = 'council-rapport.odt'
+itemCouncilRapportTemplatePDF.podFormat = 'pdf'
+itemCouncilRapportTemplatePDF.podCondition = 'python:here.meta_type=="MeetingItem"'
+
+itemCouncilProjectTemplate = PodTemplateDescriptor('projet-deliberation', 'Projet dÃ©libÃ©ration')
+itemCouncilProjectTemplate.podTemplate = 'projet-deliberation.odt'
+itemCouncilProjectTemplate.podCondition = 'python:here.meta_type=="MeetingItem" and not here.hasMeeting()'
+
+itemCouncilProjectTemplatePDF = PodTemplateDescriptor('projet-deliberation-pdf', 'Projet dÃ©libÃ©ration')
+itemCouncilProjectTemplatePDF.podTemplate = 'projet-deliberation.odt'
+itemCouncilProjectTemplatePDF.podFormat = 'pdf'
+itemCouncilProjectTemplatePDF.podCondition = 'python:here.meta_type=="MeetingItem" and not here.hasMeeting()'
+
+itemCouncilTemplate = PodTemplateDescriptor('deliberation', 'DÃ©libÃ©ration')
+itemCouncilTemplate.podTemplate = 'deliberation.odt'
+itemCouncilTemplate.podCondition = 'python:here.meta_type=="MeetingItem" and here.hasMeeting()'
+
+itemCouncilTemplatePDF = PodTemplateDescriptor('deliberation-pdf', 'DÃ©libÃ©ration')
+itemCouncilTemplatePDF.podTemplate = 'deliberation.odt'
+itemCouncilTemplatePDF.podFormat = 'pdf'
+itemCouncilTemplatePDF.podCondition = 'python:here.meta_type=="MeetingItem" and here.hasMeeting()'
+
+councilTemplates = [agendaCouncilTemplate, agendaCouncilTemplatePDF,
+                    decisionsCouncilTemplate, decisionsCouncilTemplatePDF,
+                    itemCouncilRapportTemplate, itemCouncilRapportTemplatePDF,
+                    itemCouncilTemplate, itemCouncilTemplatePDF,
+                    itemCouncilProjectTemplate, itemCouncilProjectTemplatePDF, ]
 
 # item templates
 template1 = ItemTemplateDescriptor(id='template1',
@@ -288,7 +375,7 @@ collegeMeeting.meetingPowerObserversStates = ('frozen', 'published', 'decided', 
 collegeMeeting.useCopies = True
 collegeMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
 
-collegeMeeting.podTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
+collegeMeeting.podTemplates = collegeTemplates
 collegeMeeting.meetingConfigsToCloneTo = [{'meeting_config': 'meeting-config-council',
                                            'trigger_workflow_transitions_until': '__nothing__'}, ]
 collegeMeeting.recurringItems = [
@@ -328,6 +415,7 @@ councilMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IM
 councilMeeting.meetingActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowActions'
 councilMeeting.transitionsToConfirm = []
 councilMeeting.transitionsForPresentingAnItem = ['propose', 'validate', 'present', ]
+councilMeeting.podTemplates = councilTemplates
 councilMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
                                                               'item_transition': 'itemfreeze'},
 
