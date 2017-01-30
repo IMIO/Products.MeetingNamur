@@ -18,18 +18,114 @@ msgstr ""
 "Preferred-encodings: utf-8 latin1\n"
 "X-is-fallback-for: fr-be fr-ca fr-lu fr-mc fr-ch fr-fr\n"
 
+#. Default: "Enter the item certified signatures to be applied."
+msgid "Enter the item certified signatures to be applied."
+msgstr "Encodez les signatures certifiées qui devront être appliquées.  Veuillez respecter la forme suivante:<BR/> Titre chef <BR/>  Nom chef <BR/>  Titre échevin <BR/>  Nom échevin"
+
+#. Default: "This item certified signatures to apply"
+msgid "Item certified signatures to apply"
+msgstr "Les signatures certifiées à encoder."
+
+#. Default: "Manage item certified signatures"
+msgid "Manage item certified signatures"
+msgstr "Gestion des signatures certifiées spécifiques pour ce point"
+
+#. Default: "Choose proposing group for cdld advice"
+msgid "MeetingCommunes_descr_cdldProposingGroup"
+msgstr "Choississez les groupes concernés par l'avis de légalité (CDLD)"
+
+#. Default: "Leave empty if he is not an echevin"
+msgid "MeetingCommunes_descr_echevinServices"
+msgstr "Laisser vide si ce n'est pas un échevin"
+
+#. Default: "Proposing group to keep for CDLD synthesis"
+msgid "MeetingCommunes_label_cdldProposingGroup"
+msgstr "Groupes repris pour la synthèse des avis de légalité (CDLD)"
+
+#. Default: "Alderman of the following services(departments)"
+msgid "MeetingCommunes_label_echevinServices"
+msgstr "Echevin des services suivants"
+
+#. Default: "Leave empty to use the certified signatures defined on the meeting or MeetingGroup"
+msgid "MeetingNamur_descr_certified_signatures"
+msgstr "Laisser vide pour utiliser les signatures certifiées définies dans la configuration."
+
+#. Default: "GrpBudgetInfos"
+msgid "MeetingNamur_descr_grpBudgetInfos"
+msgstr "Sélectionnez les services budgétaires concernés. Sélectionnez plusieurs groupes à l'aide de CTRL+clic"
+
+#. Default: "This item is Confidential"
+msgid "MeetingNamur_isConfidentialItem"
+msgstr "Ce point est confidentiel"
+
+#. Default: "MeetingNamur_label_grpBudgetInfos"
+msgid "MeetingNamur_label_grpBudgetInfos"
+msgstr "Services Budgétaires concernés"
+
+#. Default: "Vote"
+msgid "MeetingNamur_vote"
+msgstr "Vote"
+
 # MeetingItem
 #. Default: "Decision"
 msgid "PloneMeeting_label_decision"
 msgstr "Extrait du Procès-verbal"
 
+#. Default: "Description"
+msgid "PloneMeeting_label_description"
+msgstr "Description"
+
+#. Default: "Detailed description"
+msgid "PloneMeeting_label_detailedDescription"
+msgstr "Interpellation"
+
+#. Default: "Gives mandatory advice on"
+msgid "PloneMeeting_label_givesMandatoryAdviceOn"
+msgstr "L'avis sera automatiquement demandé si"
+
+#. Default: "Observations for the preparatory meeting"
+msgid "PloneMeeting_label_preObservations"
+msgstr "Note de PV"
+
+#. Default: "Observations for the preparatory meeting"
+msgid "PloneMeeting_label_preObservations2"
+msgstr "Note de PV"
+
 #. Default: "Linked items"
 msgid "PloneMeeting_label_predecessor"
 msgstr "Point(s) lié(s)"
 
+#. Default: "Observations"
+msgid "PloneMeeting_meetingObservations"
+msgstr "Observations de l'OJ"
+
+#. Default: "Observations"
+msgid "PloneMeeting_meetingObservations2"
+msgstr "Observations de l'OJ"
+
 #. Default: "PloneMeeting"
 msgid "app_name"
 msgstr "PloneMeeting"
+
+#. Default: "Add [[ ]] around absent people (like [[Mister Sample Peter]])"
+msgid "assembly_meeting_descr"
+msgstr "Ajoutez des double crochets [[ ]] autour des personnes absentes, par exemple : [[Mr. Untel Didier]]"
+
+#. Default: "budgetimpactreviewers"
+msgid "budgetimpactreviewers"
+msgstr "Référent budgétaire"
+
+#. Default: "Item created from a college item"
+msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
+msgstr "Point Conseil Communal créé depuis un point Collège Communal"
+
+#. Default: "When advice mandatoriness is enforced, an item can't be inserted into a meeting unless all mandatory advices are given and positive."
+msgid "enforce_advice_mandatoriness_descr"
+msgstr "Quand le caractère obligatoire des avis est d'application, un point ne peut être inséré dans une séance à moins que tous les avis obligatoires (avis automatiques définis au niveau des groupes) n'aient été rendus et soient positifs."
+
+#. Default: "Specify here a TAL expression that will return True if the group must give a mandatory advice on an item.  We receive 'item' as the meeting item to give an advice on.  WARNING if the group of advisers linked to this PloneMeeting group os empty, it will no be considered, despite the result of the TAL expression"
+msgid "gives_mandatory_advice_on_descr"
+msgstr "Spécifiez une expression TAL qui retourne 'True' si le groupe doit automatiquement donner son avis sur le point donné. L'élément 'item' (point) est utilisable dans l'expression. ATTENTION si le groupe de donneurs d'avis lié à ce groupe PloneMeeting est vide, ce groupe ne sera pas pris en compte, quel que soit le résultat de l'expression TAL. De plus, si dans votre configuration de séance, l'option 'Appliquer le caractère obligatoire des avis' est activé, cet avis automatique deviendra obligatoire (et devra nécessairement être positif pour que le point puisse être présenté)."
 
 #. Default: "For every field you select here, PloneMeeting will keep track of any change on any item, if it is in one of the 'historizable' states as defined below."
 msgid "historized_item_attrs_descr"
@@ -47,25 +143,34 @@ msgstr "Configurer PloneMeeting"
 msgid "hs_welcome_title"
 msgstr "Bienvenue sur PloneMeeting"
 
-#. Default: "Description"
-msgid "meeting_item_description"
-msgstr "Projet de délibération"
+#. Default: "This item is Confidential"
+msgid "isConfidentialYes"
+msgstr "Ce point est confidentiel"
 
-#. Default: "Description"
-msgid "PloneMeeting_label_description"
-msgstr "Description"
+#. Default: "An item was sent back to you in PloneMeeting. You can find the item here ${objectUrl}."
+msgid "itemMustBeCorrected_mail_body"
+msgstr "Un point vous a été retourné dans l'application PloneMeeting. Vous trouverez le point là : ${objectUrl}."
 
-#. Default: "Description"
-msgid "projectOfDecision"
-msgstr "Projet de délibération"
+# Mails (item corrected notifications)
+#. Default: "${portalTitle} - '${itemTitle}' must be corrected"
+msgid "itemMustBeCorrected_mail_subject"
+msgstr "${portalTitle} - Le point '${itemTitle}' doit être corrigé."
 
-#. Default: "Description"
-msgid "projectOfDecision_label"
-msgstr "Projet de délibération"
+#. Default: "This item certified signatures"
+msgid "item_certifiedSignatures"
+msgstr "Signatures certifiées"
+
+#. Default: "Vote"
+msgid "item_vote_descr"
+msgstr "Si vous laissez vide cette zone de vote, la phrase : ""Cette décision a été prise à l'unanimité des membres présents"" sera indiquée dans les modèles générés."
 
 #. Default: "Acronym"
 msgid "meetingNamur_acronym_descri_msgid"
 msgstr "Attention, pour les groupes dont l'acronyme commence par DGF un rôle spécifique est ajouté (dans configuration du site /utilisateur et groupe). Ce qui permettra de définir les personnes pouvant rendre l'avis financier. De plus, pour avoir des services faisant partie d'un département, il suffit de préfixer l'acronym par celui du département et un tiret (ie. DGF-CTX)"
+
+#. Default: "Description"
+msgid "meeting_item_description"
+msgstr "Projet de délibération"
 
 #. Default: "Choose advisers that will have to issue an optional advice for this item"
 msgid "optional_advisers_item_descr"
@@ -75,13 +180,22 @@ msgstr "Sélectionnez les groupes qui pourront remettre un avis sur ce point. S�
 msgid "powerObserversGroupTitle"
 msgstr "Echevins"
 
-#. Default: "TaxController"
-msgid "taxControllerGroupTitle"
-msgstr "Receveur"
-
 #. Default: "Present every selected items"
 msgid "present_several_items"
 msgstr "Présenter tous les points sélectionnés"
+
+#. Default: "Description"
+msgid "projectOfDecision"
+msgstr "Projet de délibération"
+
+#. Default: "Description"
+msgid "projectOfDecision_label"
+msgstr "Projet de délibération"
+
+# searches
+#. Default: "cdld synthesis"
+msgid "searchcdlditems"
+msgstr "Synthèse CDLD"
 
 #. Default: "Items of my group"
 msgid "searchgroupitems"
@@ -96,78 +210,6 @@ msgstr "les points proposés"
 msgid "searchvalidateditems"
 msgstr "les points validés"
 
-#. Default: "Alderman of the following services(departments)"
-msgid "MeetingCommunes_label_echevinServices"
-msgstr "Echevin des services suivants"
-
-#. Default: "Leave empty if he is not an echevin"
-msgid "MeetingCommunes_descr_echevinServices"
-msgstr "Laisser vide si ce n'est pas un échevin"
-
-#. Default: "Gives mandatory advice on"
-msgid "PloneMeeting_label_givesMandatoryAdviceOn"
-msgstr "L'avis sera automatiquement demandé si"
-
-#. Default: "Specify here a TAL expression that will return True if the group must give automatically advice on an item.  We receive 'item' as the meeting item to give an advice on.  WARNING if the group of advisers linked to this PloneMeeting group os empty, it will no be considered, despite the result of the TAL expression. Furthermore, if in your meeting's configuration, the option ' to Apply the mandatory character of Advice' is activated, this automatic advice will become mandatory (and will have to inevitably be positive so that the point can be presented)."
-msgid "gives_mandatory_advice_on_descr"
-msgstr "Spécifiez une expression TAL qui retourne 'True' si le groupe doit automatiquement donner son avis sur le point donné. L'élément 'item' (point) est utilisable dans l'expression. ATTENTION si le groupe de donneurs d'avis lié à ce groupe PloneMeeting est vide, ce groupe ne sera pas pris en compte, quel que soit le résultat de l'expression TAL. De plus, si dans votre configuration de séance, l'option 'Appliquer le caractère obligatoire des avis' est activé, cet avis automatique deviendra obligatoire (et devra nécessairement être positif pour que le point puisse être présenté)."
-
-#. Default: "When advice mandatoriness is enforced, an item can't be inserted into a meeting unless all mandatory advices (automatic advice defined at the level of the groups) are given and positive."
-msgid "enforce_advice_mandatoriness_descr"
-msgstr "Quand le caractère obligatoire des avis est d'application, un point ne peut être inséré dans une séance à moins que tous les avis obligatoires (avis automatiques définis au niveau des groupes) n'aient été rendus et soient positifs."
-
-#. Default: "budgetimpactreviewers"
-msgid "budgetimpactreviewers"
-msgstr "Référent budgétaire"
-
-#. Default: "GrpBudgetInfos"
-msgid "MeetingNamur_descr_grpBudgetInfos"
-msgstr "Sélectionnez les services budgétaires concernés. Sélectionnez plusieurs groupes à l'aide de CTRL+clic"
-
-#. Default: "MeetingNamur_label_grpBudgetInfos"
-msgid "MeetingNamur_label_grpBudgetInfos"
-msgstr "Services Budgétaires concernés"
-
-# Mails (item corrected notifications)
-#. Default: "${portalTitle} - '${itemTitle}' must be corrected"
-msgid "itemMustBeCorrected_mail_subject"
-msgstr "${portalTitle} - Le point '${itemTitle}' doit être corrigé."
-
-#. Default: "An item was sent back to you in PloneMeeting. You can find the item here ${objectUrl}."
-msgid "itemMustBeCorrected_mail_body"
-msgstr "Un point vous a été retourné dans l'application PloneMeeting. Vous trouverez le point là : ${objectUrl}."
-
-#. Default: "Add [[ ]] around absent people (like [[Mister Sample Peter]])"
-msgid "assembly_meeting_descr"
-msgstr "Ajoutez des double crochets [[ ]] autour des personnes absentes, par exemple : [[Mr. Untel Didier]]"
-
-#. Default: "Observations for the preparatory meeting"
-msgid "PloneMeeting_label_preObservations"
-msgstr "Note de PV"
-
-#. Default: "Observations for the preparatory meeting"
-msgid "PloneMeeting_label_preObservations2"
-msgstr "Note de PV"
-#. Default: "Observations"
-msgid "PloneMeeting_meetingObservations"
-msgstr "Observations de l'OJ"
-
-#. Default: "Observations"
-msgid "PloneMeeting_meetingObservations2"
-msgstr "Observations de l'OJ"
-
-#. Default: "When an item is delay, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
-msgid "item_decision_report_text_descr"
-msgstr "Lorsque le point est reporté, la décision sera remplacée par le texte défini ici, sous la forme d'une expression TAL (Tag Attribute Language) dans laquelle le nom 'here', représentant le point courant, peut être utilisé. Voici un exemple : python:'%sLe collège décide de reporter le point'%here.getDecision()"
-
-#. Default: "Décision used when the item is refused"
-msgid "PloneMeeting_label_itemDecisionRefuseText"
-msgstr "Décision du point lors d'un refus"
-
-#. Default: "When an item is refused, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
-msgid "item_decision_refuse_text_descr"
-msgstr "Lorsque le point est refusé, la décision sera remplacée par le texte défini ici, sous la forme d'une expression TAL (Tag Attribute Language) dans laquelle le nom 'here', représentant le point courant, peut être utilisé. Voici un exemple : python:'%sLe collège décide de refuser le point'%here.getDecision()"
-
 #. Default: "The item has been successfully transfered to the college."
 msgid "sendto_meeting-config-college_success"
 msgstr "Le point a été envoyé au Collège."
@@ -176,51 +218,7 @@ msgstr "Le point a été envoyé au Collège."
 msgid "sendto_meeting-config-council_success"
 msgstr "Le point a été envoyé au Conseil communal."
 
-#. Default: "Leave empty to use the certified signatures defined on the meeting or MeetingGroup"
-msgid "MeetingNamur_descr_certified_signatures"
-msgstr "Laisser vide pour utiliser les signatures certifiées définies dans la configuration."
+#. Default: "TaxController"
+msgid "taxControllerGroupTitle"
+msgstr "Receveur"
 
-#. Default: "This item is Confidential"
-msgid "MeetingNamur_isConfidentialItem"
-msgstr "Ce point est confidentiel"
-
-#. Default: "This item is Confidential"
-msgid "isConfidentialYes"
-msgstr "Ce point est confidentiel"
-
-#. Default: "This item certified signatures"
-msgid "item_certifiedSignatures"
-msgstr "Signatures certifiées"
-
-#. Default: "Enter the item certified signatures to be applied."
-msgid "Enter the item certified signatures to be applied."
-msgstr "Encodez les signatures certifiées qui devront être appliquées.  Veuillez respecter la forme suivante:<BR/> Titre chef <BR/>  Nom chef <BR/>  Titre échevin <BR/>  Nom échevin"
-
-#. Default: "This item certified signatures to apply"
-msgid "Item certified signatures to apply"
-msgstr "Les signatures certifiées à encoder."
-
-#. Default: "Manage item certified signatures"
-msgid "Manage item certified signatures"
-msgstr "Gestion des signatures certifiées spécifiques pour ce point"
-
-#searches
-#. Default: "cdld synthesis"
-msgid "searchcdlditems"
-msgstr "Synthèse CDLD"
-
-#. Default: "Proposing group to keep for CDLD synthesis"
-msgid "MeetingCommunes_label_cdldProposingGroup"
-msgstr "Groupes repris pour la synthèse des avis de légalité (CDLD)"
-
-#. Default: "Choose proposing group for cdld advice"
-msgid "MeetingCommunes_descr_cdldProposingGroup"
-msgstr "Choississez les groupes concernés par l'avis de légalité (CDLD)"
-
-#. Default: "Detailed description"
-msgid "PloneMeeting_label_detailedDescription"
-msgstr "Interpellation"
-
-#. Default: "Item created from a college item"
-msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
-msgstr "Point Conseil Communal créé depuis un point Collège Communal"

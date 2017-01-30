@@ -70,6 +70,14 @@ msgstr "accepté avec modifications"
 msgid "advices"
 msgstr "Avis et copies"
 
+#. Default: "Accepted >>> Approved"
+msgid "approved"
+msgstr "Approuvé"
+
+#. Default: "Accepted but modified >>> Approved with a modification"
+msgid "approved_but_modified"
+msgstr "Approuvé moyennant une modification"
+
 #. Default: "backToCreated_done_descr"
 msgid "backToCreated_done_descr"
 msgstr "Vous venez d'annuler le gel de l'ordre du jour."
@@ -93,6 +101,10 @@ msgstr "Le procès-verbal est maintenant clôturé, tous les points pour lesquel
 #. Default: "closed"
 msgid "closed"
 msgstr "clôturé"
+
+#. Default: "Create an item council from an item college"
+msgid "create_to_meeting-config-council_from_meeting-config-college"
+msgstr "Envoyer vers Conseil Communal"
 
 # College meeting workflow transitions specific vocabulary
 #. Default: ""
@@ -134,14 +146,3 @@ msgstr "accepté provisoirement"
 msgid "validated"
 msgstr "validé"
 
-#. Default: "Accepted >>> Approved"
-msgid "approved"
-msgstr "Approuvé"
-
-#. Default: "Accepted but modified >>> Approved with a modification"
-msgid "approved_but_modified"
-msgstr "Approuvé moyennant une modification"
-
-#. Default: "Create an item council from an item college"
-msgid "create_to_meeting-config-council_from_meeting-config-college"
-msgstr "Envoyer vers Conseil Communal"
