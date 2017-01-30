@@ -1,4 +1,5 @@
 from Products.Archetypes.atapi import MultiSelectionWidget
+from Products.Archetypes.atapi import RichWidget
 from Products.Archetypes.atapi import LinesField
 from Products.Archetypes.atapi import BooleanField
 from Products.Archetypes.atapi import TextField
@@ -86,6 +87,23 @@ def update_item_schema(baseSchema):
                 i18n_domain='PloneMeeting',
             ),
             optional=True,
+        ),
+        TextField(
+            name='vote',
+            widget=RichWidget(
+                condition="python: here.attributeIsUsed('vote')",
+                description="Vote",
+                description_msgid="item_vote_descr",
+                label='Vote',
+                label_msgid='MeetingNamur_vote',
+                i18n_domain='PloneMeeting',
+            ),
+            optional=True,
+            read_permission="PloneMeeting: Read item observations",
+            write_permission="PloneMeeting: Write item observations",
+            default_content_type="text/html",
+            allowable_content_types=('text/html',),
+            default_output_type="text/x-html-safe",
         ),
     ),)
 
