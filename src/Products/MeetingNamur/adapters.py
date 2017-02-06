@@ -564,6 +564,16 @@ class CustomMeeting(Meeting):
                 ressort.append(ressorti)
         return ressort
 
+    security.declarePublic('getVotes')
+
+    def getVotes(self):
+        '''Get all item with "votes" for a meeting in a list to print in template'''
+        res = []
+        for item in self.context.getAllItems(ordered=True):
+            if item.getVote():
+                res.append(item)
+        return res
+
 
 class CustomMeetingItem(MeetingItem):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
