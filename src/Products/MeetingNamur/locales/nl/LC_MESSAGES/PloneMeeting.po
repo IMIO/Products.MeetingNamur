@@ -27,16 +27,12 @@ msgstr ""
 msgid "Manage item certified signatures"
 msgstr ""
 
-#. Default: "Choose proposing group for cdld advice"
-msgid "MeetingCommunes_descr_cdldProposingGroup"
+#. Default: "Finances advice"
+msgid "MeetingAdviceFinances"
 msgstr ""
 
 #. Default: "Leave empty if he is not an echevin"
 msgid "MeetingCommunes_descr_echevinServices"
-msgstr ""
-
-#. Default: "Proposing group to keep for CDLD synthesis"
-msgid "MeetingCommunes_label_cdldProposingGroup"
 msgstr ""
 
 #. Default: "Alderman of the following services(departments)"
@@ -57,10 +53,6 @@ msgstr ""
 
 #. Default: "MeetingNamur_label_grpBudgetInfos"
 msgid "MeetingNamur_label_grpBudgetInfos"
-msgstr ""
-
-#. Default: "Vote"
-msgid "MeetingNamur_vote"
 msgstr ""
 
 # MeetingItem
@@ -112,10 +104,6 @@ msgstr ""
 msgid "budgetimpactreviewers"
 msgstr ""
 
-#. Default: "Item created from a college item"
-msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
-msgstr ""
-
 #. Default: "When advice mandatoriness is enforced, an item can't be inserted into a meeting unless all mandatory advices are given and positive."
 msgid "enforce_advice_mandatoriness_descr"
 msgstr ""
@@ -157,10 +145,6 @@ msgstr ""
 msgid "item_certifiedSignatures"
 msgstr ""
 
-#. Default: "Vote"
-msgid "item_vote_descr"
-msgstr ""
-
 #. Default: "Acronym"
 msgid "meetingNamur_acronym_descri_msgid"
 msgstr ""
@@ -193,14 +177,13 @@ msgstr ""
 msgid "projectOfDecision_label"
 msgstr ""
 
-# searches
-#. Default: "cdld synthesis"
-msgid "searchcdlditems"
-msgstr ""
-
 #. Default: "Items of my group"
 msgid "searchgroupitems"
 msgstr "Items uit mijn groep"
+
+#. Default: "Items to control completeness of"
+msgid "searchitemstocontrolcompletenessof"
+msgstr ""
 
 # searches
 #. Default: "proposed items"
@@ -213,15 +196,6 @@ msgstr "Voorgestelde items"
 msgid "searchvalidateditems"
 msgstr "Gevalideerde items"
 
-#. Default: "The item has been successfully transfered to the college."
-msgid "sendto_meeting-config-college_success"
-msgstr ""
-
-#. Default: "The item has been successfully transfered to the council."
-msgid "sendto_meeting-config-council_success"
-msgstr ""
-
 #. Default: "TaxController"
 msgid "taxControllerGroupTitle"
 msgstr ""
-

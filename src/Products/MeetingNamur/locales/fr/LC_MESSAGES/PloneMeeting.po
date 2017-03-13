@@ -30,17 +30,13 @@ msgstr "Les signatures certifiées à encoder."
 msgid "Manage item certified signatures"
 msgstr "Gestion des signatures certifiées spécifiques pour ce point"
 
-#. Default: "Choose proposing group for cdld advice"
-msgid "MeetingCommunes_descr_cdldProposingGroup"
-msgstr "Choississez les groupes concernés par l'avis de légalité (CDLD)"
+#. Default: "Finances advice"
+msgid "MeetingAdviceFinances"
+msgstr "Avis finances"
 
 #. Default: "Leave empty if he is not an echevin"
 msgid "MeetingCommunes_descr_echevinServices"
 msgstr "Laisser vide si ce n'est pas un échevin"
-
-#. Default: "Proposing group to keep for CDLD synthesis"
-msgid "MeetingCommunes_label_cdldProposingGroup"
-msgstr "Groupes repris pour la synthèse des avis de légalité (CDLD)"
 
 #. Default: "Alderman of the following services(departments)"
 msgid "MeetingCommunes_label_echevinServices"
@@ -61,10 +57,6 @@ msgstr "Ce point est confidentiel"
 #. Default: "MeetingNamur_label_grpBudgetInfos"
 msgid "MeetingNamur_label_grpBudgetInfos"
 msgstr "Services Budgétaires concernés"
-
-#. Default: "Vote"
-msgid "MeetingNamur_vote"
-msgstr "Vote"
 
 # MeetingItem
 #. Default: "Decision"
@@ -115,15 +107,13 @@ msgstr "Ajoutez des double crochets [[ ]] autour des personnes absentes, par exe
 msgid "budgetimpactreviewers"
 msgstr "Référent budgétaire"
 
-#. Default: "Item created from a college item"
-msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
-msgstr "Point Conseil Communal créé depuis un point Collège Communal"
-
 #. Default: "When advice mandatoriness is enforced, an item can't be inserted into a meeting unless all mandatory advices are given and positive."
+#, fuzzy
 msgid "enforce_advice_mandatoriness_descr"
 msgstr "Quand le caractère obligatoire des avis est d'application, un point ne peut être inséré dans une séance à moins que tous les avis obligatoires (avis automatiques définis au niveau des groupes) n'aient été rendus et soient positifs."
 
 #. Default: "Specify here a TAL expression that will return True if the group must give a mandatory advice on an item.  We receive 'item' as the meeting item to give an advice on.  WARNING if the group of advisers linked to this PloneMeeting group os empty, it will no be considered, despite the result of the TAL expression"
+#, fuzzy
 msgid "gives_mandatory_advice_on_descr"
 msgstr "Spécifiez une expression TAL qui retourne 'True' si le groupe doit automatiquement donner son avis sur le point donné. L'élément 'item' (point) est utilisable dans l'expression. ATTENTION si le groupe de donneurs d'avis lié à ce groupe PloneMeeting est vide, ce groupe ne sera pas pris en compte, quel que soit le résultat de l'expression TAL. De plus, si dans votre configuration de séance, l'option 'Appliquer le caractère obligatoire des avis' est activé, cet avis automatique deviendra obligatoire (et devra nécessairement être positif pour que le point puisse être présenté)."
 
@@ -192,14 +182,13 @@ msgstr "Projet de délibération"
 msgid "projectOfDecision_label"
 msgstr "Projet de délibération"
 
-# searches
-#. Default: "cdld synthesis"
-msgid "searchcdlditems"
-msgstr "Synthèse CDLD"
-
 #. Default: "Items of my group"
 msgid "searchgroupitems"
 msgstr "points de mon service"
+
+#. Default: "Items to control completeness of"
+msgid "searchitemstocontrolcompletenessof"
+msgstr ""
 
 # searches
 #. Default: "proposed items"
@@ -210,15 +199,6 @@ msgstr "les points proposés"
 msgid "searchvalidateditems"
 msgstr "les points validés"
 
-#. Default: "The item has been successfully transfered to the college."
-msgid "sendto_meeting-config-college_success"
-msgstr "Le point a été envoyé au Collège."
-
-#. Default: "The item has been successfully transfered to the council."
-msgid "sendto_meeting-config-council_success"
-msgstr "Le point a été envoyé au Conseil communal."
-
 #. Default: "TaxController"
 msgid "taxControllerGroupTitle"
 msgstr "Receveur"
-

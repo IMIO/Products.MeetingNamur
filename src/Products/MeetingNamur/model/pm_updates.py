@@ -8,9 +8,7 @@ from Products.Archetypes.atapi import StringField
 from Products.Archetypes.atapi import Schema
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingItem import MeetingItem
-from Products.PloneMeeting.config import WriteRiskyConfig
 from Products.PloneMeeting.MeetingGroup import MeetingGroup
-from Products.PloneMeeting.MeetingConfig import MeetingConfig
 
 
 def update_group_schema(baseSchema):
@@ -126,31 +124,6 @@ def update_meeting_schema(baseSchema):
     completeSchema = baseSchema + specificSchema.copy()
     return completeSchema
 Meeting.schema = update_meeting_schema(Meeting.schema)
-
-
-def update_config_schema(baseSchema):
-    specificSchema = Schema((
-        # field used to define list of services for synthesis document for DF (legality advice)
-        LinesField(
-            name='cdldProposingGroup',
-            widget=MultiSelectionWidget(
-                size=10,
-                label='CdldProposingGroup',
-                label_msgid='MeetingCommunes_label_cdldProposingGroup',
-                description='Choose proposing group for cdld advice',
-                description_msgid='MeetingCommunes_descr_cdldProposingGroup',
-                i18n_domain='PloneMeeting',
-            ),
-            enforceVocabulary=True,
-            multiValued=1,
-            vocabulary='listCdldProposingGroup',
-            write_permission=WriteRiskyConfig,
-        ),
-    ),)
-
-    completeConfigSchema = baseSchema + specificSchema.copy()
-    return completeConfigSchema
-MeetingConfig.schema = update_config_schema(MeetingConfig.schema)
 
 # Classes have already been registered, but we register them again here
 # because we have potentially applied some schema adaptations (see above).

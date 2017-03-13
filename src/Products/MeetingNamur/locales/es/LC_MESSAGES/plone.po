@@ -34,6 +34,22 @@ msgstr "Tema Colegio"
 msgid "MeetingItemCouncil"
 msgstr "Tema Consejo"
 
+#. Default: "MeetingItemRecurringCollege"
+msgid "MeetingItemNamurRecurringCollege"
+msgstr ""
+
+#. Default: "MeetingItemRecurringCouncil"
+msgid "MeetingItemNamurRecurringCouncil"
+msgstr ""
+
+#. Default: "MeetingItemTemplateCollege"
+msgid "MeetingItemNamurTemplate"
+msgstr ""
+
+#. Default: "MeetingItemTemplateCouncil"
+msgid "MeetingItemNamurTemplateCouncil"
+msgstr ""
+
 #. Default: "Meeting item BP"
 msgid "MeetingItembp"
 msgstr "Tema Oficina Permanente"
@@ -57,14 +73,6 @@ msgstr "Reunión de Consejo Social"
 #. Default: "Meeting Comitee"
 msgid "Meetingcomitee"
 msgstr "Reunión de Comité de Concertación"
-
-#. Default: "accept but modify"
-msgid "accept_but_modify"
-msgstr ""
-
-#. Default: "accepted but modified"
-msgid "accepted_but_modified"
-msgstr ""
 
 #. Default: "Advices and copies"
 msgid "advices"
@@ -102,6 +110,10 @@ msgstr ""
 msgid "closed"
 msgstr ""
 
+#. Default: "Create an item college from an item council"
+msgid "create_to_meeting-config-college_from_meeting-config-council"
+msgstr ""
+
 #. Default: "Create an item council from an item college"
 msgid "create_to_meeting-config-council_from_meeting-config-college"
 msgstr ""
@@ -136,16 +148,7 @@ msgstr "congelado"
 msgid "itemfrozen"
 msgstr "congelado"
 
-#. Default: "pre accept"
-msgid "pre_accept"
-msgstr ""
-
-#. Default: "pre accepted"
-msgid "pre_accepted"
-msgstr ""
-
 # College item workflow states specific vocabulary
 #. Default: "validated"
 msgid "validated"
 msgstr ""
-

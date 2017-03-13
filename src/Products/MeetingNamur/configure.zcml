@@ -4,47 +4,35 @@
            xmlns:i18n="http://namespaces.zope.org/i18n"
            i18n_domain="MeetingNamur">
 
-  <!-- ##code-section configure.zcml.header -->
   <include file="events.zcml" />
   <!-- registerTranslations before including package Products.PloneMeeting
        so Products.MeetingNamur can overrides Products.PloneMeeting translations -->
   <i18n:registerTranslations directory="locales" />
 
+  <include file="profiles.zcml" />
+  <include package=".browser" />
   <include package="Products.CMFPlacefulWorkflow"/>
   <include package="Products.PloneMeeting"/>
-  <include package=".browser"/>
+  <includeOverrides file="overrides.zcml" />
+
+  <include package="Products.CMFPlacefulWorkflow"/>
+  <include package="Products.PloneMeeting"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingNamur.adapters.MeetingItemNamurCollegeWorkflowActions"
-           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowActions"/>
+           factory="Products.MeetingNamur.adapters.MeetingItemNamurWorkflowActions"
+           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurWorkflowActions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingNamur.adapters.MeetingItemNamurCollegeWorkflowConditions"
-           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowConditions"/>
+           factory="Products.MeetingNamur.adapters.MeetingItemNamurWorkflowConditions"
+           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurWorkflowConditions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingNamur.adapters.MeetingNamurCollegeWorkflowActions"
-           provides="Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowActions"/>
+           factory="Products.MeetingNamur.adapters.MeetingNamurWorkflowActions"
+           provides="Products.MeetingNamur.interfaces.IMeetingNamurWorkflowActions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingNamur.adapters.MeetingNamurCollegeWorkflowConditions"
-           provides="Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowConditions"/>
-
-  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingNamur.adapters.MeetingItemNamurCouncilWorkflowActions"
-           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowActions"/>
-
-  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingNamur.adapters.MeetingItemNamurCouncilWorkflowConditions"
-           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowConditions"/>
-
-  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingNamur.adapters.MeetingNamurCouncilWorkflowActions"
-           provides="Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowActions"/>
-
-  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingNamur.adapters.MeetingNamurCouncilWorkflowConditions"
-           provides="Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowConditions"/>
+           factory="Products.MeetingNamur.adapters.MeetingNamurWorkflowConditions"
+           provides="Products.MeetingNamur.interfaces.IMeetingNamurWorkflowConditions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
            factory="Products.MeetingNamur.adapters.CustomMeetingItem"
@@ -65,16 +53,5 @@
   <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
            factory="Products.MeetingNamur.adapters.CustomToolPloneMeeting"
            provides="Products.PloneMeeting.interfaces.IToolPloneMeetingCustom"/>
-
-  <!-- ##/code-section configure.zcml.header -->
-
-  <i18n:registerTranslations directory="locales" />
-
-  <include file="profiles.zcml" />
-
-
-
-  <!-- ##code-section configure.zcml.core -->
-  <!-- ##/code-section configure.zcml.core -->
 
 </configure>

@@ -150,14 +150,6 @@ msgstr ""
 msgid "PloneMeeting_meetingObservations2"
 msgstr ""
 
-#. Default: "The item has been successfully transfered to the council."
-msgid "sendto_meeting-config-council_success"
-msgstr ""
-
-#. Default: "The item has been successfully transfered to the college."
-msgid "sendto_meeting-config-college_success"
-msgstr ""
-
 #. Default: "Leave empty to use the certified signatures defined on the meeting or MeetingGroup"
 msgid "MeetingNamur_descr_certified_signatures"
 msgstr ""
@@ -186,31 +178,14 @@ msgstr ""
 msgid "Manage item certified signatures"
 msgstr ""
 
-#searches
-#. Default: "cdld synthesis"
-msgid "searchcdlditems"
-msgstr ""
-
-#. Default: "Proposing group to keep for CDLD synthesis"
-msgid "MeetingCommunes_label_cdldProposingGroup"
-msgstr ""
-
-#. Default: "Choose proposing group for cdld advice"
-msgid "MeetingCommunes_descr_cdldProposingGroup"
-msgstr ""
-
 #. Default: "Detailed description"
 msgid "PloneMeeting_label_detailedDescription"
 msgstr ""
 
-#. Default: "Item created from a college item"
-msgid "create_to_meeting-config-council_from_meeting-config-college_comments"
+#. Default: "Finances advice"
+msgid "MeetingAdviceFinances"
 msgstr ""
 
-#. Default: "Vote"
-msgid "MeetingNamur_vote"
-msgstr ""
-
-#. Default: "Vote"
-msgid "item_vote_descr"
+#. Default: "Items to control completeness of"
+msgid "searchitemstocontrolcompletenessof"
 msgstr ""

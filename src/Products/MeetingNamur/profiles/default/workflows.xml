@@ -5,24 +5,16 @@
  <object name="meetingnamurcouncil_workflow" meta_type="Workflow" remove="True"/>
  <object name="meetingitemnamurcollege_workflow" meta_type="Workflow" remove="True"/>
  <object name="meetingitemnamurcouncil_workflow" meta_type="Workflow" remove="True"/>
- <object name="meetingitemnamurcollege_workflow" meta_type="Workflow"/>
- <object name="meetingitemnamurcouncil_workflow" meta_type="Workflow"/>
- <object name="meetingnamurcollege_workflow" meta_type="Workflow"/>
- <object name="meetingnamurcouncil_workflow" meta_type="Workflow"/>
+ <object name="meetingitemnamur_workflow" meta_type="Workflow"/>
+ <object name="meetingnamur_workflow" meta_type="Workflow"/>
 <!-- ##code-section workflowobjects -->
 <!-- ##/code-section workflowobjects -->
  <bindings>
-  <type type_id="MeetingItemNamurCollege">
-     <bound-workflow workflow_id="meetingitemnamurcollege_workflow" />
+  <type type_id="MeetingItemNamur">
+     <bound-workflow workflow_id="meetingitemnamur_workflow" />
   </type>
-  <type type_id="MeetingItemNamurCouncil">
-     <bound-workflow workflow_id="meetingitemnamurcouncil_workflow" />
-  </type>
-  <type type_id="MeetingNamurCollege">
-     <bound-workflow workflow_id="meetingnamurcollege_workflow" />
-  </type>
-  <type type_id="MeetingNamurCouncil">
-     <bound-workflow workflow_id="meetingnamurcouncil_workflow" />
+  <type type_id="MeetingNamur">
+     <bound-workflow workflow_id="meetingnamur_workflow" />
   </type>
 <!-- ##code-section workflowbindings -->
 <!-- ##/code-section workflowbindings -->

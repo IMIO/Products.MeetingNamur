@@ -34,6 +34,22 @@ msgstr "Point collège Communal"
 msgid "MeetingItemCouncil"
 msgstr "Point Conseil Communal"
 
+#. Default: "MeetingItemRecurringCollege"
+msgid "MeetingItemNamurRecurringCollege"
+msgstr "Point récurrent Collège Communal"
+
+#. Default: "MeetingItemRecurringCouncil"
+msgid "MeetingItemNamurRecurringCouncil"
+msgstr "Point récurrent Conseil Communal"
+
+#. Default: "MeetingItemTemplateCollege"
+msgid "MeetingItemNamurTemplate"
+msgstr "Modèle de point Collège Communal"
+
+#. Default: "MeetingItemTemplateCouncil"
+msgid "MeetingItemNamurTemplateCouncil"
+msgstr "Modèle de point Conseil Communal"
+
 #. Default: "Meeting item BP"
 msgid "MeetingItembp"
 msgstr "Point Bureau Permanent"
@@ -57,14 +73,6 @@ msgstr "Séance du Conseil de l'Action Sociale"
 #. Default: "Meeting Comitee"
 msgid "Meetingcomitee"
 msgstr "Séance du Comité de Concertation"
-
-#. Default: "accept but modify"
-msgid "accept_but_modify"
-msgstr "accepter avec modifications"
-
-#. Default: "accepted but modified"
-msgid "accepted_but_modified"
-msgstr "accepté avec modifications"
 
 #. Default: "Advices and copies"
 msgid "advices"
@@ -102,6 +110,10 @@ msgstr "Le procès-verbal est maintenant clôturé, tous les points pour lesquel
 msgid "closed"
 msgstr "clôturé"
 
+#. Default: "Create an item college from an item council"
+msgid "create_to_meeting-config-college_from_meeting-config-council"
+msgstr "Envoyer vers Collège Communal"
+
 #. Default: "Create an item council from an item college"
 msgid "create_to_meeting-config-council_from_meeting-config-college"
 msgstr "Envoyer vers Conseil Communal"
@@ -133,16 +145,7 @@ msgstr "gelé"
 msgid "itemfrozen"
 msgstr "gelé"
 
-#. Default: "pre accept"
-msgid "pre_accept"
-msgstr "accepter provisoirement"
-
-#. Default: "pre accepted"
-msgid "pre_accepted"
-msgstr "accepté provisoirement"
-
 # College item workflow states specific vocabulary
 #. Default: "validated"
 msgid "validated"
 msgstr "validé"
-

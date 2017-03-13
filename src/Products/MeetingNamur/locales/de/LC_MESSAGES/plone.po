@@ -31,6 +31,22 @@ msgstr "TOP Kollegium"
 msgid "MeetingItemCouncil"
 msgstr "TOP Rat"
 
+#. Default: "MeetingItemRecurringCollege"
+msgid "MeetingItemNamurRecurringCollege"
+msgstr ""
+
+#. Default: "MeetingItemRecurringCouncil"
+msgid "MeetingItemNamurRecurringCouncil"
+msgstr ""
+
+#. Default: "MeetingItemTemplateCollege"
+msgid "MeetingItemNamurTemplate"
+msgstr ""
+
+#. Default: "MeetingItemTemplateCouncil"
+msgid "MeetingItemNamurTemplateCouncil"
+msgstr ""
+
 #. Default: "Meeting item BP"
 msgid "MeetingItembp"
 msgstr "TOP Ständiges Präsidium"
@@ -54,16 +70,6 @@ msgstr "Sitzung Sozialhilferat"
 #. Default: "Meeting Comitee"
 msgid "Meetingcomitee"
 msgstr "Sitzung Konzertierungsausschuss"
-
-#. Default: "accept but modify"
-#, fuzzy
-msgid "accept_but_modify"
-msgstr "Angenommen aber ändern"
-
-#. Default: "accepted but modified"
-#, fuzzy
-msgid "accepted_but_modified"
-msgstr "Angenommen aber geändert"
 
 #. Default: "Advices and copies"
 msgid "advices"
@@ -101,6 +107,10 @@ msgstr ""
 msgid "closed"
 msgstr ""
 
+#. Default: "Create an item college from an item council"
+msgid "create_to_meeting-config-college_from_meeting-config-council"
+msgstr ""
+
 #. Default: "Create an item council from an item college"
 msgid "create_to_meeting-config-council_from_meeting-config-college"
 msgstr ""
@@ -135,18 +145,7 @@ msgstr "Gesperrt"
 msgid "itemfrozen"
 msgstr "TOP gesperrt"
 
-#. Default: "pre accept"
-#, fuzzy
-msgid "pre_accept"
-msgstr "Provisiorisch aktzeptieren"
-
-#. Default: "pre accepted"
-#, fuzzy
-msgid "pre_accepted"
-msgstr "Provisorisch akzeptiert"
-
 # College item workflow states specific vocabulary
 #. Default: "validated"
 msgid "validated"
 msgstr ""
-

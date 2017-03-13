@@ -32,14 +32,6 @@ msgstr ""
 msgid "validated"
 msgstr ""
 
-#. Default: "accepted but modified"
-msgid "accepted_but_modified"
-msgstr ""
-
-#. Default: "pre accepted"
-msgid "pre_accepted"
-msgstr ""
-
 # College meeting workflow states specific vocabulary
 #. Default: "decided"
 msgid "decided"
@@ -64,14 +56,6 @@ msgstr ""
 
 #. Default: "itemfrozen"
 msgid "itemfrozen"
-msgstr ""
-
-#. Default: "accept but modify"
-msgid "accept_but_modify"
-msgstr ""
-
-#. Default: "pre accept"
-msgid "pre_accept"
 msgstr ""
 
 #transitions descriptions
@@ -137,4 +121,24 @@ msgstr ""
 
 #. Default: "Create an item council from an item college"
 msgid "create_to_meeting-config-council_from_meeting-config-college"
+msgstr ""
+
+#. Default: "MeetingItemTemplateCollege"
+msgid "MeetingItemNamurTemplate"
+msgstr ""
+
+#. Default: "MeetingItemRecurringCollege"
+msgid "MeetingItemNamurRecurringCollege"
+msgstr ""
+
+#. Default: "MeetingItemTemplateCouncil"
+msgid "MeetingItemNamurTemplateCouncil"
+msgstr ""
+
+#. Default: "MeetingItemRecurringCouncil"
+msgid "MeetingItemNamurRecurringCouncil"
+msgstr ""
+
+#. Default: "Create an item college from an item council"
+msgid "create_to_meeting-config-college_from_meeting-config-council"
 msgstr ""

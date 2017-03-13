@@ -1,16 +1,13 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.3-dev'
+version = '4.0.dev0'
 
 setup(name='Products.MeetingNamur',
       version=version,
-      description="PloneMeeting profile for city of Seraing",
-      long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
-      classifiers=[
-        "Programming Language :: Python",
-        ],
+      description="PloneMeeting profile for city of Namur",
+      long_description=open("README.txt").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read(),
+      classifiers=["Programming Language :: Python", ],
       keywords='',
       author='',
       author_email='',
@@ -22,17 +19,16 @@ setup(name='Products.MeetingNamur',
       include_package_data=True,
       zip_safe=False,
       extras_require=dict(
-            test=['unittest2',
-                  'zope.testing',
-                  'plone.testing',
-                  'plone.app.testing',
-                  'plone.app.robotframework',
-                  'Products.CMFPlacefulWorkflow',
-                  'zope.testing',
-                  'Products.MeetingCommunes',
-                  'Products.PloneTestCase'],
-            templates=['Genshi',
-                  ]),
+          test=['unittest2',
+                'zope.testing',
+                'plone.testing',
+                'plone.app.testing',
+                'plone.app.robotframework',
+                'Products.CMFPlacefulWorkflow',
+                'zope.testing',
+                'Products.MeetingCommunes',
+                'Products.PloneTestCase'],
+          templates=['Genshi', ]),
       install_requires=[
           'setuptools',
           'Products.CMFPlone',

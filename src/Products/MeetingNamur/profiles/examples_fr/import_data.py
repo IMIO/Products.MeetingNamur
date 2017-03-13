@@ -239,12 +239,12 @@ collegeMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex
                                    annexeDecision, overheadAnalysis, marketingAnalysis,
                                    adviceAnnex, adviceLegalAnalysis]
 collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
-collegeMeeting.itemWorkflow = 'meetingitemnamurcollege_workflow'
-collegeMeeting.meetingWorkflow = 'meetingnamurcollege_workflow'
-collegeMeeting.itemConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowConditions'
-collegeMeeting.itemActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowActions'
-collegeMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowConditions'
-collegeMeeting.meetingActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowActions'
+collegeMeeting.itemWorkflow = 'meetingitemnamur_workflow'
+collegeMeeting.meetingWorkflow = 'meetingnamur_workflow'
+collegeMeeting.itemConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurWorkflowConditions'
+collegeMeeting.itemActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurWorkflowActions'
+collegeMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurWorkflowConditions'
+collegeMeeting.meetingActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamureWorkflowActions'
 collegeMeeting.transitionsToConfirm = []
 collegeMeeting.transitionsForPresentingAnItem = ['propose', 'validate', 'present', ]
 collegeMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
