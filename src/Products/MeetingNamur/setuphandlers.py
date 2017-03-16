@@ -16,16 +16,10 @@ __docformat__ = 'plaintext'
 import os
 import logging
 logger = logging.getLogger('MeetingCommunes: setuphandlers')
-from DateTime import DateTime
 from plone import api
-from plone import namedfile
-from plone.app.textfield.value import RichTextValue
-from plone.dexterity.utils import createContentInContainer
-from collective.iconifiedcategory.utils import calculate_category_id
-from collective.iconifiedcategory.utils import get_config_root
-from Products.CMFPlone.utils import _createObjectByType
 from Products.PloneMeeting.exportimport.content import ToolInitializer
-from Products.MeetingCommunes.config import PROJECTNAME
+from Products.MeetingNamur.config import PROJECTNAME
+
 
 
 def isNotMeetingNamurProfile(context):
@@ -176,7 +170,7 @@ def finalizeExampleInstance(context):
     # add the test users 'dfin' and 'bourgmestre' to every '_powerobservers' groups
     mTool = api.portal.get_tool('portal_membership')
     groupsTool = api.portal.get_tool('portal_groups')
-    member = mTool.getMemberById(specialUserId)
+    member = mTool.getMemberById('bourgmestre')
     for memberId in ('dfin', 'bourgmestre', ):
         member = mTool.getMemberById(memberId)
         if member:
