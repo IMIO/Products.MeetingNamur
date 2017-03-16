@@ -53,7 +53,7 @@ def formatedAssembly(assembly, focus):
     return ('\n'.join(res))
 
 
-class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
+class MNItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
     """Specific printing methods used for item."""
 
     def _financialAdviceDetails(self):
@@ -204,3 +204,6 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
                 return event['time'].strftime('%d/%m/%Y')
 
         return None
+
+class MNMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView):
+    """Specific printing methods used for meeting."""

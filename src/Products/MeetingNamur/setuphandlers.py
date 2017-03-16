@@ -13,29 +13,33 @@ __author__ = """Andre Nuyens <andre@imio.be>"""
 __docformat__ = 'plaintext'
 
 
-import logging
-logger = logging.getLogger('MeetingNamur: setuphandlers')
-from Products.MeetingNamur.config import PROJECTNAME
-from Products.MeetingNamur.config import DEPENDENCIES
 import os
-from Products.CMFCore.utils import getToolByName
-import transaction
-##code-section HEAD
+import logging
+logger = logging.getLogger('MeetingCommunes: setuphandlers')
+from DateTime import DateTime
+from plone import api
+from plone import namedfile
+from plone.app.textfield.value import RichTextValue
+from plone.dexterity.utils import createContentInContainer
+from collective.iconifiedcategory.utils import calculate_category_id
+from collective.iconifiedcategory.utils import get_config_root
+from Products.CMFPlone.utils import _createObjectByType
 from Products.PloneMeeting.exportimport.content import ToolInitializer
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
-##/code-section HEAD
+from Products.MeetingCommunes.config import PROJECTNAME
+
 
 def isNotMeetingNamurProfile(context):
     return context.readDataFile("MeetingNamur_marker.txt") is None
 
 
-
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingNamurProfile(context): return
-    wft = getToolByName(context.getSite(), 'portal_workflow')
+    if isNotMeetingNamurProfile(context):
+        return
+    wft = api.portal.get_tool('portal_workflow')
     wft.updateRoleMappings()
+
 
 def postInstall(context):
     """Called as at the end of the setup process. """
@@ -44,14 +48,12 @@ def postInstall(context):
         return
     logStep("postInstall", context)
     site = context.getSite()
-    #need to reinstall PloneMeeting after reinstalling MC workflows to re-apply wfAdaptations
+    # need to reinstall PloneMeeting after reinstalling MC workflows to re-apply wfAdaptations
     reinstallPloneMeeting(context, site)
     showHomeTab(context, site)
     reorderSkinsLayers(context, site)
 
 
-
-##code-section FOOT
 def logStep(method, context):
     logger.info("Applying '%s' in profile '%s'" %
                 (method, '/'.join(context._profile_path.split(os.sep)[-3:])))
@@ -86,9 +88,9 @@ def initializeTool(context):
         return
 
     logStep("initializeTool", context)
-    #PloneMeeting is no more a dependency to avoid
-    #magic between quickinstaller and portal_setup
-    #so install it manually
+    # PloneMeeting is no more a dependency to avoid
+    # magic between quickinstaller and portal_setup
+    # so install it manually
     _installPloneMeeting(context)
     return ToolInitializer(context, PROJECTNAME).run()
 
@@ -149,7 +151,7 @@ def addTaxControllerGroup(context):
     logStep("addTaxControllerGroup", context)
     portal = context.getSite()
     groupId = "meetingtaxcontroller"
-    if not groupId in portal.portal_groups.listGroupIds():
+    if groupId not in portal.portal_groups.listGroupIds():
         portal.portal_groups.addGroup(groupId,
                                       title=portal.utranslate("taxControllerGroupTitle", domain='PloneMeeting'))
         portal.portal_groups.setRolesForGroup(groupId, ('MeetingObserverGlobal', 'MeetingPowerObserverLocal',
@@ -172,79 +174,46 @@ def finalizeExampleInstance(context):
 
     logStep("finalizeExampleInstance", context)
     # add the test users 'dfin' and 'bourgmestre' to every '_powerobservers' groups
+    mTool = api.portal.get_tool('portal_membership')
+    groupsTool = api.portal.get_tool('portal_groups')
+    member = mTool.getMemberById(specialUserId)
     for memberId in ('dfin', 'bourgmestre', ):
-        member = site.portal_membership.getMemberById(memberId)
+        member = mTool.getMemberById(memberId)
         if member:
-            site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig1Id)
-            site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
+            groupsTool.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig1Id)
+            groupsTool.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
     # add the test user 'conseiller' only to the 'meeting-config-council_powerobservers' group
 
-    member = site.portal_membership.getMemberById('conseiller')
+    member = mTool.getMemberById('conseiller')
     if member:
-        site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
+        groupsTool.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
 
     # add the test user 'dfin' and 'chefCompta' to the 'meeting-config-xxx_budgetimpacteditors' groups
     for memberId in ('dfin', 'chefCompta', ):
-        member = site.portal_membership.getMemberById(memberId)
+        member = mTool.getMemberById(memberId)
         if member:
             site.portal_groups.addPrincipalToGroup(memberId, '%s_budgetimpacteditors' % meetingConfig1Id)
             site.portal_groups.addPrincipalToGroup(memberId, '%s_budgetimpacteditors' % meetingConfig2Id)
 
-    # add some extra topics to each MeetingConfig
-    topicsInfo = (
-        # Items in state 'proposed'
-        ('searchproposeditems',
-         (('portal_type', 'ATPortalTypeCriterion', ('MeetingItem',)),
-          ('review_state', 'ATListCriterion', ('proposed',),)
-          ),
-         'created',
-         '',
-         "python: not here.portal_plonemeeting.userIsAmong('reviewers')",
-         ),
-        # Items in state 'validated'
-        ('searchvalidateditems',
-         (('portal_type', 'ATPortalTypeCriterion', ('MeetingItem',)),
-         ('review_state', 'ATListCriterion', ('validated',),)
-          ),
-         'created',
-         '',
-         '',
-         ),
-        # Items for cdld synthesis
-        ('searchcdlditems',
-        (('Type', 'ATPortalTypeCriterion', ('MeetingItem',)),
-         ),
-        'created',
-        'searchCDLDItems',
-        "python: '%s_budgetimpacteditors' % here.portal_plonemeeting.getMeetingConfig(here)"
-        ".getId() in member.getGroups() or here.portal_plonemeeting.isManager(here)", ),
-    )
+    # add some topics to the portlet_todo
     mc_college = getattr(site.portal_plonemeeting, meetingConfig1Id)
-    mc_college.createTopics(topicsInfo)
-    mc_council = getattr(site.portal_plonemeeting, meetingConfig2Id)
-    mc_council.createTopics(topicsInfo)
+    mc_college.setToDoListSearches(
+        [getattr(mc_college.searches.searches_items, 'searchdecideditems'),
+         getattr(mc_college.searches.searches_items, 'searchallitemsincopy'),
+         getattr(mc_college.searches.searches_items, 'searchitemstoadvicewithdelay'),
+         getattr(mc_college.searches.searches_items, 'searchallitemstoadvice'),
+         ])
 
     # add some topics to the portlet_todo
-    mc_college.setToDoListTopics(
-        [getattr(mc_college.topics, 'searchdecideditems'),
-         getattr(mc_college.topics, 'searchallitemsincopy'),
-         getattr(mc_college.topics, 'searchitemstoadvicewithdelay'),
-         getattr(mc_college.topics, 'searchallitemstoadvice'),
-         ])
-    # add some topics to the portlet_todo
-    mc_council.setToDoListTopics(
-        [getattr(mc_council.topics, 'searchdecideditems'),
-         getattr(mc_council.topics, 'searchallitemsincopy'),
+    mc_council = getattr(site.portal_plonemeeting, meetingConfig2Id)
+    mc_council.setToDoListSearches(
+        [getattr(mc_council.searches.searches_items, 'searchdecideditems'),
+         getattr(mc_council.searches.searches_items, 'searchallitemsincopy'),
          ])
 
     # finally, re-launch plonemeetingskin and MeetingNamur skins step
     # because PM has been installed before the import_data profile and messed up skins layers
     site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingNamur:default', 'skins')
-    # define default workflowAdaptations for council
-    # due to some weird problems, the wfAdaptations can not be defined
-    # thru the import_data...
-    mc_council.setWorkflowAdaptations(['no_global_observation', 'no_publication'])
-    performWorkflowAdaptations(site, mc_council, logger)
 
 
 def reorderCss(context):
@@ -260,9 +229,8 @@ def reorderCss(context):
     logStep("reorderCss", context)
 
     portal_css = site.portal_css
-    css = ['plonemeeting.css',
-           'meeting.css',
-           'meetingitem.css',
+    css = ['imio.dashboard.css',
+           'plonemeeting.css',
            'meetingnamur.css',
            'imioapps.css',
            'plonemeetingskin.css',
@@ -270,5 +238,3 @@ def reorderCss(context):
            'ploneCustom.css']
     for resource in css:
         portal_css.moveResourceToBottom(resource)
-
-##/code-section FOOT

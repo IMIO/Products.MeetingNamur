@@ -76,7 +76,7 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         res = i2.getCertifiedSignatures()
         #signatures defined for developers group, get it
         res = i2.getCertifiedSignatures()
-        self.assertEquals(res, [u'Le Secrétaire communal ff', u'Remplaçant', u'Le 1er échevin', u'Remplaçant 2'])
+        self.assertEquals(res, [u'Le DG ff', u'Remplaçant', u'Le 1er échevin', u'Remplaçant 2'])
 
     def test_GetEchevinsForProposingGroup(self):
         '''Check a meetingItem for developers group return an echevin (the Same group in our case)

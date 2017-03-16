@@ -31,10 +31,8 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.atapi import DisplayList
 from plone import api
-from plone.memoize import ram
 
 from imio.helpers.xhtml import xhtmlContentIsEmpty
-from Products.PloneMeeting.adapters import CompoundCriterionBaseAdapter
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.interfaces import IMeetingGroupCustom
@@ -49,18 +47,22 @@ from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowConditions
 from Products.PloneMeeting.model import adaptations
-from Products.PloneMeeting.model.adaptations import WF_APPLIED
 from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
 from Products.PloneMeeting.utils import sendMail
 from Products.PloneMeeting.utils import sendMailIfRelevant
 
-from Products.MeetingNamur import logger
-from Products.MeetingNamur.config import FINANCE_ADVICES_COLLECTION_ID
 from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowConditions
 from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowActions
 from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowConditions
 from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowActions
-
+from Products.MeetingNamur.interfaces import IMeetingItemNamurCollegeWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingItemNamurCollegeWorkflowActions
+from Products.MeetingNamur.interfaces import IMeetingNamurCollegeWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingNamurCollegeWorkflowActions
+from Products.MeetingNamur.interfaces import IMeetingItemNamurCouncilWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingItemNamurCouncilWorkflowActions
+from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowActions
 # Names of available workflow adaptations.
 customWfAdaptations = ('return_to_proposing_group', 'return_to_proposing_group_with_last_validation',
                        'return_to_proposing_group_with_all_validations')
@@ -410,7 +412,7 @@ class CustomMeeting(Meeting):
                     # Insert the category among used categories at the right place.
                     categoryInserted = False
                     i = 0
-                    for i in range(len(usedCategories)):
+                    for obj in res:
                         try:
                             if not obj[0].getAcronym().startswith(cat.getAcronym()):
                                 i = i + 1
@@ -891,6 +893,13 @@ class MeetingNamurWorkflowActions(MeetingWorkflowActions):
         '''We do not impact items while going back from decided.'''
         pass
 
+class MeetingNamurCollegeWorkflowActions(MeetingNamurWorkflowActions):
+    '''inherit class'''
+    implements(IMeetingNamurCollegeWorkflowActions)
+
+class MeetingNamurCouncilWorkflowActions(MeetingNamurWorkflowActions):
+    '''inherit class'''
+    implements(IMeetingNamurCouncilWorkflowActions)
 
 class MeetingNamurWorkflowConditions(MeetingWorkflowConditions):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -907,6 +916,13 @@ class MeetingNamurWorkflowConditions(MeetingWorkflowConditions):
             res = True
         return res
 
+class MeetingNamurCollegeWorkflowConditions(MeetingNamurWorkflowConditions):
+    '''inherit class'''
+    implements(IMeetingNamurCollegeWorkflowConditions)
+
+class MeetingNamurCouncilWorkflowConditions(MeetingNamurWorkflowConditions):
+    '''inherit class'''
+    implements(IMeetingNamurCouncilWorkflowConditions)
 
 class MeetingItemNamurWorkflowActions(MeetingItemWorkflowActions):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1001,6 +1017,15 @@ class MeetingItemNamurWorkflowActions(MeetingItemWorkflowActions):
         # If the decision field is empty, initialize it
         item._initDecisionFieldIfEmpty()
 
+class MeetingItemNamurCollegeWorkflowActions(MeetingItemNamurWorkflowActions):
+    '''inherit class'''
+    implements(IMeetingItemNamurCollegeWorkflowActions)
+
+
+class MeetingItemNamurCouncilWorkflowActions(MeetingItemNamurWorkflowActions):
+    '''inherit class'''
+    implements(IMeetingItemNamurCouncilWorkflowActions)
+
 
 class MeetingItemNamurWorkflowConditions(MeetingItemWorkflowConditions):
     '''Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1022,6 +1047,16 @@ class MeetingItemNamurWorkflowConditions(MeetingItemWorkflowConditions):
            meeting and meeting.adapted().isDecided():
             res = True
         return res
+
+
+class MeetingItemNamurCollegeWorkflowConditions(MeetingItemNamurWorkflowConditions):
+    '''inherit class'''
+    implements(IMeetingItemNamurCollegeWorkflowConditions)
+
+
+class MeetingItemNamurCouncilWorkflowConditions(MeetingItemNamurWorkflowConditions):
+    '''inherit class'''
+    implements(IMeetingItemNamurCouncilWorkflowConditions)
 
 
 class CustomToolPloneMeeting(ToolPloneMeeting):

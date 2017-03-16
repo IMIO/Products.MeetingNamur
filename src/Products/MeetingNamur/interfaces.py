@@ -28,6 +28,7 @@ from Products.PloneMeeting.interfaces import \
     IMeetingItemWorkflowConditions, IMeetingItemWorkflowActions, \
     IMeetingWorkflowActions, IMeetingWorkflowConditions
 
+
 # ------------------------------------------------------------------------------
 class IMeetingItemNamurWorkflowActions(IMeetingItemWorkflowActions):
     '''This interface represents a meeting item as viewed by the specific
@@ -44,6 +45,16 @@ class IMeetingItemNamurWorkflowActions(IMeetingItemWorkflowActions):
         """
           Triggered while doing the 'pre_accept' transition
         """
+
+
+class IMeetingItemNamurCollegeWorkflowActions(IMeetingItemNamurWorkflowActions):
+    '''inherit class'''
+
+
+class IMeetingItemNamurCouncilWorkflowActions(IMeetingItemNamurWorkflowActions):
+    '''inherit class'''
+
+
 class IMeetingItemNamurWorkflowConditions(IMeetingItemWorkflowConditions):
     '''This interface represents a meeting item as viewed by the specific
        item workflow that is defined in this MeetingNamur product.'''
@@ -59,6 +70,15 @@ class IMeetingItemNamurWorkflowConditions(IMeetingItemWorkflowConditions):
         """
           Guard for the 'freeze' transition
         """
+
+
+class IMeetingItemNamurCollegeWorkflowConditions(IMeetingItemNamurWorkflowConditions):
+    '''inherit class'''
+
+
+class IMeetingItemNamurCouncilWorkflowConditions(IMeetingItemNamurWorkflowConditions):
+    '''inherit class'''
+
 
 class IMeetingNamurWorkflowActions(IMeetingWorkflowActions):
     '''This interface represents a meeting as viewed by the specific meeting
@@ -79,6 +99,16 @@ class IMeetingNamurWorkflowActions(IMeetingWorkflowActions):
         """
           Triggered while doing the 'doBackToCreated' transition
         """
+
+
+class IMeetingNamurCollegeWorkflowActions(IMeetingNamurWorkflowActions):
+    '''inherit class'''
+
+
+class IMeetingNamurCouncilWorkflowActions(IMeetingNamurWorkflowActions):
+    '''inherit class'''
+
+
 class IMeetingNamurWorkflowConditions(IMeetingWorkflowConditions):
     '''This interface represents a meeting as viewed by the specific meeting
        workflow that is defined in this MeetingNamur product.'''
@@ -98,4 +128,12 @@ class IMeetingNamurWorkflowConditions(IMeetingWorkflowConditions):
         """
           Check if the user may or not changes the order of the items on the meeting
         """
+
+
+class IMeetingNamurCollegeWorkflowConditions(IMeetingNamurWorkflowConditions):
+    '''inherit class'''
+
+
+class IMeetingNamurCouncilWorkflowConditions(IMeetingNamurWorkflowConditions):
+    '''inherit class'''
 # ------------------------------------------------------------------------------
