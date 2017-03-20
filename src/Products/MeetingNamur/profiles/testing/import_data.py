@@ -29,6 +29,36 @@ overheadAnalysis = ItemAnnexTypeDescriptor(
     other_mc_correspondences=(
         'meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex', ))
 
+financialAnalysisSubAnnex = ItemAnnexSubTypeDescriptor(
+    'financial-analysis-sub-annex',
+    'Financial analysis sub annex')
+
+financialAnalysis = ItemAnnexTypeDescriptor(
+    'financial-analysis', 'Financial analysis', u'financialAnalysis.png',
+    u'Predefined title for financial analysis', subTypes=[financialAnalysisSubAnnex])
+
+legalAnalysis = ItemAnnexTypeDescriptor(
+    'legal-analysis', 'Legal analysis', u'legalAnalysis.png')
+
+budgetAnalysisCfg2Subtype = ItemAnnexSubTypeDescriptor(
+    'budget-analysis-sub-annex',
+    'Budget analysis sub annex')
+
+budgetAnalysisCfg2 = ItemAnnexTypeDescriptor(
+    'budget-analysis', 'Budget analysis', u'budgetAnalysis.png',
+    subTypes=[budgetAnalysisCfg2Subtype])
+
+budgetAnalysisCfg1Subtype = ItemAnnexSubTypeDescriptor(
+    'budget-analysis-sub-annex',
+    'Budget analysis sub annex',
+    other_mc_correspondences=(
+        'meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex', ))
+
+budgetAnalysisCfg1 = ItemAnnexTypeDescriptor(
+    'budget-analysis', 'Budget analysis', u'budgetAnalysis.png',
+    subTypes=[budgetAnalysisCfg1Subtype],
+    other_mc_correspondences=('meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis', ))
+
 itemAnnex = ItemAnnexTypeDescriptor(
     'item-annex', 'Other annex(es)', u'itemAnnex.png')
 # Could be used once we
@@ -53,13 +83,13 @@ meetingAnnex = AnnexTypeDescriptor(
 
 # Pod templates ----------------------------------------------------------------
 agendaTemplate = PodTemplateDescriptor('oj', 'Ordre du jour')
-agendaTemplate.odt_file = 'college-oj.odt'
+agendaTemplate.odt_file = 'Agenda.odt'
 agendaTemplate.pod_portal_types = ['MeetingCollege']
 agendaTemplate.tal_condition = 'python:(here.meta_type=="Meeting") and here.portal_plonemeeting.isManager()'
 
 
 decisionsTemplate = PodTemplateDescriptor('decisionsTemplate', 'Meeting decisions')
-decisionsTemplate.podTemplate = 'Decisions.odt'
+decisionsTemplate.odt_file = 'Decisions.odt'
 decisionsTemplate.pod_portal_types = ['MeetingCollege']
 decisionsTemplate.tal_condition = 'python:here.adapted().isDecided()'
 
@@ -271,13 +301,13 @@ collegeMeeting.certifiedSignatures = [
 collegeMeeting.categories = [development, research]
 collegeMeeting.classifiers = [classifier1, classifier2, classifier3]
 collegeMeeting.shortName = 'College'
-collegeMeeting.annexTypes = [overheadAnalysis,
+collegeMeeting.annexTypes = [financialAnalysis, budgetAnalysisCfg1, overheadAnalysis,
                              itemAnnex, decisionAnnex, marketingAnalysis,
                              adviceAnnex, adviceLegalAnalysis, meetingAnnex]
 collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
 collegeMeeting.itemWorkflow = 'meetingitemnamur_workflow'
 collegeMeeting.meetingWorkflow = 'meetingnamur_workflow'
-collegeMeeting.itemConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowActions'
+collegeMeeting.itemConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowConditions'
 collegeMeeting.itemActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowActions'
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowConditions'
 collegeMeeting.meetingActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowActions'
@@ -360,8 +390,9 @@ councilMeeting.categories = [deployment, maintenance, development, events,
                              research, projects, marketing, subproducts]
 councilMeeting.classifiers = [classifier1, classifier2, classifier3]
 councilMeeting.shortName = 'Council'
-councilMeeting.meetingFileTypes = [itemAnnex, decisionAnnex, marketingAnalysis,
-                                   adviceAnnex, adviceLegalAnalysis, meetingAnnex]
+councilMeeting.annexTypes = [financialAnalysis, legalAnalysis,
+                             budgetAnalysisCfg2, itemAnnex, decisionAnnex,
+                             adviceAnnex, adviceLegalAnalysis, meetingAnnex]
 councilMeeting.itemWorkflow = 'meetingitemnamur_workflow'
 councilMeeting.meetingWorkflow = 'meetingnamur_workflow'
 councilMeeting.itemConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowConditions'

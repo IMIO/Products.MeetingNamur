@@ -69,7 +69,7 @@ class IMeetingItemNamurWorkflowConditions(IMeetingItemWorkflowConditions):
     def mayFreeze():
         """
           Guard for the 'freeze' transition
-        """ 
+        """
 
 
 class IMeetingItemNamurCollegeWorkflowConditions(IMeetingItemNamurWorkflowConditions):

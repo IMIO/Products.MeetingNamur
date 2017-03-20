@@ -19,20 +19,36 @@
   <include package="Products.PloneMeeting"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingNamur.adapters.MeetingItemNamurWorkflowActions"
-           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurWorkflowActions"/>
+           factory="Products.MeetingNamur.adapters.MeetingItemNamurCollegeWorkflowActions"
+           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowActions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingNamur.adapters.MeetingItemNamurWorkflowConditions"
-           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurWorkflowConditions"/>
+           factory="Products.MeetingNamur.adapters.MeetingItemNamurCollegeWorkflowConditions"
+           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowConditions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingNamur.adapters.MeetingNamurWorkflowActions"
-           provides="Products.MeetingNamur.interfaces.IMeetingNamurWorkflowActions"/>
+           factory="Products.MeetingNamur.adapters.MeetingNamurCollegeWorkflowActions"
+           provides="Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowActions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingNamur.adapters.MeetingNamurWorkflowConditions"
-           provides="Products.MeetingNamur.interfaces.IMeetingNamurWorkflowConditions"/>
+           factory="Products.MeetingNamur.adapters.MeetingNamurCollegeWorkflowConditions"
+           provides="Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowConditions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+           factory="Products.MeetingNamur.adapters.MeetingItemNamurCouncilWorkflowActions"
+           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowActions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+           factory="Products.MeetingNamur.adapters.MeetingItemNamurCouncilWorkflowConditions"
+           provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowConditions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+           factory="Products.MeetingNamur.adapters.MeetingNamurCouncilWorkflowActions"
+           provides="Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowActions"/>
+
+  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+           factory="Products.MeetingNamur.adapters.MeetingNamurCouncilWorkflowConditions"
+           provides="Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowConditions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
            factory="Products.MeetingNamur.adapters.CustomMeetingItem"

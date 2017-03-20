@@ -27,8 +27,10 @@ from Products.CMFCore.permissions import setDefaultRoles
 PROJECTNAME = "MeetingNamur"
 
 # Permissions
-DEFAULT_ADD_CONTENT_PERMISSION = "Add portal content"
-setDefaultRoles(DEFAULT_ADD_CONTENT_PERMISSION, ('Manager', 'Owner', 'Contributor'))
+WriteDecision = 'MeetingNamur: Write description'
+setDefaultRoles(WriteDecision, ('Manager',))
+WriteCertified = 'MeetingNamur: Write certified signatures'
+setDefaultRoles(WriteCertified, ('Manager',))
 
 product_globals = globals()
 
