@@ -70,11 +70,7 @@ class testMeetingItem(MeetingNamurTestCase, pmtmi):
         self.failIf(clonedItem.getBudgetInfos())
         self.failIf(clonedItem.getOtherMeetingConfigsClonableTo())
 
-    def test_subproduct_call_PowerObserversLocalRoles(self):
-        '''See doc string in PloneMeeting.'''
-        self.test_pm_PowerObserversLocalRoles()
-
-    def test_subproduct_call_OnTransitionFieldTransforms(self):
+    def test_pm_OnTransitionFieldTransforms(self):
         ''' We must ovveride this test because for Namur, the decision field is never fill by creator or reviewer
            On transition triggered, some transforms can be applied to item or meeting
            rich text field depending on what is defined in MeetingConfig.onTransitionFieldTransforms.
@@ -130,7 +126,7 @@ class testMeetingItem(MeetingNamurTestCase, pmtmi):
         self.assertTrue(item4.getDecision(keepWithNext=False) == '<p>My decision that will not be touched.</p>')
         # a portal_message is displayed to the user that triggered the transition
         messages = IStatusMessage(self.request).show()
-        self.assertTrue(messages[0].message == ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR % ('decision',
+        self.assertTrue(messages[-1].message == ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR % ('decision',
                                                                                          "'some_wrong_tal_expression'"))
 
     def test_subproduct_call_ItemStrikedAssembly(self):
