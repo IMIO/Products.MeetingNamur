@@ -365,27 +365,20 @@ class CustomMeeting(Meeting):
                     if item.getIsConfidentialItem() and not userCanView:
                         continue
                 currentCat = item.getCategory(theObject=True)
-                # Add the item to a new category, excepted if the
-                # category already exists.
-                currentCatId = currentCat.getId()
-                if currentCatId != previousCatId:
-                    # Add the item to a new category, excepted if the category already exists.
-                    catExists = False
-                    for catList in res:
-                        if catList[0] == currentCat:
-                            catExists = True
-                            break
-                        if catExists:
-                            self._insertItemInCategory(catList, item,
-                                                       by_proposing_group, group_prefixes, groups)
-                        else:
-                            res.append([currentCat])
-                            self._insertItemInCategory(res[-1], item,
-                                                       by_proposing_group, group_prefixes, groups)
-                    previousCatId = currentCatId
+                # Add the item to a new category, excepted if the category already exists.
+                catExists = False
+                for catList in res:
+                    if catList[0] == currentCat:
+                        catExists = True
+                        break
+                # Add the item to a new category, excepted if the category already exists.
+                if catExists:
+                    self._insertItemInCategory(catList, item,
+                                               by_proposing_group, group_prefixes, groups)
                 else:
-                    # Append the item to the same category
-                    self._insertItemInCategory(res[-1], item, by_proposing_group, group_prefixes, groups)
+                    res.append([currentCat])
+                    self._insertItemInCategory(res[-1], item,
+                                               by_proposing_group, group_prefixes, groups)
         if forceCategOrderFromConfig or cmp(listTypes.sort(), ['late', 'normal']) == 0:
             res.sort(cmp=_comp)
         if includeEmptyCategories:
@@ -681,8 +674,7 @@ class CustomMeetingItem(MeetingItem):
         # set keepWithNext to False as it will add a 'class' and so
         # xhtmlContentIsEmpty will never consider it empty...
         if xhtmlContentIsEmpty(self.getDecision(keepWithNext=False)):
-            self.setDecision("<p>%s</p>%s" % (self.Title(),
-                                              self.Description()))
+            self.setDecision("%s" % self.Description())
             self.reindexObject()
     MeetingItem._initDecisionFieldIfEmpty = _initDecisionFieldIfEmpty
 

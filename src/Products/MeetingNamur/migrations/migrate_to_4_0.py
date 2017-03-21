@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-logger = logging.getLogger('MeetingCommunes')
+logger = logging.getLogger('MeetingNamur')
 
 from plone import api
 
@@ -49,32 +49,28 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
         PMMigrate_To_4_0._after_reinstall(self)
         for cfg in self.tool.objectValues('MeetingConfig'):
             # MeetingItem workflow
-            if cfg.getItemWorkflow() == 'meetingitemcollege_workflow':
-                cfg.setItemWorkflow('meetingitemcommunes_workflow')
-                cfg._v_oldItemWorkflow = 'meetingitemcollege_workflow'
+            if cfg.getItemWorkflow() == 'meetingitemnamurcollege_workflow':
+                cfg.setItemWorkflow('meetingitemnamur_workflow')
+                cfg._v_oldItemWorkflow = 'meetingitemnamurcollege_workflow'
                 wfAdaptations = list(cfg.getWorkflowAdaptations())
-                if 'no_publication' not in wfAdaptations:
-                    wfAdaptations.append('no_publication')
-                if 'no_global_observation' not in wfAdaptations:
-                    wfAdaptations.append('no_global_observation')
                 cfg.setWorkflowAdaptations(wfAdaptations)
-            if cfg.getItemWorkflow() == 'meetingitemcouncil_workflow':
-                cfg.setItemWorkflow('meetingitemcommunes_workflow')
-                cfg._v_oldItemWorkflow = 'meetingitemcouncil_workflow'
+            if cfg.getItemWorkflow() == 'meetingitemnamurcouncil_workflow':
+                cfg.setItemWorkflow('meetingitemnamur_workflow')
+                cfg._v_oldItemWorkflow = 'meetingitemnamurcouncil_workflow'
             # Meeting workflow
-            if cfg.getMeetingWorkflow() == 'meetingcollege_workflow':
-                cfg.setMeetingWorkflow('meetingcommunes_workflow')
-                cfg._v_oldMeetingWorkflow = 'meetingcollege_workflow'
-            if cfg.getMeetingWorkflow() == 'meetingcouncil_workflow':
-                cfg.setMeetingWorkflow('meetingcommunes_workflow')
-                cfg._v_oldMeetingWorkflow = 'meetingcouncil_workflow'
+            if cfg.getMeetingWorkflow() == 'meetingnamurcollege_workflow':
+                cfg.setMeetingWorkflow('meetingnamur_workflow')
+                cfg._v_oldMeetingWorkflow = 'meetingnamurcollege_workflow'
+            if cfg.getMeetingWorkflow() == 'meetingnamurcouncil_workflow':
+                cfg.setMeetingWorkflow('meetingnamur_workflow')
+                cfg._v_oldMeetingWorkflow = 'meetingnamurcouncil_workflow'
         # delete old unused workflows, aka every workflows containing 'college' or 'council'
         wfTool = api.portal.get_tool('portal_workflow')
         self.wfs_to_delete = [wfId for wfId in wfTool.listWorkflows()
-                              if wfId.endswith(('meetingitemcollege_workflow',
-                                                'meetingitemcouncil_workflow',
-                                                'meetingcollege_workflow',
-                                                'meetingcouncil_workflow'))]
+                              if wfId.endswith(('meetingitemnamurcollege_workflow',
+                                                'meetingitemnamurcouncil_workflow',
+                                                'meetingnamurcollege_workflow',
+                                                'meetingnamurcouncil_workflow'))]
         logger.info('Done.')
 
     def _deleteUselessWorkflows(self):
@@ -87,11 +83,11 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
 
     def run(self):
         # change self.profile_name that is reinstalled at the beginning of the PM migration
-        self.profile_name = u'profile-Products.MeetingCommunes:default'
+        self.profile_name = u'profile-Products.MeetingNamur:default'
         # call steps from Products.PloneMeeting
         PMMigrate_To_4_0.run(self)
         # now MeetingLiege specific steps
-        logger.info('Migrating to MeetingCommunes 4.0...')
+        logger.info('Migrating to MeetingNamur 4.0...')
         self._cleanCDLD()
         self._migrateItemPositiveDecidedStates()
         self._deleteUselessWorkflows()
@@ -101,7 +97,7 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
 def migrate(context):
     '''This migration function:
 
-       1) Reinstall Products.MeetingCommunes and execute the Products.PloneMeeting migration;
+       1) Reinstall Products.MeetingNamur and execute the Products.PloneMeeting migration;
        2) Clean CDLD attributes;
        3) Migrate positive decided states.
     '''

@@ -33,6 +33,43 @@ class testMeetingItem(MeetingNamurTestCase, pmtmi):
         Tests the MeetingItem class methods.
     """
 
+    def test_pm_SendItemToOtherMCKeptFields(self):
+        '''Test what fields are taken when sending to another MC, actually only fields
+           enabled in both original and destination config.'''
+        cfg = self.meetingConfig
+        cfg2 = self.meetingConfig2
+        cfg2Id = cfg2.getId()
+        # enable motivation and budgetInfos in cfg1, not in cfg2
+        cfg.setUsedItemAttributes(('motivation', 'budgetInfos'))
+        cfg2.setUsedItemAttributes(('itemIsSigned', 'privacy'))
+        cfg.setItemManualSentToOtherMCStates((self.WF_STATE_NAME_MAPPINGS['itemcreated'],))
+
+        # create and send
+        self.changeUser('pmManager')
+        item = self.create('MeetingItem')
+        # default always kept fields
+        item.setTitle('My title')
+        item.setDescription('<p>My description</p>', mimetype='text/html')
+        item.setDecision('<p>My decision</p>', mimetype='text/html')
+        # optional fields
+        item.setMotivation('<p>My motivation</p>', mimetype='text/html')
+        item.setBudgetRelated(True)
+        item.setBudgetInfos('<p>My budget infos</p>', mimetype='text/html')
+        item.setOtherMeetingConfigsClonableTo((cfg2Id,))
+        item.at_post_edit_script()
+        clonedItem = item.cloneToOtherMeetingConfig(cfg2Id)
+
+        # make sure relevant fields are there or no more there
+        self.assertEquals(clonedItem.Title(), item.Title())
+        self.assertEquals(clonedItem.Description(), item.Description())
+        # for Namur, the decision field is fill when item go to te meetingManager (validated)
+        # an item who is send to other config didn't have decision
+        self.assertEquals(clonedItem.getDecision(), '<p>&nbsp;</p>')
+        self.failIf(clonedItem.getMotivation())
+        self.failIf(clonedItem.getBudgetRelated())
+        self.failIf(clonedItem.getBudgetInfos())
+        self.failIf(clonedItem.getOtherMeetingConfigsClonableTo())
+
     def test_subproduct_call_PowerObserversLocalRoles(self):
         '''See doc string in PloneMeeting.'''
         self.test_pm_PowerObserversLocalRoles()
