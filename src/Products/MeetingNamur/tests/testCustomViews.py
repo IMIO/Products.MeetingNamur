@@ -23,15 +23,14 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testCustomViews import testCustomViews as mctcv
 
 
-class testCustomViews(MeetingNamurTestCase, mctcv):
+class testCustomViews(MeetingNamurTestCase):
     ''' '''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testCustomViews, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testCustomViews, prefix='test_pm_'))
     return suite

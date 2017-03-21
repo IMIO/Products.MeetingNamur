@@ -23,10 +23,9 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
+from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as pmtmc
 
-
-class testMeetingConfig(MeetingNamurTestCase, mctmc):
+class testMeetingConfig(MeetingNamurTestCase, pmtmc):
     '''Tests the MeetingConfig class methods.'''
 
     def test_subproduct_call_SearchItemsToValidateOfEveryReviewerLevelsAndLowerLevels(self):
@@ -45,5 +44,5 @@ class testMeetingConfig(MeetingNamurTestCase, mctmc):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testMeetingConfig, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testMeetingConfig, prefix='test_pm_'))
     return suite

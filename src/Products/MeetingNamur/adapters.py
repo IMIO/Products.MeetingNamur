@@ -741,6 +741,32 @@ class CustomMeetingItem(MeetingItem):
         else:
             return False
 
+    security.declarePublic('viewFullFieldInItemEdit')
+
+    def viewFullFieldInItemEdit(self):
+        '''
+            This method is used in MeetingItem_edit.cpt
+        '''
+        item = self.getSelf()
+        roles = item.portal_membership.getAuthenticatedMember().getRolesInContext(item)
+        res = False
+        for role in roles:
+            if (role == 'Authenticated') or (role == 'Member') or \
+                    (role == 'MeetingTaxController') or (role == 'MeetingBudgetImpactReviewer') or \
+                    (role == 'MeetingObserverGlobal') or (role == 'Reader'):
+                continue
+            res = True
+            break
+        return res
+
+    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc):
+        '''
+          Keep some new fields when item is cloned (to another mc or from itemtemplate).
+        '''
+        res = ['grpBudgetInfos', 'itemCertifiedSignatures', 'isConfidentialItem']
+        if cloned_to_same_mc:
+            res = res + []
+        return res
 
 class CustomMeetingGroup(MeetingGroup):
     '''Adapter that adapts a meeting group implementing IMeetingGroup to the
@@ -869,13 +895,10 @@ class MeetingNamurWorkflowActions(MeetingWorkflowActions):
            MeetingConfig.initItemDecisionIfEmptyOnDecide is True, we
            initialize the decision field with content of Title+Description
            if decision field is empty.'''
-        tool = getToolByName(self.context, 'portal_plonemeeting')
-        cfg = tool.getMeetingConfig(self.context)
-        if cfg.getInitItemDecisionIfEmptyOnDecide():
-            for item in self.context.getItems():
-                # If deliberation (motivation+decision) is empty,
-                # initialize it the decision field
-                item._initDecisionFieldIfEmpty()
+        for item in self.context.getItems():
+            # If deliberation (decision) is empty,
+            # initialize it the decision field
+            item._initDecisionFieldIfEmpty()
 
     security.declarePrivate('doBackToPublished')
 
@@ -884,7 +907,7 @@ class MeetingNamurWorkflowActions(MeetingWorkflowActions):
         '''We initialize the decision field with content of Title+Description
            if no decision has already been written.'''
         MeetingWorkflowActions.doClose(self, stateChange)
-        for item in self.context.getAllItems(ordered=True):
+        for item in self.context.getItems():
             # If the decision field is empty, initialize it
             item._initDecisionFieldIfEmpty()
 

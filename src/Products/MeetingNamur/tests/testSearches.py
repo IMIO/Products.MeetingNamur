@@ -23,15 +23,15 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testSearches import testSearches as mcts
+from Products.PloneMeeting.tests.testSearches import testSearches as pmts
 
 
-class testSearches(MeetingNamurTestCase, mcts):
+class testSearches(MeetingNamurTestCase, pmts):
     """Test searches."""
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testSearches, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testSearches, prefix='test_pm_'))
     return suite

@@ -20,18 +20,22 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
+from Products.PloneMeeting.tests.PloneMeetingTestCase import PloneMeetingTestCase
 from Products.MeetingNamur.testing import MNA_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingNamur.tests.helpers import MeetingNamurTestingHelpers
 
 # monkey patch the MeetingConfig.wfAdaptations again because it is done in
 # adapters.py but overrided by Products.MeetingCommunes here in the tests...
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
+from Products.PloneMeeting.model import adaptations
 from Products.MeetingNamur.adapters import customWfAdaptations
 MeetingConfig.wfAdaptations = customWfAdaptations
+from Products.MeetingNamur.adapters import RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
+MeetingConfig.wfAdaptations = customWfAdaptations
+adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
-class MeetingNamurTestCase(MeetingCommunesTestCase, MeetingNamurTestingHelpers):
+class MeetingNamurTestCase(PloneMeetingTestCase, MeetingNamurTestingHelpers):
     """Base class for defining MeetingNamur test cases."""
 
     layer = MNA_TESTING_PROFILE_FUNCTIONAL
@@ -57,11 +61,8 @@ class MeetingNamurTestCase(MeetingCommunesTestCase, MeetingNamurTestingHelpers):
                 newGroup = getattr(self.tool, newGroupId)
                 newGroup.processForm(values={'dummy': None})
 
+    def setUp(self):
+        PloneMeetingTestCase.setUp(self)
+        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
+        self.meetingConfig2 = getattr(self.tool, 'meeting-config-council')
 
-# this is necessary to execute base test
-# test_tescasesubproduct_VerifyTestFiles from PloneMeeting
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(MeetingCommunesTestCase, prefix='test_testcasesubproduct_'))
-    return suite

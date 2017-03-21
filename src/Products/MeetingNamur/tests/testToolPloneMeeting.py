@@ -22,16 +22,15 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingNamur.tests.MeetingNamurTestCase import \
-    MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testToolPloneMeeting import testToolPloneMeeting as mctt
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.PloneMeeting.tests.testToolPloneMeeting import testToolPloneMeeting as pmtt
 
 
-class testToolPloneMeeting(MeetingNamurTestCase, mctt):
+class testToolPloneMeeting(MeetingNamurTestCase, pmtt):
     '''Tests the ToolPloneMeeting class methods.'''
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testToolPloneMeeting, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testToolPloneMeeting, prefix='test_pm_'))
     return suite

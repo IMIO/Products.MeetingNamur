@@ -23,12 +23,12 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
+from Products.PloneMeeting.tests.testAdvices import testAdvices as pmta
 from plone.app.textfield.value import RichTextValue
 from plone.dexterity.utils import createContentInContainer
 
 
-class testAdvices(MeetingNamurTestCase, mcta):
+class testAdvices(MeetingNamurTestCase, pmta):
     '''Tests various aspects of advices management.
        Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
 
@@ -64,5 +64,5 @@ class testAdvices(MeetingNamurTestCase, mcta):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testAdvices, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testAdvices, prefix='test_pm_'))
     return suite

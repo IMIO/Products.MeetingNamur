@@ -23,15 +23,15 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testAnnexes import testAnnexes as mcta
+from Products.PloneMeeting.tests.testAnnexes import testAnnexes as pmta
 
 
-class testAnnexes(MeetingNamurTestCase, mcta):
+class testAnnexes(MeetingNamurTestCase, pmta):
     ''' '''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testAnnexes, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testAnnexes, prefix='test_pm_'))
     return suite

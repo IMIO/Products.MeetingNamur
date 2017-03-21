@@ -22,8 +22,7 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingNamur.tests.MeetingNamurTestCase import \
-    MeetingNamurTestCase
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 
 
 class testCustomMeeting(MeetingNamurTestCase):

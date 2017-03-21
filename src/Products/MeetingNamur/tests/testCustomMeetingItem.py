@@ -32,20 +32,6 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         Tests the Meeting adapted methods
     """
 
-    def _createMeetingWithItems(self):
-        '''Create a meeting with a bunch of items.'''
-        meetingDate = DateTime().strftime('%y/%m/%d %H:%M:%S')
-        meeting = self.create('Meeting', date=meetingDate)
-        item1 = self.create('MeetingItem')
-        item1.setProposingGroup('developers')
-        item2 = self.create('MeetingItem')
-        item2.setProposingGroup('vendors')
-        for item in (item1, item2):
-            self.do(item, 'propose')
-            self.do(item, 'validate')
-            self.do(item, 'present')
-        return meeting
-
     def test_GetCertifiedSignatures(self):
         '''Check that the certified signature is defined on developers group but not defined on vendors.'''
         #create an item for test
@@ -118,9 +104,8 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         '''check MeetingBudgetImpactReviewer role on an item, when a group is choosen in BudgetInfosAdviser
         and state is, at least "itemFrozen". Retrieve role for other grp_budgetimpactreviewers
         '''
-        self.changeUser('admin')
-        m = self._createMeetingWithItems()
         self.changeUser('pmManager')
+        m = self._createMeetingWithItems()
         self.do(m, 'freeze')
         item = m.getItems()[0]
         #no MeetingBudgetImpactReviewer in rôle

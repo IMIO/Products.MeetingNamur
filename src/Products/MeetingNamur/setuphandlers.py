@@ -15,7 +15,7 @@ __docformat__ = 'plaintext'
 
 import os
 import logging
-logger = logging.getLogger('MeetingCommunes: setuphandlers')
+logger = logging.getLogger('MeetingNamur: setuphandlers')
 from plone import api
 from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.MeetingNamur.config import PROJECTNAME

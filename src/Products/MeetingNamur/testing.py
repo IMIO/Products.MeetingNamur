@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from plone.testing import z2, zca
-from plone.app.testing import PloneWithPackageLayer
 from plone.app.testing import FunctionalTesting
+from plone.app.testing import PloneWithPackageLayer
 import Products.MeetingNamur
-from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
 
 
 MNA_ZCML = zca.ZCMLSandbox(filename="testing.zcml",
@@ -26,12 +25,3 @@ MNA_TESTING_PROFILE = PloneWithPackageLayer(
 
 MNA_TESTING_PROFILE_FUNCTIONAL = FunctionalTesting(
     bases=(MNA_TESTING_PROFILE,), name="MNA_TESTING_PROFILE_FUNCTIONAL")
-
-MNA_TESTING_ROBOT = FunctionalTesting(
-    bases=(
-        MNA_TESTING_PROFILE,
-        REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE,
-    ),
-    name="MNA_TESTING_ROBOT",
-)

@@ -23,7 +23,7 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testValidators import testValidators as pmtv
+from Products.PloneMeeting.tests.testValidators import testValidators as pmtv
 
 
 class testValidators(MeetingNamurTestCase, pmtv):
@@ -35,5 +35,5 @@ class testValidators(MeetingNamurTestCase, pmtv):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testValidators, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testValidators, prefix='test_pm_'))
     return suite

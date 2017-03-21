@@ -23,12 +23,12 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
+from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as pmtmi
 from Products.statusmessages.interfaces import IStatusMessage
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
 
 
-class testMeetingItem(MeetingNamurTestCase, mctmi):
+class testMeetingItem(MeetingNamurTestCase, pmtmi):
     """
         Tests the MeetingItem class methods.
     """
@@ -113,5 +113,5 @@ def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     # launch only tests prefixed by 'test_mc_' to avoid launching the tests coming from mctmi
-    suite.addTest(makeSuite(testMeetingItem, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testMeetingItem, prefix='test_pm_'))
     return suite

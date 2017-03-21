@@ -21,10 +21,10 @@
 #
 
 from DateTime import DateTime
-from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
+from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
 
 
-class MeetingNamurTestingHelpers(MeetingCommunesTestingHelpers):
+class MeetingNamurTestingHelpers(PloneMeetingTestingHelpers):
     '''Override some values of PloneMeetingTestingHelpers.'''
 
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('propose',)
@@ -88,6 +88,10 @@ class MeetingNamurTestingHelpers(MeetingCommunesTestingHelpers):
                               'validated': 'validated',
                               'presented': 'presented'}
 
+    # in which state an item must be after an particular meeting transition?
+    ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {'publish_decisions': 'accepted',
+                                              'close': 'accepted'}
+
     TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = ('freeze', 'decide', )
 
     def _createMeetingWithItems(self, withItems=True, meetingDate=DateTime()):
@@ -98,7 +102,7 @@ class MeetingNamurTestingHelpers(MeetingCommunesTestingHelpers):
         currentMember = self.portal.portal_membership.getAuthenticatedMember()
         currentMemberRoles = currentMember.getRoles()
         setRoles(self.portal, currentMember.getId(), currentMemberRoles + ['Manager', ])
-        meeting = MeetingCommunesTestingHelpers._createMeetingWithItems(self,
+        meeting = PloneMeetingTestingHelpers._createMeetingWithItems(self,
                                                                         withItems=withItems,
                                                                         meetingDate=meetingDate)
         setRoles(self.portal, currentMember.getId(), currentMemberRoles)

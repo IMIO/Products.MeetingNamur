@@ -23,17 +23,16 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testCustomWorkflows import testCustomWorkflows as mctcw
 
 
-class testCustomWorkflows(MeetingNamurTestCase, mctcw):
+class testCustomWorkflows(MeetingNamurTestCase):
     ''' '''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testCustomWorkflows, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testCustomWorkflows, prefix='test_pm_'))
     return suite
 
 

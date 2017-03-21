@@ -26,7 +26,6 @@ setup(name='Products.MeetingNamur',
                 'plone.app.robotframework',
                 'Products.CMFPlacefulWorkflow',
                 'zope.testing',
-                'Products.MeetingCommunes',
                 'Products.PloneTestCase'],
           templates=['Genshi', ]),
       install_requires=[

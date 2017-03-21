@@ -22,12 +22,11 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingNamur.tests.MeetingNamurTestCase import \
-    MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testPortlets import testPortlets as mctp
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.PloneMeeting.tests.testPortlets import testPortlets as pmtp
 
 
-class testPortlets(MeetingNamurTestCase, mctp):
+class testPortlets(MeetingNamurTestCase, pmtp):
     '''Tests the portlets methods.'''
 
     def test_subproduct_call_CreateItemFromTemplate(self):
@@ -70,5 +69,5 @@ class testPortlets(MeetingNamurTestCase, mctp):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testPortlets, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testPortlets, prefix='test_pm_'))
     return suite

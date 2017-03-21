@@ -27,16 +27,18 @@ from DateTime import DateTime
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
+from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as pmtwfa
 
 
-class testWFAdaptations(MeetingNamurTestCase, mctwfa):
+class testWFAdaptations(MeetingNamurTestCase, pmtwfa):
     '''Tests various aspects of votes management.'''
 
     def test_subproduct_call_WFA_availableWFAdaptations(self):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
         self.assertEquals(set(self.meetingConfig.listWorkflowAdaptations()),
-                          set(('return_to_proposing_group',)))
+                          set(('return_to_proposing_group',
+                               'return_to_proposing_group_with_last_validation',
+                               'return_to_proposing_group_with_all_validations')))
 
     def test_subproduct_call_WFA_no_publication(self):
         '''No sense...'''
@@ -88,7 +90,7 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
 
     def test_subproduct_call_WFA_return_to_proposing_group(self):
         '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        mctwfa.test_pm_WFA_return_to_proposing_group(self)
+        pmtwfa.test_pm_WFA_return_to_proposing_group(self)
 
     def _return_to_proposing_group_inactive(self):
         '''Tests while 'return_to_proposing_group' wfAdaptation is inactive.'''

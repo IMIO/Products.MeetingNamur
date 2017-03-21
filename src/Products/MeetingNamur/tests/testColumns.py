@@ -23,15 +23,14 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testColumns import testColumns as mctc
 
 
-class testColumns(MeetingNamurTestCase, mctc):
+class testColumns(MeetingNamurTestCase):
     ''' '''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testColumns, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testColumns, prefix='test_pm_'))
     return suite

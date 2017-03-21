@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testVotes import testVotes as mctv
+from Products.PloneMeeting.tests.testVotes import testVotes as pmtv
 
 
-class testVotes(MeetingNamurTestCase, mctv):
+class testVotes(MeetingNamurTestCase, pmtv):
     '''Tests various aspects of votes management.
        Advices are enabled for PloneMeeting Assembly, not for PloneGov Assembly.
        By default, vote are encoded by 'theVoterHimself'.'''
@@ -35,5 +35,5 @@ class testVotes(MeetingNamurTestCase, mctv):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testVotes, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testVotes, prefix='test_pm_'))
     return suite
