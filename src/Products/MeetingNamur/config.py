@@ -27,8 +27,9 @@ from Products.CMFCore.permissions import setDefaultRoles
 PROJECTNAME = "MeetingNamur"
 
 # Permissions
-WriteDecision = 'MeetingNamur: Write description'
-setDefaultRoles(WriteDecision, ('Manager',))
+WriteDescription = 'MeetingNamur: Write description'
+#  for test, we must give writeDescription for Member
+setDefaultRoles(WriteDescription, ('Manager', 'Member'))
 WriteCertified = 'MeetingNamur: Write certified signatures'
 setDefaultRoles(WriteCertified, ('Manager',))
 

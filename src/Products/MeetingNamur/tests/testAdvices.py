@@ -32,6 +32,42 @@ class testAdvices(MeetingNamurTestCase, pmta):
     '''Tests various aspects of advices management.
        Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
 
+    def test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self, ):
+        '''Test that if an item is set back to a state the user that set it back can
+           not view anymore, and that the advice turn from giveable to not giveable anymore,
+           transitions triggered on advice that will 'giveAdvice'.'''
+        cfg = self.meetingConfig
+        # advice can be given when item is validated
+        cfg.setItemAdviceStates((self.WF_STATE_NAME_MAPPINGS['validated'], ))
+        cfg.setItemAdviceEditStates((self.WF_STATE_NAME_MAPPINGS['validated'], ))
+        cfg.setItemAdviceViewStates((self.WF_STATE_NAME_MAPPINGS['validated'], ))
+        # create an item as vendors and give an advice as vendors on it
+        # it is viewable by MeetingManager when validated
+        self.changeUser('pmCreator2')
+        item = self.create('MeetingItem')
+        item.setOptionalAdvisers(('vendors', ))
+        # validate the item and advice it
+        self.validateItem(item)
+        self.changeUser('pmReviewer2')
+        createContentInContainer(item,
+                                 'meetingadvice',
+                                 **{'advice_group': 'vendors',
+                                    'advice_type': u'positive',
+                                    'advice_comment': RichTextValue(u'My comment')})
+        # make sure if a MeetingManager send the item back to 'proposed' it works...
+        self.changeUser('pmManager')
+        # do the back transition that send the item back to 'itemcreated'
+        itemWF = self.wfTool.getWorkflowsFor(item)[0]
+        backToCreatedTr = None
+        for tr in self.transitions(item):
+            # get the transition that ends to 'itemcreated'
+            transition = itemWF.transitions[tr]
+            if transition.new_state_id == self.WF_STATE_NAME_MAPPINGS['itemcreated']:
+                backToCreatedTr = tr
+                break
+        # this will work...
+        self.do(item, backToCreatedTr)
+
     def test_subproduct_call_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self, ):
         '''Run the test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState from PloneMeeting.'''
         '''Test that if an item is set back to a state the user that set it back can

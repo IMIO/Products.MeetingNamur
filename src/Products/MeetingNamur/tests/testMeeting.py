@@ -36,7 +36,7 @@ class testMeeting(MeetingNamurTestCase, pmtm):
             Give temporary manager right to pmManager.
         """
         self.portal.acl_users.portal_role_manager.assignRoleToPrincipal('Manager', 'pmManager')
-        mctm.test_pm_RemoveOrDeleteLinkedItem(self)
+        pmtm.test_pm_RemoveOrDeleteLinkedItem(self)
 
 
 def test_suite():

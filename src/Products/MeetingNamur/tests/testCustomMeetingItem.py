@@ -34,21 +34,20 @@ class testCustomMeetingItem(MeetingNamurTestCase):
 
     def test_GetCertifiedSignatures(self):
         '''Check that the certified signature is defined on developers group but not defined on vendors.'''
-        #create an item for test
-        self.changeUser('admin')
-        meetingDate = DateTime('2008/06/12 08:00:00')
-        self.create('Meeting', date=meetingDate)
-        #create items
+        # create a meeting for test
+        self.changeUser('pmManager')
+        meeting = self.create('Meeting', date=DateTime() + 1)
+        # create items
         self.changeUser('pmCreator1')
         i1 = self.create('MeetingItem')
         i1.setProposingGroup('vendors')
         self.do(i1, 'propose')
-        self.changeUser('pmReviewer1')
+        self.changeUser('pmReviewer2')
         self.do(i1, 'validate')
         self.changeUser('pmManager')
         self.do(i1, 'present')
         res = i1.getCertifiedSignatures()
-        #no signatures defined for vendors group, get meetingconfig signature
+        # no signatures defined for vendors group, get meetingconfig signature
         res = i1.getCertifiedSignatures()
         self.assertEquals(res, [u'Le Secr\xe9taire communal', u'Mr Vraiment Pr\xe9sent', u'Le Bourgmestre', u'Mr Charles Exemple'])
         self.changeUser('pmCreator1')
@@ -60,17 +59,13 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         self.changeUser('pmManager')
         self.do(i2, 'present')
         res = i2.getCertifiedSignatures()
-        #signatures defined for developers group, get it
+        # signatures defined for developers group, get it
         res = i2.getCertifiedSignatures()
         self.assertEquals(res, [u'Le DG ff', u'Remplaçant', u'Le 1er échevin', u'Remplaçant 2'])
 
     def test_GetEchevinsForProposingGroup(self):
         '''Check a meetingItem for developers group return an echevin (the Same group in our case)
            and a meetingItem for vendors return no echevin.'''
-        #create an item for test
-        self.changeUser('admin')
-        meetingDate = DateTime('2008/06/12 08:00:00')
-        self.create('Meeting', date=meetingDate)
         #create items
         self.changeUser('pmCreator1')
         i1 = self.create('MeetingItem')
@@ -143,7 +138,7 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         item = self.create('MeetingItem')
         item.setDecision('<p>A decision</p>')
         self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime())
+        meeting = self._createMeetingWithItems(withItems=False, meetingDate=DateTime() + 1)
         # define an assembly on the meeting
         meeting.setAssembly('Meeting assembly')
         meeting.setSignatures('Meeting signatures')
