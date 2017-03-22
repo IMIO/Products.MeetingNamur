@@ -695,7 +695,7 @@ class CustomMeetingItem(MeetingItem):
         tool = getToolByName(self, 'portal_plonemeeting')
         item = self.getSelf()
         ignoreDuplicateButton = item.queryState() == 'pre_accepted'
-        if self.isDefinedInTool() or not tool.userIsAmong('creators') \
+        if self.isDefinedInTool() or not tool.userIsAmong(['creators']) \
            or not self.isPrivacyViewable() or ignoreDuplicateButton:
             return False
         return True
@@ -881,7 +881,7 @@ class CustomMeetingConfig(MeetingConfig):
                         'sort_on': u'created',
                         'sort_reversed': True,
                         'showNumberOfItems': False,
-                        'tal_condition': "python: not tool.userIsAmong('reviewers')",
+                        'tal_condition': "python: not tool.userIsAmong(['reviewers'])",
                         'roles_bypassing_talcondition': ['Manager', ]
                     }
                  ),
