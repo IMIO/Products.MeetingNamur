@@ -23,8 +23,11 @@
 #
 
 from DateTime import DateTime
+from Products.CMFCore.permissions import DeleteObjects
 
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
+from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
+from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as pmtwfa
@@ -33,42 +36,42 @@ from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as p
 class testWFAdaptations(MeetingNamurTestCase, pmtwfa):
     '''Tests various aspects of votes management.'''
 
-    def test_subproduct_call_WFA_availableWFAdaptations(self):
+    def test_pm_WFA_availableWFAdaptations(self):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
         self.assertEquals(set(self.meetingConfig.listWorkflowAdaptations()),
                           set(('return_to_proposing_group',
                                'return_to_proposing_group_with_last_validation',
                                'return_to_proposing_group_with_all_validations')))
 
-    def test_subproduct_call_WFA_no_publication(self):
+    def test_pm_WFA_no_publication(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_no_proposal(self):
+    def test_pm_WFA_no_proposal(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_pre_validation(self):
+    def test_pm_WFA_pre_validation(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_items_come_validated(self):
+    def test_pm_WFA_items_come_validated(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_only_creator_may_delete(self):
+    def test_pm_WFA_only_creator_may_delete(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_no_global_observation(self):
+    def test_pm_WFA_no_global_observation(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_everyone_reads_all(self):
+    def test_pm_WFA_everyone_reads_all(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_creator_edits_unless_closed(self):
+    def test_pm_WFA_creator_edits_unless_closed(self):
         '''No sense...'''
         pass
 
@@ -76,19 +79,27 @@ class testWFAdaptations(MeetingNamurTestCase, pmtwfa):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_creator_initiated_decisions(self):
+    def test_pm_WFA_creator_initiated_decisions(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_local_meeting_managers(self):
+    def test_pm_WFA_local_meeting_managers(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_return_to_proposing_group_with_hide_decisions_when_under_writing(self):
+    def test_pm_WFA_return_to_proposing_group_with_hide_decisions_when_under_writing(self):
         '''No sense...'''
         pass
 
-    def test_subproduct_call_WFA_return_to_proposing_group(self):
+    def test_pm_WFA_return_to_proposing_group_with_all_validations(self):
+        '''Not used yet...'''
+        pass
+
+    def test_pm_WFA_return_to_proposing_group_with_last_validation(self):
+        '''Not used yet...'''
+        pass
+
+    def test_pm_WFA_return_to_proposing_group(self):
         '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
         pmtwfa.test_pm_WFA_return_to_proposing_group(self)
 
@@ -108,11 +119,12 @@ class testWFAdaptations(MeetingNamurTestCase, pmtwfa):
            RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS defined value.
            In our use case, just test that permissions of 'returned_to_proposing_group' state
            are the one defined in RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS.'''
-        itemWF = getattr(self.wfTool, self.meetingConfig.getItemWorkflow())
+        cfg = self.meetingConfig
+        itemWF = self.wfTool.getWorkflowsFor(cfg.getItemTypeName())[0]
         returned_to_proposing_group_state_permissions = itemWF.states['returned_to_proposing_group'].permission_roles
         for permission in returned_to_proposing_group_state_permissions:
             self.assertEquals(returned_to_proposing_group_state_permissions[permission],
-                              RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS[permission])
+                              RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS[cfg.getItemWorkflow()][permission])
 
     def _return_to_proposing_group_active_wf_functionality(self):
         '''Tests the workflow functionality of using the 'return_to_proposing_group' wfAdaptation.
@@ -160,8 +172,48 @@ class testWFAdaptations(MeetingNamurTestCase, pmtwfa):
         self.do(meeting, 'freeze')
 
 
+def _return_to_proposing_group_with_validation_active_state_to_clone(self):
+    '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
+       RETURN_TO_PROPOSING_GROUP_VALIDATING_STATES defined value.'''
+    # make sure permissions of the new state correspond to permissions of the state
+    # defined in the model.adaptations.RETURN_TO_PROPOSING_GROUP_WITH_LAST_VALIDATION_STATE_TO_CLONE item state name
+    # just take care that for new state, MeetingManager have been added to every permissions
+    # this has only sense if using it, aka no RETURN_TO_PROPOSING_GROUP_WITH_LAST_VALIDATION_CUSTOM_PERMISSIONS
+    # this could be the case if a subproduct (MeetingXXX) calls this test...
+    itemWF = self.wfTool.getWorkflowsFor(self.meetingConfig.getItemTypeName())[0]
+    cfgItemWFId = self.meetingConfig.getItemWorkflow()
+
+    state_to_clone_ids = (RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE.get(cfgItemWFId).split('.')[1],) + \
+                          RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
+    for state_to_clone_id in state_to_clone_ids:
+        cloned_state_permissions = itemWF.states[state_to_clone_id].permission_roles
+        returned_state = 'returned_to_proposing_group'
+        if state_to_clone_id != 'itemcreated':
+            returned_state += '_{0}'.format(state_to_clone_id)
+        new_state_permissions = itemWF.states[returned_state].permission_roles
+        for permission in cloned_state_permissions:
+            cloned_state_permission_with_meetingmanager = []
+            acquired = isinstance(cloned_state_permissions[permission], list) and True or False
+            if not 'MeetingManager' in cloned_state_permissions[permission]:
+                cloned_state_permission_with_meetingmanager = list(cloned_state_permissions[permission])
+                cloned_state_permission_with_meetingmanager.append('MeetingManager')
+            else:
+                cloned_state_permission_with_meetingmanager = list(cloned_state_permissions[permission])
+
+            # 'Delete objects' is only given to ['Manager', ]
+            if permission == DeleteObjects:
+                cloned_state_permission_with_meetingmanager = ['Manager', ]
+            if not acquired:
+                cloned_state_permission_with_meetingmanager = tuple(cloned_state_permission_with_meetingmanager)
+            self.assertEquals(cloned_state_permission_with_meetingmanager,
+                              new_state_permissions[permission])
+            # Permission acquisition is also cloned
+            self.assertEquals(
+                itemWF.states[state_to_clone_id].getPermissionInfo(permission)['acquired'],
+                itemWF.states[returned_state].getPermissionInfo(permission)['acquired'])
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testWFAdaptations, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testWFAdaptations, prefix='test_pm_'))
     return suite

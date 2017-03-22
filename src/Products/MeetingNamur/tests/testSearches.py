@@ -29,6 +29,13 @@ from Products.PloneMeeting.tests.testSearches import testSearches as pmts
 class testSearches(MeetingNamurTestCase, pmts):
     """Test searches."""
 
+    def test_pm_SearchItemsToCorrectToValidateHighestHierarchicLevel(self):
+        '''Not used yet...'''
+        pass
+
+    def test_pm_SearchItemsToCorrectToValidateOfEveryReviewerGroups(self):
+        '''Not used yet...'''
+        pass
 
 def test_suite():
     from unittest import TestSuite, makeSuite

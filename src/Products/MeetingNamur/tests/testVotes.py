@@ -31,6 +31,20 @@ class testVotes(MeetingNamurTestCase, pmtv):
        Advices are enabled for PloneMeeting Assembly, not for PloneGov Assembly.
        By default, vote are encoded by 'theVoterHimself'.'''
 
+    def test_pm_MayConsultVotes(self):
+        ''' Currently, Votes are not used'''
+
+
+    def test_pm_MayEditVotes(self):
+        ''' Currently, Votes are not used'''
+
+
+    def test_pm_OnSaveItemPeopleInfos(self):
+        ''' Currently, Votes are not used'''
+
+    def test_pm_SecretVotes(self):
+        ''' Currently, Votes are not used'''
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

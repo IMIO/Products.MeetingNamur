@@ -305,8 +305,8 @@ collegeMeeting.annexTypes = [financialAnalysis, budgetAnalysisCfg1, overheadAnal
                              itemAnnex, decisionAnnex, marketingAnalysis,
                              adviceAnnex, adviceLegalAnalysis, meetingAnnex]
 collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
-collegeMeeting.itemWorkflow = 'meetingitemnamur_workflow'
-collegeMeeting.meetingWorkflow = 'meetingnamur_workflow'
+collegeMeeting.itemWorkflow = 'meetingitemnamurcollege_workflow'
+collegeMeeting.meetingWorkflow = 'meetingnamurcollege_workflow'
 collegeMeeting.itemConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowConditions'
 collegeMeeting.itemActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowActions'
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowConditions'
@@ -393,8 +393,8 @@ councilMeeting.shortName = 'Council'
 councilMeeting.annexTypes = [financialAnalysis, legalAnalysis,
                              budgetAnalysisCfg2, itemAnnex, decisionAnnex,
                              adviceAnnex, adviceLegalAnalysis, meetingAnnex]
-councilMeeting.itemWorkflow = 'meetingitemnamur_workflow'
-councilMeeting.meetingWorkflow = 'meetingnamur_workflow'
+councilMeeting.itemWorkflow = 'meetingitemnamurcouncil_workflow'
+councilMeeting.meetingWorkflow = 'meetingnamurcouncil_workflow'
 councilMeeting.itemConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowConditions'
 councilMeeting.itemActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowActions'
 councilMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowConditions'

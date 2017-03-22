@@ -43,5 +43,8 @@ DEPENDENCIES = []
 # override in custom configuration
 PRODUCT_DEPENDENCIES = []
 
+# the id of the collection querying finance advices
+FINANCE_ADVICES_COLLECTION_ID = 'searchitemswithfinanceadvice'
+
 STYLESHEETS = [{'id': 'meetingnamur.css',
                 'title': 'MeetingNamur CSS styles'}]

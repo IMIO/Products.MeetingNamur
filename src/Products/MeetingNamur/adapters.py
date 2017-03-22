@@ -14,7 +14,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License
+# You should have received a copy of the GNU General Public LicensePloneMeeting: Read budget infos
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
@@ -51,6 +51,7 @@ from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
 from Products.PloneMeeting.utils import sendMail
 from Products.PloneMeeting.utils import sendMailIfRelevant
 
+from Products.MeetingNamur.config import FINANCE_ADVICES_COLLECTION_ID
 from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowConditions
 from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowActions
 from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowConditions
@@ -69,21 +70,15 @@ customWfAdaptations = ('return_to_proposing_group', 'return_to_proposing_group_w
 MeetingConfig.wfAdaptations = customWfAdaptations
 originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
-RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
+RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemnamur_workflow':
     # view permissions
-    'Access contents information':
+    {'Access contents information':
     ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     'View':
     ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     'PloneMeeting: Read decision':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
-     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
-    'PloneMeeting: Read optional advisers':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
-     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
-    'PloneMeeting: Read decision annex':
     ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     'PloneMeeting: Read item observations':
@@ -103,31 +98,28 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
     'PloneMeeting: Add annex':
     ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
-    'PloneMeeting: Add MeetingFile':
-    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
-    'PloneMeeting: Write decision annex':
-    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
-    'PloneMeeting: Write optional advisers':
-    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
-    'PloneMeeting: Write optional advisers':
+    'PloneMeeting: Add annexDecision':
     ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
     'PloneMeeting: Write budget infos':
     ('Manager', 'MeetingMember', 'MeetingReviewer', 'MeetingBudgetImpactEditor', 'MeetingManager',
      'MeetingBudgetImpactReviewer', ),
     'MeetingNamur: Write description':
     ('Manager', 'MeetingMember', 'MeetingManager', 'MeetingReviewer',),
+    # MeetingManagers edit permissions
     'MeetingNamur: Write certified signatures':
     ('Manager',),
-    # MeetingManagers edit permissions
+    'PloneMeeting: Write marginal notes':
+    ('Manager',),
+    'PloneMeeting: Write item MeetingManager reserved fields':
+    ('Manager', 'MeetingManager',),
     'Delete objects':
-    ['Manager', ],
-    'PloneMeeting: Write item observations':
-    ('Manager', 'MeetingManager', ),
+    ['Manager', ],}
 }
 
 adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 
 RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {'meetingitemnamur_workflow': 'meetingitemnamur_workflow.itemcreated'}
+
 adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 
@@ -596,6 +588,18 @@ class CustomMeetingItem(MeetingItem):
     def __init__(self, item):
         self.context = item
 
+    def getFinanceAdviceId(self):
+        """ """
+        tool = api.portal.get_tool('portal_plonemeeting')
+        cfg = tool.getMeetingConfig(self.context)
+        usedFinanceGroupIds = cfg.adapted().getUsedFinanceGroupIds(self.context)
+        adviserIds = self.context.adviceIndex.keys()
+        financeAdvisersIds = set(usedFinanceGroupIds).intersection(set(adviserIds))
+        if financeAdvisersIds:
+            return list(financeAdvisersIds)[0]
+        else:
+            return None
+
     def getEchevinsForProposingGroup(self):
         '''Returns all echevins defined for the proposing group'''
         res = []
@@ -810,6 +814,50 @@ class CustomMeetingConfig(MeetingConfig):
 
     def __init__(self, item):
         self.context = item
+
+    security.declarePublic('getUsedFinanceGroupIds')
+
+    def getUsedFinanceGroupIds(self, item=None):
+        """Possible finance advisers group ids are defined on
+           the FINANCE_ADVICES_COLLECTION_ID collection."""
+        cfg = self.getSelf()
+        tool = api.portal.get_tool('portal_plonemeeting')
+        collection = getattr(cfg.searches.searches_items, FINANCE_ADVICES_COLLECTION_ID, None)
+        if not collection:
+            logger.warn(
+                "Method 'getUsedFinanceGroupIds' could not find the '{0}' collection!".format(
+                    FINANCE_ADVICES_COLLECTION_ID))
+            return []
+        # get the indexAdvisers value defined on the collection
+        # and find the relevant group, indexAdvisers form is :
+        # 'delay_real_group_id__2014-04-16.9996934488', 'real_group_id_directeur-financier'
+        # it is either a customAdviser row_id or a MeetingGroup id
+        values = [term['v'] for term in collection.getRawQuery()
+                  if term['i'] == 'indexAdvisers'][0]
+        res = []
+        for v in values:
+            rowIdOrGroupId = v.replace('delay_real_group_id__', '').replace('real_group_id__', '')
+            if hasattr(tool, rowIdOrGroupId):
+                groupId = rowIdOrGroupId
+                # append it only if not already into res and if
+                # we have no 'row_id' for this adviser in adviceIndex
+                if item and groupId not in res and \
+                   (groupId in item.adviceIndex and not item.adviceIndex[groupId]['row_id']):
+                    res.append(groupId)
+                elif not item:
+                    res.append(groupId)
+            else:
+                groupId = cfg._dataForCustomAdviserRowId(rowIdOrGroupId)['group']
+                # append it only if not already into res and if
+                # we have a 'row_id' for this adviser in adviceIndex
+                if item and groupId not in res and \
+                    (groupId in item.adviceIndex and
+                     item.adviceIndex[groupId]['row_id'] == rowIdOrGroupId):
+                    res.append(groupId)
+                elif not item:
+                    res.append(groupId)
+        # remove duplicates
+        return list(set(res))
 
     def _extraSearchesInfo(self, infos):
         """Add some specific searches."""
