@@ -26,13 +26,29 @@
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
   <genericsetup:upgradeStep
-      title="Go to MeetingNamur 4.0"
+      title="Go to MeetingNamur 4.0 (Step 1)"
       description=""
-      source="3.3.2"
-      destination="4.0"
-      handler="Products.MeetingNamur.migrations.migrate_to_4_0.migrate"
+      source="*"
+      destination="3.4"
+      handler="Products.MeetingNamur.migrations.migrate_to_4_0.migrate_step1"
       profile="Products.MeetingNamur:default" />
-  
+
+  <genericsetup:upgradeStep
+      title="Go to MeetingNamur 4.0 (Step 2)"
+      description=""
+      source="*"
+      destination="3.5"
+      handler="Products.MeetingNamur.migrations.migrate_to_4_0.migrate_step2"
+      profile="Products.MeetingNamur:default" />
+
+  <genericsetup:upgradeStep
+      title="Go to MeetingNamur 4.0 (Step 3)"
+      description=""
+      source="*"
+      destination="4.0"
+      handler="Products.MeetingNamur.migrations.migrate_to_4_0.migrate_step3"
+      profile="Products.MeetingNamur:default" />
+
   <!-- ##/code-section profiles.zcml-bottom -->
 
 </configure>

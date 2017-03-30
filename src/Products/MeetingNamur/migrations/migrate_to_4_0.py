@@ -81,27 +81,63 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             wfTool.manage_delObjects(self.wfs_to_delete)
         logger.info('Done.')
 
-    def run(self):
+    def run(self, step=None):
         # change self.profile_name that is reinstalled at the beginning of the PM migration
         self.profile_name = u'profile-Products.MeetingNamur:default'
+
         # call steps from Products.PloneMeeting
-        PMMigrate_To_4_0.run(self)
-        # now MeetingLiege specific steps
-        logger.info('Migrating to MeetingNamur 4.0...')
-        self._cleanCDLD()
-        self._migrateItemPositiveDecidedStates()
-        self._deleteUselessWorkflows()
+        PMMigrate_To_4_0.run(self, step=step)
+
+        if step == 3:
+            # now MeetingCommunes specific steps
+            logger.info('Migrating to MeetingNamur 4.0...')
+            self._cleanCDLD()
+            self._deleteUselessWorkflows()
+            self._migrateItemPositiveDecidedStates()
 
 
 # The migration function -------------------------------------------------------
 def migrate(context):
     '''This migration function:
 
-       1) Reinstall Products.MeetingNamur and execute the Products.PloneMeeting migration;
+       1) Reinstall Products.MeetingCommunes and execute the Products.PloneMeeting migration;
        2) Clean CDLD attributes;
-       3) Migrate positive decided states.
+       3) Remove useless workflows;
+       4) Migrate positive decided states.
     '''
     migrator = Migrate_To_4_0(context)
     migrator.run()
     migrator.finish()
-# ------------------------------------------------------------------------------
+
+
+def migrate_step1(context):
+    '''This migration function:
+
+       1) Reinstall Products.MeetingNamur and execute the Products.PloneMeeting migration.
+    '''
+    migrator = Migrate_To_4_0(context)
+    migrator.run(step=1)
+    migrator.finish()
+
+
+def migrate_step2(context):
+    '''This migration function:
+
+       1) Execute step2 of Products.PloneMeeting migration profile (imio.annex).
+    '''
+    migrator = Migrate_To_4_0(context)
+    migrator.run(step=2)
+    migrator.finish()
+
+
+def migrate_step3(context):
+    '''This migration function:
+
+       1) Execute step3 of Products.PloneMeeting migration profile.
+       2) Clean CDLD attributes;
+       3) Remove useless workflows;
+       4) Migrate positive decided states.
+    '''
+    migrator = Migrate_To_4_0(context)
+    migrator.run(step=3)
+    migrator.finish()
