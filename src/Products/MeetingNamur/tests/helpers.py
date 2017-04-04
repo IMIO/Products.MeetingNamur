@@ -43,15 +43,17 @@ class MeetingNamurTestingHelpers(PloneMeetingTestingHelpers):
         'itemcreated': ('backToItemFrozen',
                         'backToPresented',
                         'backToValidated',
-                        'backToItemCreated',),
+                        'backToItemCreated', ),
         'proposed': ('backToItemFrozen',
                      'backToPresented',
                      'backToValidated',
                      'backToItemCreated',
-                     'propose',),
+                     'propose', ),
         'validated': ('backToItemFrozen',
                       'backToPresented',
-                      'backToValidated',)}
+                      'backToValidated', ),
+        'presented': ('backToItemFrozen',
+                      'backToPresented', )}
 
     WF_STATE_NAME_MAPPINGS = {'itemcreated': 'itemcreated',
                               'proposed': 'proposed',
