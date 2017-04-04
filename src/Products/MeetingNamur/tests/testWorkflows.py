@@ -117,7 +117,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         self.failIf(len(self.transitions(meeting)) != 2)
         self.do(meeting, 'close')
 
-    def test_subproduct_FreezeMeeting(self):
+    def test_pm_FreezeMeeting(self):
         """
            When we freeze a meeting, every presented items will be frozen
            too and their state will be set to 'itemfrozen'.  When the meeting
@@ -153,7 +153,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
 
-    def test_subproduct_CloseMeeting(self):
+    def test_pm_CloseMeeting(self):
         """
            When we close a meeting, every items are set to accepted if they are still
            not decided...

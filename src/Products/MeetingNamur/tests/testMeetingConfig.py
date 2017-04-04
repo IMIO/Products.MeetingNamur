@@ -28,15 +28,15 @@ from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as p
 class testMeetingConfig(MeetingNamurTestCase, pmtmc):
     '''Tests the MeetingConfig class methods.'''
 
-    def test_subproduct_call_SearchItemsToValidateOfEveryReviewerLevelsAndLowerLevels(self):
+    def test_pm_SearchItemsToValidateOfEveryReviewerLevelsAndLowerLevels(self):
         '''Not sense... One validation level and prevalidation wfadaptation is not avalaible'''
         pass
 
-    def test_subproduct_call_SearchItemsToValidateOfHighestHierarchicLevel(self):
+    def test_pm_SearchItemsToValidateOfHighestHierarchicLevel(self):
         '''Not sense... One validation level and prevalidation wfadaptation is not avalaible'''
         pass
 
-    def test_subproduct_call_SearchItemsToValidateOfMyReviewerGroups(self):
+    def test_pm_SearchItemsToValidateOfMyReviewerGroups(self):
         '''Not sense... One validation level and prevalidation wfadaptation is not avalaible'''
         pass
 

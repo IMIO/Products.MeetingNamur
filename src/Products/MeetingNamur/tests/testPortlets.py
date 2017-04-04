@@ -29,7 +29,7 @@ from Products.PloneMeeting.tests.testPortlets import testPortlets as pmtp
 class testPortlets(MeetingNamurTestCase, pmtp):
     '''Tests the portlets methods.'''
 
-    def test_subproduct_call_CreateItemFromTemplate(self):
+    def test_pm_CreateItemFromTemplate(self):
         '''
           Test the createItemFromTemplate functionnality triggered from the plonemeeting portlet.
         '''

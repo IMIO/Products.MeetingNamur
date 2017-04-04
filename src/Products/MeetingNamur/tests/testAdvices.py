@@ -387,7 +387,7 @@ class testAdvices(MeetingNamurTestCase, pmta):
         h_metadata = pr.getHistoryMetadata(advice)
         self.assertEquals(h_metadata._available, [0, 1, 2, 3, 4])
 
-    def test_subproduct_call_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self, ):
+    def test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self, ):
         '''Run the test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState from PloneMeeting.'''
         '''Test that if an item is set back to a state the user that set it back can
            not view anymore, and that the advice turn from giveable to not giveable anymore,

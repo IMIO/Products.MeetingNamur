@@ -129,19 +129,6 @@ class testMeetingItem(MeetingNamurTestCase, pmtmi):
         self.assertTrue(messages[-1].message == ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR % ('decision',
                                                                                          "'some_wrong_tal_expression'"))
 
-    def test_subproduct_call_ItemStrikedAssembly(self):
-        self.test_pm_ItemStrikedAssembly()
-
-    def test_subproduct_call_Emergency(self):
-        self.test_pm_Emergency()
-
-    def test_subproduct_call_Completeness(self):
-        self.test_pm_Completeness()
-
-    def test_subproduct_call_SendItemToOtherMCManually(self):
-        self.test_pm_SendItemToOtherMCManually()
-
-
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

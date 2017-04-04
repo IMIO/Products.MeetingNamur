@@ -75,7 +75,7 @@ class testWFAdaptations(MeetingNamurTestCase, pmtwfa):
         '''No sense...'''
         pass
 
-    def test_subproduct_WFA_add_published_state(self):
+    def test_pm_WFA_add_published_state(self):
         '''No sense...'''
         pass
 
