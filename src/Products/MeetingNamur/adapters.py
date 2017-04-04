@@ -867,43 +867,45 @@ class CustomMeetingConfig(MeetingConfig):
             [
                 # Items in state 'proposed'
                 ('searchproposeditems',
-                    {
-                        'subFolderId': 'searches_items',
-                        'query':
-                        [
-                            {'i': 'portal_type',
-                             'o': 'plone.app.querystring.operation.selection.is',
-                             'v': [itemType, ]},
-                            {'i': 'review_state',
-                             'o': 'plone.app.querystring.operation.selection.is',
-                             'v': ['proposed']}
-                        ],
-                        'sort_on': u'created',
-                        'sort_reversed': True,
-                        'showNumberOfItems': False,
-                        'tal_condition': "python: not tool.userIsAmong(['reviewers'])",
-                        'roles_bypassing_talcondition': ['Manager', ]
-                    }
+                 {
+                     'subFolderId': 'searches_items',
+                     'active': True,
+                     'query':
+                         [
+                             {'i': 'portal_type',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': [itemType, ]},
+                             {'i': 'review_state',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['proposed']}
+                         ],
+                     'sort_on': u'created',
+                     'sort_reversed': True,
+                     'showNumberOfItems': False,
+                     'tal_condition': "python: not tool.userIsAmong(['reviewers'])",
+                     'roles_bypassing_talcondition': ['Manager', ]
+                 }
                  ),
                 # Items in state 'validated'
                 ('searchvalidateditems',
-                    {
-                        'subFolderId': 'searches_items',
-                        'query':
-                        [
-                            {'i': 'portal_type',
-                             'o': 'plone.app.querystring.operation.selection.is',
-                             'v': [itemType, ]},
-                            {'i': 'review_state',
-                             'o': 'plone.app.querystring.operation.selection.is',
-                             'v': ['validated']}
-                        ],
-                        'sort_on': u'created',
-                        'sort_reversed': True,
-                        'showNumberOfItems': False,
-                        'tal_condition': "",
-                        'roles_bypassing_talcondition': ['Manager', ]
-                    }
+                 {
+                     'subFolderId': 'searches_items',
+                     'active': True,
+                     'query':
+                         [
+                             {'i': 'portal_type',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': [itemType, ]},
+                             {'i': 'review_state',
+                              'o': 'plone.app.querystring.operation.selection.is',
+                              'v': ['validated']}
+                         ],
+                     'sort_on': u'created',
+                     'sort_reversed': True,
+                     'showNumberOfItems': False,
+                     'tal_condition': "",
+                     'roles_bypassing_talcondition': ['Manager', ]
+                 }
                  ),
             ]
         )
