@@ -19,4 +19,9 @@
         name="document_generation_helper_view"
      />
 
+    <!-- IPrettyLink for MeetingItem -->
+    <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+             factory=".adapters.MLItemPrettyLinkAdapter"
+             provides="imio.prettylink.interfaces.IPrettyLink" />
+
 </configure>

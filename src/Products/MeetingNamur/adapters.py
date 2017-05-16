@@ -25,6 +25,7 @@ from AccessControl import ClassSecurityInfo
 from collections import OrderedDict
 from Globals import InitializeClass
 from zope.interface import implements
+from zope.i18n import translate
 
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
@@ -33,6 +34,7 @@ from Products.Archetypes.atapi import DisplayList
 from plone import api
 
 from imio.helpers.xhtml import xhtmlContentIsEmpty
+from Products.PloneMeeting.adapters import ItemPrettyLinkAdapter
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.interfaces import IMeetingGroupCustom
@@ -51,6 +53,7 @@ from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
 from Products.PloneMeeting.utils import sendMail
 from Products.PloneMeeting.utils import sendMailIfRelevant
 
+from Products.MeetingNamur import logger
 from Products.MeetingNamur.config import FINANCE_ADVICES_COLLECTION_ID
 from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowConditions
 from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowActions
@@ -657,19 +660,6 @@ class CustomMeetingItem(MeetingItem):
         #adapt MeetingBudgetImpactReviewerRole if needed
         item.adapted().giveMeetingBudgetImpactReviewerRole()
 
-    security.declarePublic('getIcons')
-
-    def getIcons(self, inMeeting, meeting):
-        '''Check docstring in PloneMeeting interfaces.py.'''
-        item = self.getSelf()
-        # Default PM item icons
-        res = MeetingItem.getIcons(item, inMeeting, meeting)
-        # Add our icons for accepted_but_modified and pre_accepted
-        itemState = item.queryState()
-        if item.getIsConfidentialItem():
-            res.append(('isConfidentialYes.png', 'isConfidentialYes'))
-        return res
-
     def _initDecisionFieldIfEmpty(self):
         '''
           If decision field is empty, it will be initialized
@@ -1195,3 +1185,27 @@ InitializeClass(MeetingItemNamurWorkflowActions)
 InitializeClass(MeetingItemNamurWorkflowConditions)
 InitializeClass(CustomToolPloneMeeting)
 # ------------------------------------------------------------------------------
+
+class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
+    """
+      Override to take into account MeetingLiege use cases...
+    """
+
+    def _leadingIcons(self):
+        """
+          Manage icons to display before the icons managed by PrettyLink._icons.
+        """
+        # Default PM item icons
+        icons = super(MLItemPrettyLinkAdapter, self)._leadingIcons()
+
+        if self.context.isDefinedInTool():
+            return icons
+
+        # add an icon if item is confidential
+        if self.context.getIsConfidentialItem():
+            icons.append(('isConfidentialYes.png',
+                          translate('isConfidentialYes',
+                                    domain="PloneMeeting",
+                                    context=self.request)))
+        return icons
+
