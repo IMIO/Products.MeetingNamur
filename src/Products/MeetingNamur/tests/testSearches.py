@@ -37,6 +37,11 @@ class testSearches(MeetingNamurTestCase, pmts):
         '''Not used yet...'''
         pass
 
+    def test_pm_SearchItemsToValidateOfHighestHierarchicLevel(selfself):
+        """Not sense"""
+        pass
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

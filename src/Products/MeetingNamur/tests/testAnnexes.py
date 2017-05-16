@@ -24,8 +24,13 @@
 
 from AccessControl import Unauthorized
 from DateTime import DateTime
+
+from imio.actionspanel.interfaces import IContentDeletable
+from Products.CMFCore.permissions import DeleteObjects
+
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.PloneMeeting.tests.testAnnexes import testAnnexes as pmta
+
 
 
 class testAnnexes(MeetingNamurTestCase, pmta):
@@ -63,6 +68,10 @@ class testAnnexes(MeetingNamurTestCase, pmta):
         decisionAnnex2 = self.addAnnex(item, relatedTo='item_decision')
         self.changeUser('pmCreator1b')
         self.assertRaises(Unauthorized, item.restrictedTraverse('@@delete_givenuid'), decisionAnnex2.UID())
+
+    def test_pm_AnnexesDeletableByItemEditor(self):
+        """annex/annexDecision may be deleted if user may edit the item."""
+        # not sense
 
 
 def test_suite():
