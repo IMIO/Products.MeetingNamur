@@ -179,9 +179,7 @@ class testWorkflows(MeetingNamurTestCase, pmtw):
         item7 = self.create('MeetingItem')  # id=o8
         item7.setProposingGroup('vendors')
         for item in (item1, item2, item3, item4, item5, item6, item7):
-            self.do(item, 'propose')
-            self.do(item, 'validate')
-            self.do(item, 'present')
+            self.presentItem(item)
         #we freeze the meeting
         self.do(meeting, 'freeze')
         #a MeetingManager can put the item back to presented

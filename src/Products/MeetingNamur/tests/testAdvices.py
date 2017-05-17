@@ -22,25 +22,28 @@
 # 02110-1301, USA.
 #
 
+from AccessControl import Unauthorized
 from datetime import datetime
 from DateTime import DateTime
+from plone import api
+from plone.dexterity.utils import createContentInContainer
+from plone.app.textfield.value import RichTextValue
+from Products.CMFCore.permissions import View
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.PloneMeeting.tests.testAdvices import testAdvices as pmta
-from plone.app.textfield.value import RichTextValue
-from plone.dexterity.utils import createContentInContainer
 from zope.event import notify
-from plone import api
 from zope.lifecycleevent import ObjectModifiedEvent
+from zope.schema.interfaces import RequiredMissing
 
 
 class testAdvices(MeetingNamurTestCase, pmta):
-    '''Tests various aspects of advices management.
-       Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
+    """Tests various aspects of advices management.
+       Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly."""
 
     def test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self, ):
-        '''Test that if an item is set back to a state the user that set it back can
+        """Test that if an item is set back to a state the user that set it back can
            not view anymore, and that the advice turn from giveable to not giveable anymore,
-           transitions triggered on advice that will 'giveAdvice'.'''
+           transitions triggered on advice that will 'giveAdvice'."""
         cfg = self.meetingConfig
         # advice can be given when item is validated
         cfg.setItemAdviceStates((self.WF_STATE_NAME_MAPPINGS['validated'], ))
@@ -74,9 +77,9 @@ class testAdvices(MeetingNamurTestCase, pmta):
         self.do(item, backToCreatedTr)
 
     def test_pm_DelayStartedStoppedOnWithKeepAccessToItemWhenAdviceIsGiven(self):
-        '''Same has 'test_pm_DelayStartedStoppedOn' but when
+        """Same has 'test_pm_DelayStartedStoppedOn' but when
            MeetingConfig.keepAccessToItemWhenAdviceIsGiven is True.
-        '''
+        """
         self.meetingConfig.setKeepAccessToItemWhenAdviceIsGiven(True)
         self._checkDelayStartedStoppedOn()
 
@@ -387,33 +390,127 @@ class testAdvices(MeetingNamurTestCase, pmta):
         h_metadata = pr.getHistoryMetadata(advice)
         self.assertEquals(h_metadata._available, [0, 1, 2, 3, 4])
 
-    def test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self, ):
-        '''Run the test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState from PloneMeeting.'''
-        '''Test that if an item is set back to a state the user that set it back can
-           not view anymore, and that the advice turn from giveable to not giveable anymore,
-           transitions triggered on advice that will 'giveAdvice'.'''
-        # advice can be given when item is validated
-        self.meetingConfig.setItemAdviceStates((self.WF_STATE_NAME_MAPPINGS['validated'], ))
-        self.meetingConfig.setItemAdviceEditStates((self.WF_STATE_NAME_MAPPINGS['validated'], ))
-        self.meetingConfig.setItemAdviceViewStates((self.WF_STATE_NAME_MAPPINGS['validated'], ))
-        # create an item as vendors and give an advice as vendors on it
-        # it is viewable by MeetingManager when validated
-        self.changeUser('pmCreator2')
-        item = self.create('MeetingItem')
-        item.setOptionalAdvisers(('vendors', ))
-        # validate the item and advice it
-        self.validateItem(item)
+    def test_pm_AddEditDeleteAdvices(self):
+        """This test the MeetingItem.getAdvicesGroupsInfosForUser method.
+           MeetingItem.getAdvicesGroupsInfosForUser returns 2 lists : first with addable advices and
+           the second with editable/deletable advices."""
+        # creator for group 'developers'
+        self.changeUser('pmCreator1')
+        # create an item and ask the advice of group 'vendors'
+        data = {
+            'title': 'Item to advice',
+            'category': 'maintenance'
+        }
+        item1 = self.create('MeetingItem', **data)
+        item1.setOptionalAdvisers(('vendors',))
+        item1.at_post_edit_script()
+        # 'pmCreator1' has no addable nor editable advice to give
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], []))
         self.changeUser('pmReviewer2')
-        createContentInContainer(item,
-                                 'meetingadvice',
-                                 **{'advice_group': 'vendors',
-                                    'advice_type': u'positive',
-                                    'advice_comment': RichTextValue(u'My comment')})
-        # make sure if a MeetingManager send the item back to 'created' it works...
+        self.failIf(self.hasPermission(View, item1))
+        self.changeUser('pmCreator1')
+        self.proposeItem(item1)
+        # a user able to View the item can not add an advice, even if he tries...
+        self.assertRaises(Unauthorized,
+                          createContentInContainer,
+                          item1,
+                          'meetingadvice')
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], []))
+        self.changeUser('pmReviewer2')
+        # 'pmReviewer2' has one advice to give for 'vendors' and no advice to edit
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([('vendors', u'Vendors')], []))
+        self.assertEquals(item1.hasAdvices(), False)
+        # fields 'advice_type' and 'advice_group' are mandatory
+        form = item1.restrictedTraverse('++add++meetingadvice').form_instance
+        self.request['PUBLISHED'] = form
+        form.update()
+        errors = form.extractData()[1]
+        self.assertEquals(errors[0].error, RequiredMissing('advice_group'))
+        self.assertEquals(errors[1].error, RequiredMissing('advice_type'))
+        # value used for 'advice_type' and 'advice_group' must be correct
+        form.request.set('form.widgets.advice_type', u'wrong_value')
+        errors = form.extractData()[1]
+        self.assertEquals(errors[1].error, RequiredMissing('advice_type'))
+        # but if the value is correct, the field renders correctly
+        form.request.set('form.widgets.advice_type', u'positive')
+        data = form.extractData()[0]
+        self.assertEquals(data['advice_type'], u'positive')
+        # regarding 'advice_group' value, only correct are the ones in the vocabulary
+        # so using another will fail, for example, can not give an advice for another group
+        form.request.set('form.widgets.advice_group', self.tool.developers.getId())
+        data = form.extractData()[0]
+        self.assertFalse('advice_group' in data)
+        # we can use the values from the vocabulary
+        vocab = form.widgets.get('advice_group').terms.terms
+        self.failUnless('vendors' in vocab)
+        self.failUnless(len(vocab) == 1)
+        # give the advice, select a valid 'advice_group' and save
+        form.request.set('form.widgets.advice_group', u'vendors')
+        # the 3 fields 'advice_group', 'advice_type' and 'advice_comment' are handled correctly
+        data = form.extractData()[0]
+        self.assertTrue('advice_group' in data and
+                        'advice_type' in data and
+                        'advice_comment' in data and
+                        'advice_row_id' in data and
+                        'advice_observations' in data and
+                        'advice_hide_during_redaction' in data)
+        # we receive the 6 fields
+        self.assertTrue(len(data) == len(form.fields))
+        form.request.form['advice_group'] = u'vendors'
+        form.request.form['advice_type'] = u'positive'
+        form.request.form['advice_comment'] = RichTextValue(u'My comment')
+        form.createAndAdd(form.request.form)
+        self.assertEquals(item1.hasAdvices(), True)
+        # 'pmReviewer2' has no more addable advice (as already given) but has now an editable advice
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], [('vendors', 'Vendors')]))
+        # given advice is correctly stored
+        self.assertEquals(item1.adviceIndex['vendors']['type'], 'positive')
+        self.assertEquals(item1.adviceIndex['vendors']['comment'], u'My comment')
+        self.changeUser('pmReviewer1')
+        self.validateItem(item1)
+        # now 'pmReviewer2' can't add (already given) an advice
+        # but he can still edit the advice he just gave
+        self.changeUser('pmReviewer2')
+        self.failUnless(self.hasPermission(View, item1))
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], [('vendors', 'Vendors')]))
+        given_advice = getattr(item1, item1.adviceIndex['vendors']['advice_id'])
+        self.failUnless(self.hasPermission('Modify portal content', given_advice))
+        # another member of the same _advisers group may also edit the given advice
         self.changeUser('pmManager')
-        # do the back transition that send the item back to 'created'
-        # this will work...
-        self.do(item, 'backToItemCreated')
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], [('vendors', 'Vendors')]))
+        self.failUnless(self.hasPermission('Modify portal content', given_advice))
+        # if a user that can not remove the advice tries he gets Unauthorized
+        self.changeUser('pmReviewer1')
+        self.assertRaises(Unauthorized, item1.restrictedTraverse('@@delete_givenuid'), item1.meetingadvice.UID())
+        # put the item back in a state where 'pmReviewer2' can remove the advice
+        self.changeUser('pmManager')
+        self.backToState(item1, self.WF_STATE_NAME_MAPPINGS['proposed'])
+        # returned an item in proposed --> item go to itemcreated state before ... advise is hisotrized
+        self.changeUser('pmReviewer2')
+        # try to remove the advice
+        self.assertRaises(Unauthorized, item1.restrictedTraverse('@@delete_givenuid'), item1.meetingadvice.UID())
+        self.changeUser('admin')
+        # admin can remove the advice
+        item1.restrictedTraverse('@@delete_givenuid')(item1.meetingadvice.UID())
+        self.changeUser('pmReviewer2')
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([('vendors', u'Vendors')], []))
+
+        # if advices are disabled in the meetingConfig, getAdvicesGroupsInfosForUser is emtpy
+        self.changeUser('admin')
+        self.meetingConfig.setUseAdvices(False)
+        self.changeUser('pmReviewer2')
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], []))
+        self.changeUser('admin')
+        self.meetingConfig.setUseAdvices(True)
+
+        # activate advices again and this time remove the fact that we asked the advice
+        self.changeUser('pmReviewer2')
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([('vendors', u'Vendors')], []))
+        self.changeUser('pmManager')
+        item1.setOptionalAdvisers([])
+        item1.at_post_edit_script()
+        self.changeUser('pmReviewer2')
+        self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], []))
 
 
 def test_suite():

@@ -37,8 +37,12 @@ class testSearches(MeetingNamurTestCase, pmts):
         '''Not used yet...'''
         pass
 
-    def test_pm_SearchItemsToValidateOfHighestHierarchicLevel(selfself):
-        """Not sense"""
+    def test_pm_SearchItemsToValidateOfHighestHierarchicLevel(self):
+        """Not sense, only one level of validation"""
+        pass
+
+    def test_pm_SearchItemsToValidateOfMyReviewerGroups(self):
+        """Not sense, only one level of validation"""
         pass
 
 
