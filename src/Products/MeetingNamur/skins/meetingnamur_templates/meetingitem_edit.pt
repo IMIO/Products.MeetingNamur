@@ -148,6 +148,10 @@
     <tal:field define="fieldName python: 'decision'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
+    <tal:comment replace="nothing">XXX Specific for Namur : vote</tal:comment>
+    <tal:field define="fieldName python: 'vote'">
+      <metal:f use-macro="context/@@pm-macros/editContentField"/>
+    </tal:field>
     <tal:field define="fieldName python: 'inAndOutMoves'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
