@@ -32,57 +32,26 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         Tests the Meeting adapted methods
     """
 
-    def test_GetCertifiedSignatures(self):
-        '''Check that the certified signature is defined on developers group but not defined on vendors.'''
-        # create a meeting for test
-        self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime() + 1)
+    def test_GetEchevinsForProposingGroup(self):
+        """Check a meetingItem for developers group return an echevin (the Same group in our case)
+           and a meetingItem for vendors return no echevin."""
         # create items
         self.changeUser('pmCreator1')
         i1 = self.create('MeetingItem')
         i1.setProposingGroup('vendors')
-        self.do(i1, 'propose')
-        self.changeUser('pmReviewer2')
-        self.do(i1, 'validate')
-        self.changeUser('pmManager')
-        self.do(i1, 'present')
-        res = i1.getCertifiedSignatures()
-        # no signatures defined for vendors group, get meetingconfig signature
-        res = i1.getCertifiedSignatures()
-        self.assertEquals(res, [u'Le Secr\xe9taire communal', u'Mr Vraiment Pr\xe9sent', u'Le Bourgmestre', u'Mr Charles Exemple'])
-        self.changeUser('pmCreator1')
-        i2 = self.create('MeetingItem')
-        i2.setProposingGroup('developers')
-        self.do(i2, 'propose')
-        self.changeUser('pmReviewer1')
-        self.do(i2, 'validate')
-        self.changeUser('pmManager')
-        self.do(i2, 'present')
-        res = i2.getCertifiedSignatures()
-        # signatures defined for developers group, get it
-        res = i2.getCertifiedSignatures()
-        self.assertEquals(res, [u'Le DG ff', u'Remplaçant', u'Le 1er échevin', u'Remplaçant 2'])
-
-    def test_GetEchevinsForProposingGroup(self):
-        '''Check a meetingItem for developers group return an echevin (the Same group in our case)
-           and a meetingItem for vendors return no echevin.'''
-        #create items
-        self.changeUser('pmCreator1')
-        i1 = self.create('MeetingItem')
-        i1.setProposingGroup('vendors')
-        #for vendor, certfiedSignatures must be empty
+        # for vendor, certfiedSignatures must be empty
         res = i1.adapted().getEchevinsForProposingGroup()
         self.assertEquals(res, [])
         self.changeUser('pmCreator1')
         i2 = self.create('MeetingItem')
         i2.setProposingGroup('developers')
-        #for developer, certfiedSignatures must be equal to
+        # for developer, certfiedSignatures must be equal to
         res = i2.adapted().getEchevinsForProposingGroup()
         self.assertEquals(res, ['developers'])
 
     def test_listGrpBudgetInfosAdviser(self):
-        '''Check if the list of groups that can be selected on an item to modify budgetInfos field
-        correspond to group with accronym start with DGF (finance and taxe))'''
+        """Check if the list of groups that can be selected on an item to modify budgetInfos field
+        correspond to group with accronym start with DGF (finance and taxe))"""
         self.changeUser('admin')
         self._createFinanceGroups()
         self.changeUser('pmCreator1')
@@ -96,14 +65,14 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         self.assertEquals(list_GBIA[2], res[2])
 
     def test_onEdit(self):
-        '''check MeetingBudgetImpactReviewer role on an item, when a group is choosen in BudgetInfosAdviser
+        """check MeetingBudgetImpactReviewer role on an item, when a group is choosen in BudgetInfosAdviser
         and state is, at least "itemFrozen". Retrieve role for other grp_budgetimpactreviewers
-        '''
+        """
         self.changeUser('pmManager')
         m = self._createMeetingWithItems()
         self.do(m, 'freeze')
         item = m.getItems()[0]
-        #no MeetingBudgetImpactReviewer in rôle
+        # no MeetingBudgetImpactReviewer in rôle
         self.assertEquals((u'developers_budgetimpactreviewers', (
             'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
         self.assertEquals((u'vendors_budgetimpactreviewers', (
@@ -114,7 +83,7 @@ class testCustomMeetingItem(MeetingNamurTestCase):
             'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
         item.setGrpBudgetInfos(('finances',))
         item.adapted().onEdit(True)
-        #MeetingBudgetImpactReviewer role define for finance (only)
+        # MeetingBudgetImpactReviewer role define for finance (only)
         self.assertEquals((u'developers_budgetimpactreviewers', (
             'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
         self.assertEquals((u'vendors_budgetimpactreviewers', (

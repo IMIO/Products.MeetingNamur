@@ -213,20 +213,6 @@ developers.observers.append(pmReviewer1)
 developers.observers.append(pmManager)
 developers.advisers.append(pmAdviser1)
 developers.advisers.append(pmManager)
-setattr(developers, 'certifiedSignatures', [
-    {'signatureNumber': '1',
-     'name': u'Remplaçant',
-     'function': u'Le DG ff',
-     'date_from': '',
-     'date_to': '',
-     },
-    {'signatureNumber': '2',
-     'name': u'Remplaçant 2',
-     'function': u'Le 1er échevin',
-     'date_from': '',
-     'date_to': '',
-     },
-])
 setattr(developers, 'echevinServices', 'developers')
 # put pmReviewerLevel1 in first level of reviewers from what is in MEETINGREVIEWERS
 getattr(developers, MEETINGREVIEWERS.keys()[-1]).append(pmReviewerLevel1)
@@ -240,7 +226,6 @@ vendors.reviewers.append(pmReviewer2)
 vendors.observers.append(pmReviewer2)
 vendors.advisers.append(pmReviewer2)
 vendors.advisers.append(pmManager)
-setattr(vendors, 'certifiedSignatures', [])
 
 # Do voters able to see items to vote for
 developers.observers.append(voter1)
@@ -284,20 +269,7 @@ collegeMeeting.assembly = 'Pierre Dupont - Bourgmestre,\n' \
                           'Echevin Un, Echevin Deux, Echevin Trois - Echevins,\n' \
                           'Jacqueline Exemple, Responsable du CPAS'
 collegeMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, Secrétaire communal'
-collegeMeeting.certifiedSignatures = [
-    {'signatureNumber': '1',
-     'name': u'Mr Vraiment Présent',
-     'function': u'Le Secrétaire communal',
-     'date_from': '',
-     'date_to': '',
-     },
-    {'signatureNumber': '2',
-     'name': u'Mr Charles Exemple',
-     'function': u'Le Bourgmestre',
-     'date_from': '',
-     'date_to': '',
-     },
-]
+collegeMeeting.certifiedSignatures = []
 collegeMeeting.categories = [development, research]
 collegeMeeting.classifiers = [classifier1, classifier2, classifier3]
 collegeMeeting.shortName = 'College'
