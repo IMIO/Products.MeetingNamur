@@ -710,7 +710,7 @@ class CustomMeetingItem(MeetingItem):
             state = 'approved'
         elif state == 'pre_accepted':
             return '/'
-        return item.i18n(state, domain='plone')
+        return item.translate(state, domain='plone')
 
     def adviceDelayIsTimedOutWithRowId(self, groupId, rowIds=[]):
         ''' Check if advice with delay from a certain p_groupId and with
