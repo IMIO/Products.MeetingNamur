@@ -22,7 +22,7 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.PloneMeeting.tests.testUtils import testUtils as pmtu
 
 
