@@ -72,7 +72,51 @@ class testAnnexes(MeetingNamurTestCase, pmta):
     def test_pm_AnnexesDeletableByItemEditor(self):
         """annex/annexDecision may be deleted if user may edit the item."""
         # not sense
+        pass
 
+    def test_pm_CategorizedAnnexesShowMethods(self):
+        """Test the @@categorized-annexes view."""
+        cfg = self.meetingConfig
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        view = item.restrictedTraverse('@@categorized-annexes')
+        # both annex and annexDecision are displayed and addable
+        self.assertTrue(view.showAddAnnex())
+        # for Namur, only MeetingManager can add decision'annex
+        self.assertFalse(view.showAddAnnexDecision())
+        self.changeUser('pmManager')
+        self.assertTrue(view.showAddAnnexDecision())
+        self.changeUser('pmCreator1')
+        self.assertTrue(view.showDecisionAnnexesSection())
+        # add an annex and an annexDecision
+        self.addAnnex(item)
+        self.changeUser('pmManager')
+        annexDecision = self.addAnnex(item, relatedTo='item_decision')
+        self.changeUser('pmCreator1')
+        self.assertTrue(view.showAddAnnex())
+        self.assertFalse(view.showAddAnnexDecision())
+        self.assertTrue(view.showAnnexesSection())
+        self.assertTrue(view.showDecisionAnnexesSection())
+        # propose item, annex sections are still shown but not addable
+        self.proposeItem(item)
+        self.assertFalse(view.showAddAnnex())
+        self.assertFalse(view.showAddAnnexDecision())
+        self.assertTrue(view.showAnnexesSection())
+        self.assertTrue(view.showDecisionAnnexesSection())
+
+        # annexDecision section is shown if annexDecision are stored or if
+        # annexDecision annex types are available (active), disable the annexDecision annex types
+        for annex_type in cfg.annexes_types.item_decision_annexes.objectValues():
+            annex_type.enabled = False
+            annex_type.reindexObject(idxs=['enabled'])
+        # view._annexDecisionCategories is memoized
+        view = item.restrictedTraverse('@@categorized-annexes')
+        # showDecisionAnnexesSection still True because annexDecision exists
+        self.assertTrue(view.showDecisionAnnexesSection())
+        self.deleteAsManager(annexDecision.UID())
+        # view._annexDecisionCategories is memoized
+        view = item.restrictedTraverse('@@categorized-annexes')
+        self.assertFalse(view.showDecisionAnnexesSection())
 
 def test_suite():
     from unittest import TestSuite, makeSuite
