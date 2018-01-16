@@ -678,17 +678,23 @@ class CustomMeetingItem(MeetingItem):
         '''Condition for displaying the 'duplicate' action in the interface.
            Returns True if the user can duplicate the item.'''
         # Conditions for being able to see the "duplicate an item" action:
-        # - the user is not Plone-disk-aware;
         # - the user is creator in some group;
         # - the user must be able to see the item if it is private.
         # The user will duplicate the item in his own folder.
-        tool = getToolByName(self, 'portal_plonemeeting')
+        tool = api.portal.get_tool('portal_plonemeeting')
         item = self.getSelf()
+        cfg = tool.getMeetingConfig(self)
         ignoreDuplicateButton = item.queryState() == 'pre_accepted'
-        if self.isDefinedInTool() or not tool.userIsAmong(['creators']) \
-           or not self.isPrivacyViewable() or ignoreDuplicateButton:
+        if not cfg.getEnableItemDuplication() or \
+                self.isDefinedInTool() or \
+                not tool.userIsAmong(['creators']) or \
+                not self.adapted().isPrivacyViewable() or ignoreDuplicateButton:
             return False
         return True
+
+
+
+    MeetingItem.__pm_old_showDuplicateItemAction = MeetingItem.showDuplicateItemAction
     MeetingItem.showDuplicateItemAction = customshowDuplicateItemAction
 
     security.declarePublic('getMappingDecision')

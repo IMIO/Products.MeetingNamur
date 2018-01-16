@@ -157,8 +157,8 @@ class testAdvices(MeetingNamurTestCase, pmta):
         self.assertTrue(item.adviceIndex['vendors']['delay_stopped_on'] is None)
         # if we excute the transition that will reinitialize dates, it is 'backToItemCreated'
         self.assertEquals(cfg.getTransitionsReinitializingDelays(),
-                          (self.WF_TRANSITION_NAME_MAPPINGS['backToItemCreated'], ))
-        self.backToState(item, self.WF_STATE_NAME_MAPPINGS['itemcreated'])
+                          (self._transitionMappingFor('backToItemCreated'), ))
+        self.backToState(item, self._stateMappingFor('itemcreated'))
         self.assertEquals(item.queryState(), self.WF_STATE_NAME_MAPPINGS['itemcreated'])
         # the delays have been reinitialized to None
         self.assertEquals([advice['delay_started_on'] for advice in item.adviceIndex.values()],
