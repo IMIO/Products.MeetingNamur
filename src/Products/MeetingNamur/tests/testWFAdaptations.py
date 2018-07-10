@@ -184,7 +184,7 @@ def _return_to_proposing_group_with_validation_active_state_to_clone(self):
     cfgItemWFId = self.meetingConfig.getItemWorkflow()
 
     state_to_clone_ids = (RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE.get(cfgItemWFId).split('.')[1],) + \
-                          RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
+        RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
     for state_to_clone_id in state_to_clone_ids:
         cloned_state_permissions = itemWF.states[state_to_clone_id].permission_roles
         returned_state = 'returned_to_proposing_group'
@@ -194,7 +194,7 @@ def _return_to_proposing_group_with_validation_active_state_to_clone(self):
         for permission in cloned_state_permissions:
             cloned_state_permission_with_meetingmanager = []
             acquired = isinstance(cloned_state_permissions[permission], list) and True or False
-            if not 'MeetingManager' in cloned_state_permissions[permission]:
+            if 'MeetingManager' not in cloned_state_permissions[permission]:
                 cloned_state_permission_with_meetingmanager = list(cloned_state_permissions[permission])
                 cloned_state_permission_with_meetingmanager.append('MeetingManager')
             else:
@@ -211,6 +211,7 @@ def _return_to_proposing_group_with_validation_active_state_to_clone(self):
             self.assertEquals(
                 itemWF.states[state_to_clone_id].getPermissionInfo(permission)['acquired'],
                 itemWF.states[returned_state].getPermissionInfo(permission)['acquired'])
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

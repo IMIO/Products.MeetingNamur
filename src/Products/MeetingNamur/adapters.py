@@ -67,6 +67,7 @@ from Products.MeetingNamur.interfaces import IMeetingItemNamurCouncilWorkflowCon
 from Products.MeetingNamur.interfaces import IMeetingItemNamurCouncilWorkflowActions
 from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowConditions
 from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowActions
+
 # Names of available workflow adaptations.
 customWfAdaptations = ('return_to_proposing_group', 'return_to_proposing_group_with_last_validation',
                        'return_to_proposing_group_with_all_validations')
@@ -74,50 +75,62 @@ MeetingConfig.wfAdaptations = customWfAdaptations
 originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
 RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemnamur_workflow':
-    # view permissions
-    {'Access contents information':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
-     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
-    'View':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
-     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
-    'PloneMeeting: Read decision':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
-     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
-    'PloneMeeting: Read item observations':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
-     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
-    'PloneMeeting: Read budget infos':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingTaxController',
-     'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
-    # edit permissions
-    'Modify portal content':
-    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
-    'PloneMeeting: Write decision':
-    ('Manager', ),
-    'Review portal content':
-    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
-    'Add portal content':
-    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
-    'PloneMeeting: Add annex':
-    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
-    'PloneMeeting: Add annexDecision':
-    ('Manager', 'MeetingMember',  'MeetingManager',  'MeetingReviewer', ),
-    'PloneMeeting: Write budget infos':
-    ('Manager', 'MeetingMember', 'MeetingReviewer', 'MeetingBudgetImpactEditor', 'MeetingManager',
-     'MeetingBudgetImpactReviewer', ),
-    'MeetingNamur: Write description':
-    ('Manager', 'MeetingMember', 'MeetingManager', 'MeetingReviewer',),
-    # MeetingManagers edit permissions
-    'MeetingNamur: Write certified signatures':
-    ('Manager',),
-    'PloneMeeting: Write marginal notes':
-    ('Manager',),
-    'PloneMeeting: Write item MeetingManager reserved fields':
-    ('Manager', 'MeetingManager',),
-    'Delete objects':
-    ['Manager', ],}
-}
+                                                # view permissions
+                                                    {'Access contents information':
+                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                          'MeetingTaxController',
+                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                     'View':
+                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                          'MeetingTaxController',
+                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                     'PloneMeeting: Read decision':
+                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                          'MeetingTaxController',
+                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                     'PloneMeeting: Read item observations':
+                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                          'MeetingTaxController',
+                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                     'PloneMeeting: Read budget infos':
+                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                          'MeetingTaxController',
+                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                     # edit permissions
+                                                     'Modify portal content':
+                                                         ('Manager', 'MeetingMember', 'MeetingManager',
+                                                          'MeetingReviewer',),
+                                                     'PloneMeeting: Write decision':
+                                                         ('Manager',),
+                                                     'Review portal content':
+                                                         ('Manager', 'MeetingMember', 'MeetingManager',
+                                                          'MeetingReviewer',),
+                                                     'Add portal content':
+                                                         ('Manager', 'MeetingMember', 'MeetingManager',
+                                                          'MeetingReviewer',),
+                                                     'PloneMeeting: Add annex':
+                                                         ('Manager', 'MeetingMember', 'MeetingManager',
+                                                          'MeetingReviewer',),
+                                                     'PloneMeeting: Add annexDecision':
+                                                         ('Manager', 'MeetingMember', 'MeetingManager',
+                                                          'MeetingReviewer',),
+                                                     'PloneMeeting: Write budget infos':
+                                                         ('Manager', 'MeetingMember', 'MeetingReviewer',
+                                                          'MeetingBudgetImpactEditor', 'MeetingManager',
+                                                          'MeetingBudgetImpactReviewer',),
+                                                     'MeetingNamur: Write description':
+                                                         ('Manager', 'MeetingMember', 'MeetingManager',
+                                                          'MeetingReviewer',),
+                                                     # MeetingManagers edit permissions
+                                                     'MeetingNamur: Write certified signatures':
+                                                         ('Manager',),
+                                                     'PloneMeeting: Write marginal notes':
+                                                         ('Manager',),
+                                                     'PloneMeeting: Write item MeetingManager reserved fields':
+                                                         ('Manager', 'MeetingManager',),
+                                                     'Delete objects':
+                                                         ['Manager', ], }
+                                                }
 
 adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 
@@ -127,8 +140,8 @@ adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP
 
 
 class CustomMeeting(Meeting):
-    '''Adapter that adapts a meeting implementing IMeeting to the
-       interface IMeetingCustom.'''
+    """Adapter that adapts a meeting implementing IMeeting to the
+       interface IMeetingCustom."""
 
     implements(IMeetingCustom)
     security = ClassSecurityInfo()
@@ -143,7 +156,7 @@ class CustomMeeting(Meeting):
                           privacy='*', oralQuestion='both', toDiscuss='both', categories=[],
                           excludedCategories=[], groupIds=[], excludedGroupIds=[],
                           firstNumber=1, renumber=False):
-        '''Returns a list of items.
+        """Returns a list of items.
            An extra list of review states to ignore can be defined.
            A privacy can also be given, and the fact that the item is an
            oralQuestion or not (or both). Idem with toDiscuss.
@@ -151,7 +164,7 @@ class CustomMeeting(Meeting):
            We can also receive in p_groupIds MeetingGroup ids to take into account.
            These 2 parameters are exclusive.  If renumber is True, a list of tuple
            will be return with first element the number and second element, the item.
-           In this case, the firstNumber value can be used.'''
+           In this case, the firstNumber value can be used."""
         # We just filter ignore_review_states here and privacy and call
         # getItems(uids), passing the correct uids and removing empty uids.
         # privacy can be '*' or 'public' or 'secret' or 'public_heading' or 'secret_heading'
@@ -200,9 +213,9 @@ class CustomMeeting(Meeting):
             return items
 
     def _getAcronymPrefix(self, group, groupPrefixes):
-        '''This method returns the prefix of the p_group's acronym among all
+        """This method returns the prefix of the p_group's acronym among all
            prefixes listed in p_groupPrefixes. If group acronym does not have a
-           prefix listed in groupPrefixes, this method returns None.'''
+           prefix listed in groupPrefixes, this method returns None."""
         res = None
         groupAcronym = group.getAcronym()
         for prefix in groupPrefixes.iterkeys():
@@ -212,12 +225,12 @@ class CustomMeeting(Meeting):
         return res
 
     def _getGroupIndex(self, group, groups, groupPrefixes):
-        '''Is p_group among the list of p_groups? If p_group is not among
+        """Is p_group among the list of p_groups? If p_group is not among
            p_groups but another group having the same prefix as p_group
            (the list of prefixes is given by p_groupPrefixes), we must conclude
            that p_group is among p_groups. res is -1 if p_group is not
            among p_group; else, the method returns the index of p_group in
-           p_groups.'''
+           p_groups."""
         prefix = self._getAcronymPrefix(group, groupPrefixes)
         if not prefix:
             if group not in groups:
@@ -231,10 +244,10 @@ class CustomMeeting(Meeting):
             return -1
 
     def _insertGroupInCategory(self, categoryList, meetingGroup, groupPrefixes, groups, item=None):
-        '''Inserts a group list corresponding to p_meetingGroup in the given
+        """Inserts a group list corresponding to p_meetingGroup in the given
            p_categoryList, following meeting group order as defined in the
            main configuration (groups from the config are in p_groups).
-           If p_item is specified, the item is appended to the group list.'''
+           If p_item is specified, the item is appended to the group list."""
         usedGroups = [g[0] for g in categoryList[1:]]
         groupIndex = self._getGroupIndex(meetingGroup, usedGroups, groupPrefixes)
         if groupIndex == -1:
@@ -261,10 +274,10 @@ class CustomMeeting(Meeting):
                 categoryList[groupIndex + 1].append(item)
 
     def _insertItemInCategory(self, categoryList, item, byProposingGroup, groupPrefixes, groups):
-        '''This method is used by the next one for inserting an item into the
+        """This method is used by the next one for inserting an item into the
            list of all items of a given category. if p_byProposingGroup is True,
            we must add it in a sub-list containing items of a given proposing
-           group. Else, we simply append it to p_category.'''
+           group. Else, we simply append it to p_category."""
         if not byProposingGroup:
             categoryList.append(item)
         else:
@@ -280,7 +293,7 @@ class CustomMeeting(Meeting):
                                     firstNumber=1, renumber=False,
                                     includeEmptyCategories=False, includeEmptyGroups=False,
                                     forceCategOrderFromConfig=False, allNoConfidentialItems=False):
-        '''Returns a list of (late or normal or both) items (depending on p_listTypes)
+        """Returns a list of (late or normal or both) items (depending on p_listTypes)
            ordered by category. Items being in a state whose name is in
            p_ignore_review_state will not be included in the result.
            If p_by_proposing_group is True, items are grouped by proposing group
@@ -299,7 +312,8 @@ class CustomMeeting(Meeting):
            nevertheless.Some specific categories can be given or some categories to exclude.
            These 2 parameters are exclusive.  If renumber is True, a list of tuple
            will be return with first element the number and second element, the item.
-           In this case, the firstNumber value can be used.'''
+           In this case, the firstNumber value can be used."""
+
         # The result is a list of lists, where every inner list contains:
         # - at position 0: the category object (MeetingCategory or MeetingGroup)
         # - at position 1 to n: the items in this category
@@ -320,6 +334,7 @@ class CustomMeeting(Meeting):
                 return 1
             else:
                 return 0
+
         res = []
         items = []
         previousCatId = None
@@ -362,6 +377,7 @@ class CustomMeeting(Meeting):
                 currentCat = item.getCategory(theObject=True)
                 # Add the item to a new category, excepted if the category already exists.
                 catExists = False
+                catList = ''
                 for catList in res:
                     if catList[0] == currentCat:
                         catExists = True
@@ -452,9 +468,9 @@ class CustomMeeting(Meeting):
     security.declarePublic('getNumberOfItems')
 
     def getNumberOfItems(self, itemUids, privacy='*', categories=[], listTypes=['normal']):
-        '''Returns the number of items depending on parameters.
+        """Returns the number of items depending on parameters.
            This is used in templates to know how many items of a particular kind exist and
-           often used to determine the 'firstNumber' parameter of getPrintableItems/getPrintableItemsByCategory.'''
+           often used to determine the 'firstNumber' parameter of getPrintableItems/getPrintableItemsByCategory."""
         # sometimes, some empty elements are inserted in itemUids, remove them...
         itemUids = [itemUid for itemUid in itemUids if itemUid != '']
         if not categories and privacy == '*':
@@ -477,7 +493,7 @@ class CustomMeeting(Meeting):
 
     def getPrintableItemsByNumCategory(self, listTypes=['normal'], uids=[],
                                        catstoexclude=[], exclude=True, allItems=False):
-        '''Returns a list of items ordered by category number. If there are many
+        """Returns a list of items ordered by category number. If there are many
            items by category, there is always only one category, even if the
            user have chosen a different order. If exclude=True , catstoexclude
            represents the category number that we don't want to print and if
@@ -485,9 +501,10 @@ class CustomMeeting(Meeting):
            only want to print. This is useful when we want for exemple to
            exclude a personnal category from the meeting an realize a separate
            meeeting for this personal category. If allItems=True, we return
-           late items AND items in order.'''
+           late items AND items in order."""
+
         def getPrintableNumCategory(current_cat):
-            '''Method used here above.'''
+            """Method used here above."""
             current_cat_id = current_cat.getId()
             current_cat_name = current_cat.Title()
             current_cat_name = current_cat_name[0:2]
@@ -518,13 +535,13 @@ class CustomMeeting(Meeting):
         # dictionary that must contain the list of item in in res[catnum][1]
         for item in items:
             if uids:
-                if (item.UID() in uids):
+                if item.UID() in uids:
                     inuid = "ok"
                 else:
                     inuid = "ko"
             else:
                 inuid = "ok"
-            if (inuid == "ok"):
+            if inuid == "ok":
                 current_cat = item.getCategory(theObject=True)
                 catNum = getPrintableNumCategory(current_cat)
                 if catNum in res:
@@ -544,7 +561,7 @@ class CustomMeeting(Meeting):
         ressort = []
         for i in reskey:
             if catstoexclude:
-                if (i in catstoexclude):
+                if i in catstoexclude:
                     if exclude is False:
                         guard = True
                     else:
@@ -574,7 +591,7 @@ class CustomMeeting(Meeting):
     security.declarePublic('getVotes')
 
     def getVotes(self):
-        '''Get all item with "votes" for a meeting in a list to print in template'''
+        """Get all item with "votes" for a meeting in a list to print in template"""
         res = []
         for item in self.context.getAllItems(ordered=True):
             if item.getVote():
@@ -583,8 +600,8 @@ class CustomMeeting(Meeting):
 
 
 class CustomMeetingItem(MeetingItem):
-    '''Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingItemCustom.'''
+    """Adapter that adapts a meeting item implementing IMeetingItem to the
+       interface IMeetingItemCustom."""
     implements(IMeetingItemCustom)
     security = ClassSecurityInfo()
 
@@ -604,7 +621,7 @@ class CustomMeetingItem(MeetingItem):
             return None
 
     def getEchevinsForProposingGroup(self):
-        '''Returns all echevins defined for the proposing group'''
+        """Returns all echevins defined for the proposing group"""
         res = []
         tool = getToolByName(self.context, 'portal_plonemeeting')
         # keep also inactive groups because this method is often used in the customAdviser
@@ -617,8 +634,8 @@ class CustomMeetingItem(MeetingItem):
     security.declarePublic('listGrpBudgetInfosAdviser')
 
     def listGrpBudgetInfosAdviser(self):
-        '''Returns a list of groups that can be selected on an item to modify budgetInfos field.
-        acronym group start with DGF'''
+        """Returns a list of groups that can be selected on an item to modify budgetInfos field.
+        acronym group start with DGF"""
         res = []
         res.append(('', self.utranslate('make_a_choice', domain='PloneMeeting')))
         tool = getToolByName(self, "portal_plonemeeting")
@@ -626,27 +643,28 @@ class CustomMeetingItem(MeetingItem):
             if group.acronym.startswith('DGF'):
                 res.append((group.id, group.getProperty('title')))
         return DisplayList(tuple(res))
+
     MeetingItem.listGrpBudgetInfosAdviser = listGrpBudgetInfosAdviser
 
     security.declarePublic('giveMeetingBudgetImpactReviewerRole')
 
     def giveMeetingBudgetImpactReviewerRole(self):
-        '''Add MeetingBudgetImpactReviewer role when on an item, a group is choosen in BudgetInfosAdviser and state is,
+        """Add MeetingBudgetImpactReviewer role when on an item, a group is choosen in BudgetInfosAdviser and state is,
            at least, "presented". Remove role for other grp_budgetimpactreviewers or remove all
            grp_budgetimpactreviewers in local role if state back in state before presented.
-        '''
+        """
         item = self.getSelf()
         grp_roles = []
         if item.queryState() in ('presented', 'itemfrozen', 'accepted', 'delayed', 'accepted_but_modified',
                                  'pre_accepted', 'refused'):
-            #add new MeetingBudgetImpactReviewerRole
+            # add new MeetingBudgetImpactReviewerRole
             for grpBudgetInfo in item.grpBudgetInfos:
                 grp_role = '%s_budgetimpactreviewers' % grpBudgetInfo
-                #for each group_budgetimpactreviewers add new local roles
+                # for each group_budgetimpactreviewers add new local roles
                 if grpBudgetInfo:
                     grp_roles.append(grp_role)
                     item.manage_addLocalRoles(grp_role, ('Reader', 'MeetingBudgetImpactReviewer',))
-        #suppress old unused group_budgetimpactreviewers
+        # suppress old unused group_budgetimpactreviewers
         toRemove = []
         for user, roles in item.get_local_roles():
             if user.endswith('_budgetimpactreviewers') and user not in grp_roles:
@@ -657,26 +675,27 @@ class CustomMeetingItem(MeetingItem):
 
     def onEdit(self, isCreated):
         item = self.getSelf()
-        #adapt MeetingBudgetImpactReviewerRole if needed
+        # adapt MeetingBudgetImpactReviewerRole if needed
         item.adapted().giveMeetingBudgetImpactReviewerRole()
 
     def _initDecisionFieldIfEmpty(self):
-        '''
+        """
           If decision field is empty, it will be initialized
           with data coming from title and description.
-        '''
+        """
         # set keepWithNext to False as it will add a 'class' and so
         # xhtmlContentIsEmpty will never consider it empty...
         if xhtmlContentIsEmpty(self.getDecision(keepWithNext=False)):
             self.setDecision("%s" % self.Description())
             self.reindexObject()
+
     MeetingItem._initDecisionFieldIfEmpty = _initDecisionFieldIfEmpty
 
     security.declarePublic('customshowDuplicateItemAction')
 
     def customshowDuplicateItemAction(self):
-        '''Condition for displaying the 'duplicate' action in the interface.
-           Returns True if the user can duplicate the item.'''
+        """Condition for displaying the 'duplicate' action in the interface.
+           Returns True if the user can duplicate the item."""
         # Conditions for being able to see the "duplicate an item" action:
         # - the user is creator in some group;
         # - the user must be able to see the item if it is private.
@@ -692,22 +711,20 @@ class CustomMeetingItem(MeetingItem):
             return False
         return True
 
-
-
     MeetingItem.__pm_old_showDuplicateItemAction = MeetingItem.showDuplicateItemAction
     MeetingItem.showDuplicateItemAction = customshowDuplicateItemAction
 
     security.declarePublic('getMappingDecision')
 
     def getMappingDecision(self):
-        '''
+        """
             In model : list of decisions, we must map some traductions
             accepted : approuved
             removed : removed
             delay : delay
             pre_accepted : /
             accepted_but_modified : Approved with a modification
-        '''
+        """
         item = self.getSelf()
         state = item.queryState()
         if state == 'accepted_but_modified':
@@ -719,26 +736,26 @@ class CustomMeetingItem(MeetingItem):
         return item.translate(state, domain='plone')
 
     def adviceDelayIsTimedOutWithRowId(self, groupId, rowIds=[]):
-        ''' Check if advice with delay from a certain p_groupId and with
+        """ Check if advice with delay from a certain p_groupId and with
             a row_id contained in p_rowIds is timed out.
-        '''
-        self = self.getSelf()
-        if self.getAdviceDataFor(self) and groupId in self.getAdviceDataFor(self):
-            adviceRowId = self.getAdviceDataFor(self, groupId)['row_id']
+        """
+        item = self.getSelf()
+        if item.getAdviceDataFor(item) and groupId in item.getAdviceDataFor(item):
+            adviceRowId = self.getAdviceDataFor(item, groupId)['row_id']
         else:
             return False
 
         if not rowIds or adviceRowId in rowIds:
-            return self._adviceDelayIsTimedOut(groupId)
+            return item._adviceDelayIsTimedOut(groupId)
         else:
             return False
 
     security.declarePublic('viewFullFieldInItemEdit')
 
     def viewFullFieldInItemEdit(self):
-        '''
+        """
             This method is used in MeetingItem_edit.cpt
-        '''
+        """
         item = self.getSelf()
         roles = item.portal_membership.getAuthenticatedMember().getRolesInContext(item)
         res = False
@@ -752,17 +769,18 @@ class CustomMeetingItem(MeetingItem):
         return res
 
     def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc):
-        '''
+        """
           Keep some new fields when item is cloned (to another mc or from itemtemplate).
-        '''
+        """
         res = ['grpBudgetInfos', 'itemCertifiedSignatures', 'isConfidentialItem', 'vote']
         if cloned_to_same_mc:
             res = res + []
         return res
 
+
 class CustomMeetingGroup(MeetingGroup):
-    '''Adapter that adapts a meeting group implementing IMeetingGroup to the
-       interface IMeetingGroupCustom.'''
+    """Adapter that adapts a meeting group implementing IMeetingGroup to the
+       interface IMeetingGroupCustom."""
 
     implements(IMeetingGroupCustom)
     security = ClassSecurityInfo()
@@ -773,7 +791,7 @@ class CustomMeetingGroup(MeetingGroup):
     security.declarePublic('listEchevinServices')
 
     def listEchevinServices(self):
-        '''Returns a list of groups that can be selected on an group (without isEchevin).'''
+        """Returns a list of groups that can be selected on an group (without isEchevin)."""
         res = []
         tool = getToolByName(self, 'portal_plonemeeting')
         # Get every Plone group related to a MeetingGroup
@@ -781,13 +799,13 @@ class CustomMeetingGroup(MeetingGroup):
             res.append((group.id, group.getProperty('title')))
 
         return DisplayList(tuple(res))
-    MeetingGroup.listEchevinServices = listEchevinServices
 
+    MeetingGroup.listEchevinServices = listEchevinServices
 
     security.declareProtected('Modify portal content', 'onEdit')
 
     def onEdit(self, isCreated):
-        '''Add group_budgetimpactreviewers if DGF group'''
+        """Add group_budgetimpactreviewers if DGF group"""
         meeting_group = self.getSelf()
         if meeting_group.acronym.startswith('DGF'):
             groupId = meeting_group.getPloneGroupId('budgetimpactreviewers')
@@ -802,8 +820,8 @@ class CustomMeetingGroup(MeetingGroup):
 
 
 class CustomMeetingConfig(MeetingConfig):
-    '''Adapter that adapts a meetingConfig implementing IMeetingConfig to the
-       interface IMeetingConfigCustom.'''
+    """Adapter that adapts a meetingConfig implementing IMeetingConfig to the
+       interface IMeetingConfigCustom."""
 
     implements(IMeetingConfigCustom)
     security = ClassSecurityInfo()
@@ -838,7 +856,7 @@ class CustomMeetingConfig(MeetingConfig):
                 # append it only if not already into res and if
                 # we have no 'row_id' for this adviser in adviceIndex
                 if item and groupId not in res and \
-                   (groupId in item.adviceIndex and not item.adviceIndex[groupId]['row_id']):
+                        (groupId in item.adviceIndex and not item.adviceIndex[groupId]['row_id']):
                     res.append(groupId)
                 elif not item:
                     res.append(groupId)
@@ -847,8 +865,8 @@ class CustomMeetingConfig(MeetingConfig):
                 # append it only if not already into res and if
                 # we have a 'row_id' for this adviser in adviceIndex
                 if item and groupId not in res and \
-                    (groupId in item.adviceIndex and
-                     item.adviceIndex[groupId]['row_id'] == rowIdOrGroupId):
+                        (groupId in item.adviceIndex and
+                         item.adviceIndex[groupId]['row_id'] == rowIdOrGroupId):
                     res.append(groupId)
                 elif not item:
                     res.append(groupId)
@@ -909,7 +927,7 @@ class CustomMeetingConfig(MeetingConfig):
         return infos
 
     def extraAdviceTypes(self):
-        '''See doc in interfaces.py.'''
+        """See doc in interfaces.py."""
         typesTool = api.portal.get_tool('portal_types')
         if 'meetingadvicefinances' in typesTool:
             return ['positive_finance', 'positive_with_remarks_finance',
@@ -919,8 +937,8 @@ class CustomMeetingConfig(MeetingConfig):
 
 
 class MeetingNamurWorkflowActions(MeetingWorkflowActions):
-    '''Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingCollegeWorkflowActions'''
+    """Adapter that adapts a meeting item implementing IMeetingItem to the
+       interface IMeetingCollegeWorkflowActions"""
 
     implements(IMeetingNamurWorkflowActions)
     security = ClassSecurityInfo()
@@ -928,11 +946,11 @@ class MeetingNamurWorkflowActions(MeetingWorkflowActions):
     security.declarePrivate('doDecide')
 
     def doDecide(self, stateChange):
-        '''We pass every item that is 'presented' in the 'itemfrozen'
+        """We pass every item that is 'presented' in the 'itemfrozen'
            state.  It is the case for late items. Moreover, if
            MeetingConfig.initItemDecisionIfEmptyOnDecide is True, we
            initialize the decision field with content of Title+Description
-           if decision field is empty.'''
+           if decision field is empty."""
         for item in self.context.getItems():
             # If deliberation (decision) is empty,
             # initialize it the decision field
@@ -940,31 +958,32 @@ class MeetingNamurWorkflowActions(MeetingWorkflowActions):
 
     security.declarePrivate('doBackToPublished')
 
-
     def doClose(self, stateChange):
-        '''We initialize the decision field with content of Title+Description
-           if no decision has already been written.'''
+        """We initialize the decision field with content of Title+Description
+           if no decision has already been written."""
         MeetingWorkflowActions.doClose(self, stateChange)
         for item in self.context.getItems():
             # If the decision field is empty, initialize it
             item._initDecisionFieldIfEmpty()
 
-
     def doBackToPublished(self, stateChange):
-        '''We do not impact items while going back from decided.'''
+        """We do not impact items while going back from decided."""
         pass
 
+
 class MeetingNamurCollegeWorkflowActions(MeetingNamurWorkflowActions):
-    '''inherit class'''
+    """inherit class"""
     implements(IMeetingNamurCollegeWorkflowActions)
 
+
 class MeetingNamurCouncilWorkflowActions(MeetingNamurWorkflowActions):
-    '''inherit class'''
+    """inherit class"""
     implements(IMeetingNamurCouncilWorkflowActions)
 
+
 class MeetingNamurWorkflowConditions(MeetingWorkflowConditions):
-    '''Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingCollegeWorkflowConditions'''
+    """Adapter that adapts a meeting item implementing IMeetingItem to the
+       interface IMeetingCollegeWorkflowConditions"""
 
     implements(IMeetingNamurWorkflowConditions)
     security = ClassSecurityInfo()
@@ -977,17 +996,20 @@ class MeetingNamurWorkflowConditions(MeetingWorkflowConditions):
             res = True
         return res
 
+
 class MeetingNamurCollegeWorkflowConditions(MeetingNamurWorkflowConditions):
-    '''inherit class'''
+    """inherit class"""
     implements(IMeetingNamurCollegeWorkflowConditions)
 
+
 class MeetingNamurCouncilWorkflowConditions(MeetingNamurWorkflowConditions):
-    '''inherit class'''
+    """inherit class"""
     implements(IMeetingNamurCouncilWorkflowConditions)
 
+
 class MeetingItemNamurWorkflowActions(MeetingItemWorkflowActions):
-    '''Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingItemCollegeWorkflowActions'''
+    """Adapter that adapts a meeting item implementing IMeetingItem to the
+       interface IMeetingItemCollegeWorkflowActions"""
 
     implements(IMeetingItemNamurWorkflowActions)
     security = ClassSecurityInfo()
@@ -1039,8 +1061,8 @@ class MeetingItemNamurWorkflowActions(MeetingItemWorkflowActions):
     security.declarePrivate('doCorrect')
 
     def doCorrect(self, stateChange):
-        ''' If needed, suppress _budgetimpactreviewers role for this Item and
-            clean decision field or copy description field in decision field.'''
+        """ If needed, suppress _budgetimpactreviewers role for this Item and
+            clean decision field or copy description field in decision field."""
         MeetingItemWorkflowActions.doCorrect(self, stateChange)
         item = self.context
         # send mail to creator if item return to owner
@@ -1062,7 +1084,7 @@ class MeetingItemNamurWorkflowActions(MeetingItemWorkflowActions):
     security.declarePrivate('doReturn_to_proposing_group')
 
     def doReturn_to_proposing_group(self, stateChange):
-        '''Cleaning decision field'''
+        """Cleaning decision field"""
         MeetingItemWorkflowActions.doReturn_to_proposing_group(self, stateChange)
         item = self.context
         item.setDecision("<p>&nbsp;</p>")
@@ -1071,26 +1093,27 @@ class MeetingItemNamurWorkflowActions(MeetingItemWorkflowActions):
     security.declarePrivate('doItemFreeze')
 
     def doItemFreeze(self, stateChange):
-        '''When an item is frozen, we must add local role MeetingBudgetReviewer '''
+        """When an item is frozen, we must add local role MeetingBudgetReviewer """
         item = self.context
         # adapt MeetingBudgetImpactReviewerRole if needed
         item.adapted().giveMeetingBudgetImpactReviewerRole()
         # If the decision field is empty, initialize it
         item._initDecisionFieldIfEmpty()
 
+
 class MeetingItemNamurCollegeWorkflowActions(MeetingItemNamurWorkflowActions):
-    '''inherit class'''
+    """inherit class"""
     implements(IMeetingItemNamurCollegeWorkflowActions)
 
 
 class MeetingItemNamurCouncilWorkflowActions(MeetingItemNamurWorkflowActions):
-    '''inherit class'''
+    """inherit class"""
     implements(IMeetingItemNamurCouncilWorkflowActions)
 
 
 class MeetingItemNamurWorkflowConditions(MeetingItemWorkflowConditions):
-    '''Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingItemCollegeWorkflowConditions'''
+    """Adapter that adapts a meeting item implementing IMeetingItem to the
+       interface IMeetingItemCollegeWorkflowConditions"""
 
     implements(IMeetingItemNamurWorkflowConditions)
     security = ClassSecurityInfo()
@@ -1101,28 +1124,28 @@ class MeetingItemNamurWorkflowConditions(MeetingItemWorkflowConditions):
     security.declarePublic('mayDecide')
 
     def mayDecide(self):
-        '''We may decide an item if the linked meeting is in relevant state.'''
+        """We may decide an item if the linked meeting is in relevant state."""
         res = False
         meeting = self.context.getMeeting()
         if _checkPermission(ReviewPortalContent, self.context) and \
-           meeting and meeting.adapted().isDecided():
+                meeting and meeting.adapted().isDecided():
             res = True
         return res
 
 
 class MeetingItemNamurCollegeWorkflowConditions(MeetingItemNamurWorkflowConditions):
-    '''inherit class'''
+    """inherit class"""
     implements(IMeetingItemNamurCollegeWorkflowConditions)
 
 
 class MeetingItemNamurCouncilWorkflowConditions(MeetingItemNamurWorkflowConditions):
-    '''inherit class'''
+    """inherit class"""
     implements(IMeetingItemNamurCouncilWorkflowConditions)
 
 
 class CustomToolPloneMeeting(ToolPloneMeeting):
-    '''Adapter that adapts a tool implementing ToolPloneMeeting to the
-       interface IToolPloneMeetingCustom'''
+    """Adapter that adapts a tool implementing ToolPloneMeeting to the
+       interface IToolPloneMeetingCustom"""
 
     implements(IToolPloneMeetingCustom)
     security = ClassSecurityInfo()
@@ -1133,9 +1156,9 @@ class CustomToolPloneMeeting(ToolPloneMeeting):
     security.declarePublic('getSpecificAssemblyFor')
 
     def getSpecificAssemblyFor(self, assembly, startTxt=''):
-        ''' Return the Assembly between two tag.
+        """ Return the Assembly between two tag.
             This method is used in templates.
-        '''
+        """
         # Pierre Dupont - Bourgmestre,
         # Charles Exemple - 1er Echevin,
         # Echevin Un, Echevin Deux excusé, Echevin Trois - Echevins,
@@ -1190,6 +1213,8 @@ InitializeClass(MeetingNamurWorkflowConditions)
 InitializeClass(MeetingItemNamurWorkflowActions)
 InitializeClass(MeetingItemNamurWorkflowConditions)
 InitializeClass(CustomToolPloneMeeting)
+
+
 # ------------------------------------------------------------------------------
 
 class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
@@ -1214,4 +1239,3 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
                                     domain="PloneMeeting",
                                     context=self.request)))
         return icons
-

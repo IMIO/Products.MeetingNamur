@@ -9,10 +9,10 @@ from Products.Archetypes.atapi import Schema
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingGroup import MeetingGroup
+from Products.PloneMeeting.config import registerClasses
 
 
 def update_group_schema(baseSchema):
-
     specificSchema = Schema((
 
         # field used to define list of services for echevin for a MeetingGroup
@@ -30,13 +30,15 @@ def update_group_schema(baseSchema):
             multiValued=1,
             vocabulary='listEchevinServices',
         ),
-    ),)
+    ), )
 
     completeSchema = baseSchema + specificSchema.copy()
     completeSchema['acronym'].widget.description = "Acronym"
     completeSchema['acronym'].widget.description_msgid = "meetingNamur_acronym_descri_msgid"
 
     return completeSchema
+
+
 MeetingGroup.schema = update_group_schema(MeetingGroup.schema)
 
 
@@ -102,7 +104,7 @@ def update_item_schema(baseSchema):
             allowable_content_types=('text/html',),
             default_output_type="text/x-html-safe",
         ),
-    ),)
+    ), )
 
     baseSchema['description'].write_permission = "MeetingNamur: Write description"
     baseSchema['description'].widget.label = "projectOfDecision"
@@ -110,23 +112,26 @@ def update_item_schema(baseSchema):
 
     completeSchema = baseSchema + specificSchema.copy()
     return completeSchema
+
+
 MeetingItem.schema = update_item_schema(MeetingItem.schema)
 
 
 def update_meeting_schema(baseSchema):
-
     specificSchema = Schema((
-    ),)
+    ), )
 
     baseSchema['assembly'].widget.description_msgid = "assembly_meeting_descr"
 
     completeSchema = baseSchema + specificSchema.copy()
     return completeSchema
+
+
 Meeting.schema = update_meeting_schema(Meeting.schema)
 
 # Classes have already been registered, but we register them again here
 # because we have potentially applied some schema adaptations (see above).
 # Class registering includes generation of accessors and mutators, for
 # example, so this is why we need to do it again now.
-from Products.PloneMeeting.config import registerClasses
+
 registerClasses()
