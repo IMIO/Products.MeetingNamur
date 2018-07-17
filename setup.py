@@ -32,7 +32,8 @@ setup(name='Products.MeetingNamur',
           'setuptools',
           'Products.CMFPlone',
           'Pillow',
-          'Products.PloneMeeting'],
+          'Products.PloneMeeting',
+          'Products.MeetingCommunes'],
 
       entry_points={},
       )

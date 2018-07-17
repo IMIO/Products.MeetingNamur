@@ -40,18 +40,24 @@ from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.interfaces import IMeetingGroupCustom
 from Products.PloneMeeting.interfaces import IMeetingConfigCustom
 from Products.PloneMeeting.interfaces import IToolPloneMeetingCustom
-from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions
-from Products.PloneMeeting.Meeting import MeetingWorkflowConditions
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingGroup import MeetingGroup
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
-from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowConditions
 from Products.PloneMeeting.model import adaptations
-from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
 from Products.PloneMeeting.utils import sendMail
 from Products.PloneMeeting.utils import sendMailIfRelevant
+
+from Products.MeetingCommunes.adapters import CustomMeeting
+from Products.MeetingCommunes.adapters import CustomMeetingItem
+from Products.MeetingCommunes.adapters import CustomMeetingGroup
+from Products.MeetingCommunes.adapters import CustomMeetingConfig
+from Products.MeetingCommunes.adapters import MeetingItemCollegeWorkflowActions
+from Products.MeetingCommunes.adapters import MeetingItemCollegeWorkflowConditions
+from Products.MeetingCommunes.adapters import MeetingCollegeWorkflowActions
+from Products.MeetingCommunes.adapters import MeetingCollegeWorkflowConditions
+from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
 
 from Products.MeetingNamur import logger
 from Products.MeetingNamur.config import FINANCE_ADVICES_COLLECTION_ID
@@ -139,7 +145,7 @@ RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {'meetingitemnamur_workflow': 'meetin
 adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 
-class CustomMeeting(Meeting):
+class CustomNamurMeeting(CustomMeeting):
     """Adapter that adapts a meeting implementing IMeeting to the
        interface IMeetingCustom."""
 
@@ -599,7 +605,7 @@ class CustomMeeting(Meeting):
         return res
 
 
-class CustomMeetingItem(MeetingItem):
+class CustomNamurMeetingItem(CustomMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCustom."""
     implements(IMeetingItemCustom)
@@ -777,8 +783,7 @@ class CustomMeetingItem(MeetingItem):
             res = res + []
         return res
 
-
-class CustomMeetingGroup(MeetingGroup):
+class CustomNamurMeetingGroup(CustomMeetingGroup):
     """Adapter that adapts a meeting group implementing IMeetingGroup to the
        interface IMeetingGroupCustom."""
 
@@ -819,7 +824,7 @@ class CustomMeetingGroup(MeetingGroup):
             group.setProperties(meetingRole='MeetingBudgetImpactReviewer', meetingGroupId=meeting_group.id)
 
 
-class CustomMeetingConfig(MeetingConfig):
+class CustomNamurMeetingConfig(CustomMeetingConfig):
     """Adapter that adapts a meetingConfig implementing IMeetingConfig to the
        interface IMeetingConfigCustom."""
 
@@ -936,7 +941,7 @@ class CustomMeetingConfig(MeetingConfig):
         return []
 
 
-class MeetingNamurWorkflowActions(MeetingWorkflowActions):
+class MeetingNamurWorkflowActions(MeetingCollegeWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingCollegeWorkflowActions"""
 
@@ -980,8 +985,7 @@ class MeetingNamurCouncilWorkflowActions(MeetingNamurWorkflowActions):
     """inherit class"""
     implements(IMeetingNamurCouncilWorkflowActions)
 
-
-class MeetingNamurWorkflowConditions(MeetingWorkflowConditions):
+class MeetingNamurWorkflowConditions(MeetingCollegeWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingCollegeWorkflowConditions"""
 
@@ -1006,8 +1010,7 @@ class MeetingNamurCouncilWorkflowConditions(MeetingNamurWorkflowConditions):
     """inherit class"""
     implements(IMeetingNamurCouncilWorkflowConditions)
 
-
-class MeetingItemNamurWorkflowActions(MeetingItemWorkflowActions):
+class MeetingItemNamurWorkflowActions(MeetingItemCollegeWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCollegeWorkflowActions"""
 
@@ -1111,7 +1114,7 @@ class MeetingItemNamurCouncilWorkflowActions(MeetingItemNamurWorkflowActions):
     implements(IMeetingItemNamurCouncilWorkflowActions)
 
 
-class MeetingItemNamurWorkflowConditions(MeetingItemWorkflowConditions):
+class MeetingItemNamurWorkflowConditions(MeetingItemCollegeWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCollegeWorkflowConditions"""
 
@@ -1143,7 +1146,7 @@ class MeetingItemNamurCouncilWorkflowConditions(MeetingItemNamurWorkflowConditio
     implements(IMeetingItemNamurCouncilWorkflowConditions)
 
 
-class CustomToolPloneMeeting(ToolPloneMeeting):
+class CustomNamurToolPloneMeeting(CustomToolPloneMeeting):
     """Adapter that adapts a tool implementing ToolPloneMeeting to the
        interface IToolPloneMeetingCustom"""
 
@@ -1204,15 +1207,15 @@ class CustomToolPloneMeeting(ToolPloneMeeting):
 
 # ------------------------------------------------------------------------------
 
-InitializeClass(CustomMeeting)
-InitializeClass(CustomMeetingItem)
-InitializeClass(CustomMeetingGroup)
-InitializeClass(CustomMeetingConfig)
+InitializeClass(CustomNamurMeeting)
+InitializeClass(CustomNamurMeetingItem)
+InitializeClass(CustomNamurMeetingGroup)
+InitializeClass(CustomNamurMeetingConfig)
 InitializeClass(MeetingNamurWorkflowActions)
 InitializeClass(MeetingNamurWorkflowConditions)
 InitializeClass(MeetingItemNamurWorkflowActions)
 InitializeClass(MeetingItemNamurWorkflowConditions)
-InitializeClass(CustomToolPloneMeeting)
+InitializeClass(CustomNamurToolPloneMeeting)
 
 
 # ------------------------------------------------------------------------------
