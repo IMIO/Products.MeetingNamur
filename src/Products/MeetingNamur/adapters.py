@@ -22,7 +22,6 @@
 # ------------------------------------------------------------------------------
 
 from AccessControl import ClassSecurityInfo
-from collections import OrderedDict
 from Globals import InitializeClass
 from zope.interface import implements
 from zope.i18n import translate
@@ -38,11 +37,9 @@ from Products.PloneMeeting.adapters import ItemPrettyLinkAdapter
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.interfaces import IMeetingGroupCustom
-from Products.PloneMeeting.interfaces import IMeetingConfigCustom
 from Products.PloneMeeting.interfaces import IToolPloneMeetingCustom
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
-from Products.PloneMeeting.MeetingGroup import MeetingGroup
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
 from Products.PloneMeeting.model import adaptations
@@ -52,15 +49,12 @@ from Products.PloneMeeting.utils import sendMailIfRelevant
 from Products.MeetingCommunes.adapters import CustomMeeting
 from Products.MeetingCommunes.adapters import CustomMeetingItem
 from Products.MeetingCommunes.adapters import CustomMeetingGroup
-from Products.MeetingCommunes.adapters import CustomMeetingConfig
 from Products.MeetingCommunes.adapters import MeetingItemCollegeWorkflowActions
 from Products.MeetingCommunes.adapters import MeetingItemCollegeWorkflowConditions
 from Products.MeetingCommunes.adapters import MeetingCollegeWorkflowActions
 from Products.MeetingCommunes.adapters import MeetingCollegeWorkflowConditions
 from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
 
-from Products.MeetingNamur import logger
-from Products.MeetingNamur.config import FINANCE_ADVICES_COLLECTION_ID
 from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowConditions
 from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowActions
 from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowConditions
@@ -156,139 +150,6 @@ class CustomNamurMeeting(CustomMeeting):
         self.context = meeting
 
     # Implements here methods that will be used by templates
-    security.declarePublic('getPrintableItems')
-
-    def getPrintableItems(self, itemUids, listTypes=['normal'], ignore_review_states=[],
-                          privacy='*', oralQuestion='both', toDiscuss='both', categories=[],
-                          excludedCategories=[], groupIds=[], excludedGroupIds=[],
-                          firstNumber=1, renumber=False):
-        """Returns a list of items.
-           An extra list of review states to ignore can be defined.
-           A privacy can also be given, and the fact that the item is an
-           oralQuestion or not (or both). Idem with toDiscuss.
-           Some specific categories can be given or some categories to exclude.
-           We can also receive in p_groupIds MeetingGroup ids to take into account.
-           These 2 parameters are exclusive.  If renumber is True, a list of tuple
-           will be return with first element the number and second element, the item.
-           In this case, the firstNumber value can be used."""
-        # We just filter ignore_review_states here and privacy and call
-        # getItems(uids), passing the correct uids and removing empty uids.
-        # privacy can be '*' or 'public' or 'secret' or 'public_heading' or 'secret_heading'
-        # oralQuestion can be 'both' or False or True
-        # toDiscuss can be 'both' or 'False' or 'True'
-        for elt in itemUids:
-            if elt == '':
-                itemUids.remove(elt)
-
-        # check filters
-        filteredItemUids = []
-        uid_catalog = self.context.uid_catalog
-        for itemUid in itemUids:
-            obj = uid_catalog(UID=itemUid)[0].getObject()
-            if obj.queryState() in ignore_review_states:
-                continue
-            elif not (privacy == '*' or obj.getPrivacy() == privacy):
-                continue
-            elif not (oralQuestion == 'both' or obj.getOralQuestion() == oralQuestion):
-                continue
-            elif not (toDiscuss == 'both' or obj.getToDiscuss() == toDiscuss):
-                continue
-            elif categories and not obj.getCategory() in categories:
-                continue
-            elif groupIds and not obj.getProposingGroup() in groupIds:
-                continue
-            elif excludedCategories and obj.getCategory() in excludedCategories:
-                continue
-            elif excludedGroupIds and obj.getProposingGroup() in excludedGroupIds:
-                continue
-            filteredItemUids.append(itemUid)
-        # in case we do not have anything, we return an empty list
-        if not filteredItemUids:
-            return []
-        else:
-            items = self.context.getItems(uids=filteredItemUids, listTypes=listTypes, ordered=True)
-            if renumber:
-                # return a list of tuple with first element the number and second
-                # element the item itself
-                i = firstNumber
-                res = []
-                for item in items:
-                    res.append((i, item))
-                    i = i + 1
-                items = res
-            return items
-
-    def _getAcronymPrefix(self, group, groupPrefixes):
-        """This method returns the prefix of the p_group's acronym among all
-           prefixes listed in p_groupPrefixes. If group acronym does not have a
-           prefix listed in groupPrefixes, this method returns None."""
-        res = None
-        groupAcronym = group.getAcronym()
-        for prefix in groupPrefixes.iterkeys():
-            if groupAcronym.startswith(prefix):
-                res = prefix
-                break
-        return res
-
-    def _getGroupIndex(self, group, groups, groupPrefixes):
-        """Is p_group among the list of p_groups? If p_group is not among
-           p_groups but another group having the same prefix as p_group
-           (the list of prefixes is given by p_groupPrefixes), we must conclude
-           that p_group is among p_groups. res is -1 if p_group is not
-           among p_group; else, the method returns the index of p_group in
-           p_groups."""
-        prefix = self._getAcronymPrefix(group, groupPrefixes)
-        if not prefix:
-            if group not in groups:
-                return -1
-            else:
-                return groups.index(group)
-        else:
-            for gp in groups:
-                if gp.getAcronym().startswith(prefix):
-                    return groups.index(gp)
-            return -1
-
-    def _insertGroupInCategory(self, categoryList, meetingGroup, groupPrefixes, groups, item=None):
-        """Inserts a group list corresponding to p_meetingGroup in the given
-           p_categoryList, following meeting group order as defined in the
-           main configuration (groups from the config are in p_groups).
-           If p_item is specified, the item is appended to the group list."""
-        usedGroups = [g[0] for g in categoryList[1:]]
-        groupIndex = self._getGroupIndex(meetingGroup, usedGroups, groupPrefixes)
-        if groupIndex == -1:
-            # Insert the group among used groups at the right place.
-            groupInserted = False
-            i = -1
-            for usedGroup in usedGroups:
-                i += 1
-                if groups.index(meetingGroup) < groups.index(usedGroup):
-                    if item:
-                        categoryList.insert(i + 1, [meetingGroup, item])
-                    else:
-                        categoryList.insert(i + 1, [meetingGroup])
-                    groupInserted = True
-                    break
-            if not groupInserted:
-                if item:
-                    categoryList.append([meetingGroup, item])
-                else:
-                    categoryList.append([meetingGroup])
-        else:
-            # Insert the item into the existing group.
-            if item:
-                categoryList[groupIndex + 1].append(item)
-
-    def _insertItemInCategory(self, categoryList, item, byProposingGroup, groupPrefixes, groups):
-        """This method is used by the next one for inserting an item into the
-           list of all items of a given category. if p_byProposingGroup is True,
-           we must add it in a sub-list containing items of a given proposing
-           group. Else, we simply append it to p_category."""
-        if not byProposingGroup:
-            categoryList.append(item)
-        else:
-            group = item.getProposingGroup(True)
-            self._insertGroupInCategory(categoryList, group, groupPrefixes, groups, item)
 
     security.declarePublic('getPrintableItemsByCategory')
 
@@ -471,129 +332,6 @@ class CustomNamurMeeting(CustomMeeting):
             items = res
         return res
 
-    security.declarePublic('getNumberOfItems')
-
-    def getNumberOfItems(self, itemUids, privacy='*', categories=[], listTypes=['normal']):
-        """Returns the number of items depending on parameters.
-           This is used in templates to know how many items of a particular kind exist and
-           often used to determine the 'firstNumber' parameter of getPrintableItems/getPrintableItemsByCategory."""
-        # sometimes, some empty elements are inserted in itemUids, remove them...
-        itemUids = [itemUid for itemUid in itemUids if itemUid != '']
-        if not categories and privacy == '*':
-            return len(self.context.getItems(uids=itemUids, listTypes=listTypes))
-        # Either, we will have to filter (privacy, categories, late)
-        filteredItemUids = []
-        uid_catalog = getToolByName(self.context, 'uid_catalog')
-        for itemUid in itemUids:
-            obj = uid_catalog(UID=itemUid)[0].getObject()
-            if not (privacy == '*' or obj.getPrivacy() == privacy):
-                continue
-            elif not (categories == [] or obj.getCategory() in categories):
-                continue
-            elif not obj.isLate() == bool(listTypes == ['late']):
-                continue
-            filteredItemUids.append(itemUid)
-        return len(filteredItemUids)
-
-    security.declarePublic('getPrintableItemsByNumCategory')
-
-    def getPrintableItemsByNumCategory(self, listTypes=['normal'], uids=[],
-                                       catstoexclude=[], exclude=True, allItems=False):
-        """Returns a list of items ordered by category number. If there are many
-           items by category, there is always only one category, even if the
-           user have chosen a different order. If exclude=True , catstoexclude
-           represents the category number that we don't want to print and if
-           exclude=False, catsexclude represents the category number that we
-           only want to print. This is useful when we want for exemple to
-           exclude a personnal category from the meeting an realize a separate
-           meeeting for this personal category. If allItems=True, we return
-           late items AND items in order."""
-
-        def getPrintableNumCategory(current_cat):
-            """Method used here above."""
-            current_cat_id = current_cat.getId()
-            current_cat_name = current_cat.Title()
-            current_cat_name = current_cat_name[0:2]
-            try:
-                catNum = int(current_cat_name)
-            except ValueError:
-                current_cat_name = current_cat_name[0:1]
-                try:
-                    catNum = int(current_cat_name)
-                except ValueError:
-                    catNum = current_cat_id
-            return catNum
-
-        if not allItems and listTypes == ['late']:
-            items = self.context.getItems(uids=uids, listTypes=['late'], ordered=True)
-        elif not allItems and not listTypes == ['late']:
-            items = self.context.getItems(uids=uids, listTypes=['normal'], ordered=True)
-        else:
-            items = self.context.getItems(uids=uids, ordered=True)
-        # res contains all items by category, the key of res is the category
-        # number. Pay attention that the category number is obtain by extracting
-        # the 2 first caracters of the categoryname, thus the categoryname must
-        # be for exemple ' 2.travaux' or '10.Urbanisme. If not, the catnum takes
-        # the value of the id + 1000 to be sure to place those categories at the
-        # end.
-        res = {}
-        # First, we create the category and for each category, we create a
-        # dictionary that must contain the list of item in in res[catnum][1]
-        for item in items:
-            if uids:
-                if item.UID() in uids:
-                    inuid = "ok"
-                else:
-                    inuid = "ko"
-            else:
-                inuid = "ok"
-            if inuid == "ok":
-                current_cat = item.getCategory(theObject=True)
-                catNum = getPrintableNumCategory(current_cat)
-                if catNum in res:
-                    res[catNum][1][item.getItemNumber()] = item
-                else:
-                    res[catNum] = {}
-                    # first value of the list is the category object
-                    res[catNum][0] = item.getCategory(True)
-                    # second value of the list is a list of items
-                    res[catNum][1] = {}
-                    res[catNum][1][item.getItemNumber()] = item
-
-        # Now we must sort the res dictionary with the key (containing catnum)
-        # and copy it in the returned array.
-        reskey = res.keys()
-        reskey.sort()
-        ressort = []
-        for i in reskey:
-            if catstoexclude:
-                if i in catstoexclude:
-                    if exclude is False:
-                        guard = True
-                    else:
-                        guard = False
-                else:
-                    if exclude is False:
-                        guard = False
-                    else:
-                        guard = True
-            else:
-                guard = True
-
-            if guard is True:
-                k = 0
-                ressorti = []
-                ressorti.append(res[i][0])
-                resitemkey = res[i][1].keys()
-                resitemkey.sort()
-                ressorti1 = []
-                for j in resitemkey:
-                    k = k + 1
-                    ressorti1.append([res[i][1][j], k])
-                ressorti.append(ressorti1)
-                ressort.append(ressorti)
-        return ressort
-
     security.declarePublic('getVotes')
 
     def getVotes(self):
@@ -613,29 +351,6 @@ class CustomNamurMeetingItem(CustomMeetingItem):
 
     def __init__(self, item):
         self.context = item
-
-    def getFinanceAdviceId(self):
-        """ """
-        tool = api.portal.get_tool('portal_plonemeeting')
-        cfg = tool.getMeetingConfig(self.context)
-        usedFinanceGroupIds = cfg.adapted().getUsedFinanceGroupIds(self.context)
-        adviserIds = self.context.adviceIndex.keys()
-        financeAdvisersIds = set(usedFinanceGroupIds).intersection(set(adviserIds))
-        if financeAdvisersIds:
-            return list(financeAdvisersIds)[0]
-        else:
-            return None
-
-    def getEchevinsForProposingGroup(self):
-        """Returns all echevins defined for the proposing group"""
-        res = []
-        tool = getToolByName(self.context, 'portal_plonemeeting')
-        # keep also inactive groups because this method is often used in the customAdviser
-        # TAL expression and a disabled MeetingGroup must still be taken into account
-        for group in tool.getMeetingGroups(onlyActive=False):
-            if self.context.getProposingGroup() in group.getEchevinServices():
-                res.append(group.getId())
-        return res
 
     security.declarePublic('listGrpBudgetInfosAdviser')
 
@@ -783,6 +498,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
             res = res + []
         return res
 
+
 class CustomNamurMeetingGroup(CustomMeetingGroup):
     """Adapter that adapts a meeting group implementing IMeetingGroup to the
        interface IMeetingGroupCustom."""
@@ -792,20 +508,6 @@ class CustomNamurMeetingGroup(CustomMeetingGroup):
 
     def __init__(self, item):
         self.context = item
-
-    security.declarePublic('listEchevinServices')
-
-    def listEchevinServices(self):
-        """Returns a list of groups that can be selected on an group (without isEchevin)."""
-        res = []
-        tool = getToolByName(self, 'portal_plonemeeting')
-        # Get every Plone group related to a MeetingGroup
-        for group in tool.getMeetingGroups():
-            res.append((group.id, group.getProperty('title')))
-
-        return DisplayList(tuple(res))
-
-    MeetingGroup.listEchevinServices = listEchevinServices
 
     security.declareProtected('Modify portal content', 'onEdit')
 
@@ -822,123 +524,6 @@ class CustomNamurMeetingGroup(CustomMeetingGroup):
             meeting_group.portal_groups.setRolesForGroup(groupId, ('MeetingObserverGlobal',))
             group = meeting_group.portal_groups.getGroupById(groupId)
             group.setProperties(meetingRole='MeetingBudgetImpactReviewer', meetingGroupId=meeting_group.id)
-
-
-class CustomNamurMeetingConfig(CustomMeetingConfig):
-    """Adapter that adapts a meetingConfig implementing IMeetingConfig to the
-       interface IMeetingConfigCustom."""
-
-    implements(IMeetingConfigCustom)
-    security = ClassSecurityInfo()
-
-    def __init__(self, item):
-        self.context = item
-
-    security.declarePublic('getUsedFinanceGroupIds')
-
-    def getUsedFinanceGroupIds(self, item=None):
-        """Possible finance advisers group ids are defined on
-           the FINANCE_ADVICES_COLLECTION_ID collection."""
-        cfg = self.getSelf()
-        tool = api.portal.get_tool('portal_plonemeeting')
-        collection = getattr(cfg.searches.searches_items, FINANCE_ADVICES_COLLECTION_ID, None)
-        if not collection:
-            logger.warn(
-                "Method 'getUsedFinanceGroupIds' could not find the '{0}' collection!".format(
-                    FINANCE_ADVICES_COLLECTION_ID))
-            return []
-        # get the indexAdvisers value defined on the collection
-        # and find the relevant group, indexAdvisers form is :
-        # 'delay_real_group_id__2014-04-16.9996934488', 'real_group_id_directeur-financier'
-        # it is either a customAdviser row_id or a MeetingGroup id
-        values = [term['v'] for term in collection.getRawQuery()
-                  if term['i'] == 'indexAdvisers'][0]
-        res = []
-        for v in values:
-            rowIdOrGroupId = v.replace('delay_real_group_id__', '').replace('real_group_id__', '')
-            if hasattr(tool, rowIdOrGroupId):
-                groupId = rowIdOrGroupId
-                # append it only if not already into res and if
-                # we have no 'row_id' for this adviser in adviceIndex
-                if item and groupId not in res and \
-                        (groupId in item.adviceIndex and not item.adviceIndex[groupId]['row_id']):
-                    res.append(groupId)
-                elif not item:
-                    res.append(groupId)
-            else:
-                groupId = cfg._dataForCustomAdviserRowId(rowIdOrGroupId)['group']
-                # append it only if not already into res and if
-                # we have a 'row_id' for this adviser in adviceIndex
-                if item and groupId not in res and \
-                        (groupId in item.adviceIndex and
-                         item.adviceIndex[groupId]['row_id'] == rowIdOrGroupId):
-                    res.append(groupId)
-                elif not item:
-                    res.append(groupId)
-        # remove duplicates
-        return list(set(res))
-
-    def _extraSearchesInfo(self, infos):
-        """Add some specific searches."""
-        cfg = self.getSelf()
-        itemType = cfg.getItemTypeName()
-        extra_infos = OrderedDict(
-            [
-                # Items in state 'proposed'
-                ('searchproposeditems',
-                 {
-                     'subFolderId': 'searches_items',
-                     'active': True,
-                     'query':
-                         [
-                             {'i': 'portal_type',
-                              'o': 'plone.app.querystring.operation.selection.is',
-                              'v': [itemType, ]},
-                             {'i': 'review_state',
-                              'o': 'plone.app.querystring.operation.selection.is',
-                              'v': ['proposed']}
-                         ],
-                     'sort_on': u'created',
-                     'sort_reversed': True,
-                     'showNumberOfItems': False,
-                     'tal_condition': "python: not tool.userIsAmong(['reviewers'])",
-                     'roles_bypassing_talcondition': ['Manager', ]
-                 }
-                 ),
-                # Items in state 'validated'
-                ('searchvalidateditems',
-                 {
-                     'subFolderId': 'searches_items',
-                     'active': True,
-                     'query':
-                         [
-                             {'i': 'portal_type',
-                              'o': 'plone.app.querystring.operation.selection.is',
-                              'v': [itemType, ]},
-                             {'i': 'review_state',
-                              'o': 'plone.app.querystring.operation.selection.is',
-                              'v': ['validated']}
-                         ],
-                     'sort_on': u'created',
-                     'sort_reversed': True,
-                     'showNumberOfItems': False,
-                     'tal_condition': "",
-                     'roles_bypassing_talcondition': ['Manager', ]
-                 }
-                 ),
-            ]
-        )
-        infos.update(extra_infos)
-        return infos
-
-    def extraAdviceTypes(self):
-        """See doc in interfaces.py."""
-        typesTool = api.portal.get_tool('portal_types')
-        if 'meetingadvicefinances' in typesTool:
-            return ['positive_finance', 'positive_with_remarks_finance',
-                    'cautious_finance', 'negative_finance', 'not_given_finance',
-                    'not_required_finance']
-        return []
 
 
 class MeetingNamurWorkflowActions(MeetingCollegeWorkflowActions):
@@ -971,10 +556,6 @@ class MeetingNamurWorkflowActions(MeetingCollegeWorkflowActions):
             # If the decision field is empty, initialize it
             item._initDecisionFieldIfEmpty()
 
-    def doBackToPublished(self, stateChange):
-        """We do not impact items while going back from decided."""
-        pass
-
 
 class MeetingNamurCollegeWorkflowActions(MeetingNamurWorkflowActions):
     """inherit class"""
@@ -985,20 +566,13 @@ class MeetingNamurCouncilWorkflowActions(MeetingNamurWorkflowActions):
     """inherit class"""
     implements(IMeetingNamurCouncilWorkflowActions)
 
+
 class MeetingNamurWorkflowConditions(MeetingCollegeWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingCollegeWorkflowConditions"""
 
     implements(IMeetingNamurWorkflowConditions)
     security = ClassSecurityInfo()
-
-    security.declarePublic('mayDecide')
-
-    def mayDecide(self):
-        res = False
-        if _checkPermission(ReviewPortalContent, self.context):
-            res = True
-        return res
 
 
 class MeetingNamurCollegeWorkflowConditions(MeetingNamurWorkflowConditions):
@@ -1009,6 +583,7 @@ class MeetingNamurCollegeWorkflowConditions(MeetingNamurWorkflowConditions):
 class MeetingNamurCouncilWorkflowConditions(MeetingNamurWorkflowConditions):
     """inherit class"""
     implements(IMeetingNamurCouncilWorkflowConditions)
+
 
 class MeetingItemNamurWorkflowActions(MeetingItemCollegeWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1050,16 +625,6 @@ class MeetingItemNamurWorkflowActions(MeetingItemCollegeWorkflowActions):
         item = self.context
         # If the decision field is empty, initialize it
         item._initDecisionFieldIfEmpty()
-
-    security.declarePrivate('doAccept_but_modify')
-
-    def doAccept_but_modify(self, stateChange):
-        pass
-
-    security.declarePrivate('doPre_accept')
-
-    def doPre_accept(self, stateChange):
-        pass
 
     security.declarePrivate('doCorrect')
 
@@ -1124,17 +689,6 @@ class MeetingItemNamurWorkflowConditions(MeetingItemCollegeWorkflowConditions):
     def __init__(self, item):
         self.context = item  # Implements IMeetingItem
 
-    security.declarePublic('mayDecide')
-
-    def mayDecide(self):
-        """We may decide an item if the linked meeting is in relevant state."""
-        res = False
-        meeting = self.context.getMeeting()
-        if _checkPermission(ReviewPortalContent, self.context) and \
-                meeting and meeting.adapted().isDecided():
-            res = True
-        return res
-
 
 class MeetingItemNamurCollegeWorkflowConditions(MeetingItemNamurWorkflowConditions):
     """inherit class"""
@@ -1156,61 +710,12 @@ class CustomNamurToolPloneMeeting(CustomToolPloneMeeting):
     def __init__(self, item):
         self.context = item
 
-    security.declarePublic('getSpecificAssemblyFor')
-
-    def getSpecificAssemblyFor(self, assembly, startTxt=''):
-        """ Return the Assembly between two tag.
-            This method is used in templates.
-        """
-        # Pierre Dupont - Bourgmestre,
-        # Charles Exemple - 1er Echevin,
-        # Echevin Un, Echevin Deux excusé, Echevin Trois - Echevins,
-        # Jacqueline Exemple, Responsable du CPAS
-        # Absentes:
-        # Mademoiselle x
-        # ExcusÃ©s:
-        # Monsieur Y, Madame Z
-        res = []
-        tmp = ['<p class="mltAssembly">']
-        splitted_assembly = assembly.replace('<p>', '').replace('</p>', '').split('<br />')
-        start_text = startTxt == ''
-        for assembly_line in splitted_assembly:
-            assembly_line = assembly_line.strip()
-            # check if this line correspond to startTxt (in this cas, we can begin treatment)
-            if not start_text:
-                start_text = assembly_line.startswith(startTxt)
-                if start_text:
-                    # when starting treatment, add tag (not use if startTxt=='')
-                    res.append(assembly_line)
-                continue
-            # check if we must stop treatment...
-            if assembly_line.endswith(':'):
-                break
-            lines = assembly_line.split(',')
-            cpt = 1
-            my_line = ''
-            for line in lines:
-                if cpt == len(lines):
-                    my_line = "%s%s<br />" % (my_line, line)
-                    tmp.append(my_line)
-                else:
-                    my_line = "%s%s," % (my_line, line)
-                cpt = cpt + 1
-        if len(tmp) > 1:
-            tmp[-1] = tmp[-1].replace('<br />', '')
-            tmp.append('</p>')
-        else:
-            return ''
-        res.append(''.join(tmp))
-        return res
-
 
 # ------------------------------------------------------------------------------
 
 InitializeClass(CustomNamurMeeting)
 InitializeClass(CustomNamurMeetingItem)
 InitializeClass(CustomNamurMeetingGroup)
-InitializeClass(CustomNamurMeetingConfig)
 InitializeClass(MeetingNamurWorkflowActions)
 InitializeClass(MeetingNamurWorkflowConditions)
 InitializeClass(MeetingItemNamurWorkflowActions)
