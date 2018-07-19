@@ -12,11 +12,10 @@
   <include file="profiles.zcml" />
   <include package=".browser" />
   <include package="Products.CMFPlacefulWorkflow"/>
+  <include package="Products.MeetingCommunes"/>
   <include package="Products.PloneMeeting"/>
   <includeOverrides file="overrides.zcml" />
 
-  <include package="Products.CMFPlacefulWorkflow"/>
-  <include package="Products.PloneMeeting"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
            factory="Products.MeetingNamur.adapters.MeetingItemNamurCollegeWorkflowActions"
@@ -51,23 +50,19 @@
            provides="Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowConditions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingNamur.adapters.CustomMeetingItem"
+           factory="Products.MeetingNamur.adapters.CustomNamurMeetingItem"
            provides="Products.PloneMeeting.interfaces.IMeetingItemCustom"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingNamur.adapters.CustomMeeting"
+           factory="Products.MeetingNamur.adapters.CustomNamurMeeting"
            provides="Products.PloneMeeting.interfaces.IMeetingCustom"/>
            
   <adapter for="Products.PloneMeeting.interfaces.IMeetingGroup"
-           factory="Products.MeetingNamur.adapters.CustomMeetingGroup"
+           factory="Products.MeetingNamur.adapters.CustomNamurMeetingGroup"
            provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
 
-  <adapter for="Products.PloneMeeting.interfaces.IMeetingConfig"
-           factory="Products.MeetingNamur.adapters.CustomMeetingConfig"
-           provides="Products.PloneMeeting.interfaces.IMeetingConfigCustom"/>
-
   <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
-           factory="Products.MeetingNamur.adapters.CustomToolPloneMeeting"
+           factory="Products.MeetingNamur.adapters.CustomNamurToolPloneMeeting"
            provides="Products.PloneMeeting.interfaces.IToolPloneMeetingCustom"/>
 
 </configure>
