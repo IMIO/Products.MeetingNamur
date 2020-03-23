@@ -82,9 +82,6 @@ def initializeTool(context):
         return
 
     logStep("initializeTool", context)
-    # PloneMeeting is no more a dependency to avoid
-    # magic between quickinstaller and portal_setup
-    # so install it manually
     _installPloneMeeting(context)
     return ToolInitializer(context, PROJECTNAME).run()
 
@@ -98,6 +95,8 @@ def reinstallPloneMeeting(context, site):
 
     logStep("reinstallPloneMeeting", context)
     _installPloneMeeting(context)
+    # launch skins step for MeetingNamur so MeetingNamur skin layers are before PM ones
+    site.portal_setup.runImportStepFromProfile('profile-Products.MeetingNamur:default', 'skins')
 
 
 def _installPloneMeeting(context):

@@ -1,11 +1,16 @@
 Products.MeetingNamur Changelog
-=================================
+===============================
 
-Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/ 
-The Products.MeetingNamur version must be the same as the Products.PloneMeeting version 
+Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/
+The Products.MeetingNamur version must be the same as the Products.PloneMeeting version
 
-4.0 (unreleased)
+4.1 (unreleased)
 ----------------
+- Using MeetingCommunes
+- Compatible for PloneMeeting 4.1
+
+4.0 (2017)
+----------
 - Adapted workflows to define the icon to use for transitions
 - Removed field MeetingConfig.cdldProposingGroup and use the 'indexAdvisers' value
   defined in the 'searchitemswithfinanceadvice' collection to determinate what are
@@ -13,7 +18,7 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 - 'getEchevinsForProposingGroup' does also return inactive MeetingGroups so when used
   as a TAL condition in a customAdviser, an inactive MeetingGroup/customAdviser does
   still behaves correctly when updating advices
-- Use ToolPloneMeeting.performCustomWFAdaptations to manage our own WFAdaptation 
+- Use ToolPloneMeeting.performCustomWFAdaptations to manage our own WFAdaptation
   (override of the 'no_publication' WFAdaptation)
 - Adapted tests, keep test... original PM files to overrides original PM tests and
   use testCustom... for every other tests, added a testCustomWorkflow.py
@@ -23,17 +28,17 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 - Added profile 'financesadvice' to manage advanced finances advice using a particular
   workflow and a specific meetingadvicefinances portal_type
 
-3.3 (2015-07-10) 
----------------- 
-- Updated regarding changes in PloneMeeting 
-- Removed profile 'examples' that loaded examples in english 
-- Removed dependencies already defined in PloneMeeting's setup.py 
-- Added parameter MeetingConfig.initItemDecisionIfEmptyOnDecide that let enable/disable 
-- items decision field initialization when meeting 'decide' transition is triggered 
-- Added MeetingConfig 'CoDir' 
-- Added MeetingConfig 'CA' 
-- Field 'MeetingGroup.signatures' was moved to PloneMeeting 
-    
+3.3 (2015-07-10)
+----------------
+- Updated regarding changes in PloneMeeting
+- Removed profile 'examples' that loaded examples in english
+- Removed dependencies already defined in PloneMeeting's setup.py
+- Added parameter MeetingConfig.initItemDecisionIfEmptyOnDecide that let enable/disable
+- items decision field initialization when meeting 'decide' transition is triggered
+- Added MeetingConfig 'CoDir'
+- Added MeetingConfig 'CA'
+- Field 'MeetingGroup.signatures' was moved to PloneMeeting
+
 3.2.0.1 (2014-03-06)
 --------------------
 - Updated regarding changes in PloneMeeting
@@ -45,7 +50,7 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 - Use getToolByName where necessary
 
 3.1.0 (2014-07-15)
-- Simplified overrides now that PloneMeeting manage this correctly 
+- Simplified overrides now that PloneMeeting manage this correctly
 
 3.0.3 (unreleased)
 ------------------

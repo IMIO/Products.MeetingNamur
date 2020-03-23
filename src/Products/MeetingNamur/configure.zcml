@@ -49,20 +49,20 @@
            factory="Products.MeetingNamur.adapters.MeetingNamurCouncilWorkflowConditions"
            provides="Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowConditions"/>
 
-  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingNamur.adapters.CustomNamurMeetingItem"
-           provides="Products.PloneMeeting.interfaces.IMeetingItemCustom"/>
+  <configure package="Products.MeetingCommunes">
 
-  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingNamur.adapters.CustomNamurMeeting"
-           provides="Products.PloneMeeting.interfaces.IMeetingCustom"/>
-           
-  <adapter for="Products.PloneMeeting.interfaces.IMeetingGroup"
-           factory="Products.MeetingNamur.adapters.CustomNamurMeetingGroup"
-           provides="Products.PloneMeeting.interfaces.IMeetingGroupCustom"/>
+      <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+               factory="Products.MeetingNamur.adapters.CustomNamurMeeting"
+               provides="Products.PloneMeeting.interfaces.IMeetingCustom"/>
 
-  <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
-           factory="Products.MeetingNamur.adapters.CustomNamurToolPloneMeeting"
-           provides="Products.PloneMeeting.interfaces.IToolPloneMeetingCustom"/>
+      <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+               factory="Products.MeetingNamur.adapters.CustomNamurMeetingItem"
+               provides="Products.PloneMeeting.interfaces.IMeetingItemCustom"/>
+
+      <adapter for="Products.PloneMeeting.interfaces.IToolPloneMeeting"
+               factory="Products.MeetingNamur.adapters.CustomNamurToolPloneMeeting"
+               provides="Products.PloneMeeting.interfaces.IToolPloneMeetingCustom"/>
+
+   </configure>
 
 </configure>

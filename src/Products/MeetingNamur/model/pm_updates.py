@@ -13,29 +13,9 @@ from Products.PloneMeeting.config import registerClasses
 
 
 def update_group_schema(baseSchema):
-    specificSchema = Schema((
-
-        # field used to define list of services for echevin for a MeetingGroup
-        LinesField(
-            name='echevinServices',
-            widget=MultiSelectionWidget(
-                size=10,
-                label='EchevinServices',
-                label_msgid='MeetingCommunes_label_echevinServices',
-                description='Leave empty if he is not an echevin',
-                description_msgid='MeetingCommunes_descr_echevinServices',
-                i18n_domain='PloneMeeting',
-            ),
-            enforceVocabulary=True,
-            multiValued=1,
-            vocabulary='listEchevinServices',
-        ),
-    ), )
-
-    completeSchema = baseSchema + specificSchema.copy()
+    completeSchema = baseSchema
     completeSchema['acronym'].widget.description = "Acronym"
     completeSchema['acronym'].widget.description_msgid = "meetingNamur_acronym_descri_msgid"
-
     return completeSchema
 
 

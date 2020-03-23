@@ -33,7 +33,7 @@ from z3c.form.contentprovider import ContentProviders
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 
 from Products.CMFCore.utils import getToolByName
-from Products.PloneMeeting import PMMessageFactory as _
+from Products.PloneMeeting.config import PMMessageFactory as _
 from Products.PloneMeeting.interfaces import IRedirect
 
 

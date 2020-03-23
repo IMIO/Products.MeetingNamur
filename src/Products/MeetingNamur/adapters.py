@@ -2,7 +2,11 @@
 # ------------------------------------------------------------------------------
 # Copyright (c) 2017 by Imio.be
 #
-# GNU General Public License (GPL)
+# GNU General Public License (GPL)# group suffixes
+# PMconfig.EXTRA_GROUP_SUFFIXES = [
+#     {'fct_title': u'serviceheads', 'fct_id': u'serviceheads', 'fct_orgs': []},
+#     {'fct_title': u'officemanagers', 'fct_id': u'officemanagers', 'fct_orgs': []},
+#     {'fct_title': u'divisionheads', 'fct_id': u'divisionheads',  'fct_orgs': []},
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,12 +26,10 @@
 # ------------------------------------------------------------------------------
 
 from AccessControl import ClassSecurityInfo
-from Globals import InitializeClass
+from AccessControl.class_init import InitializeClass
 from zope.interface import implements
 from zope.i18n import translate
 
-from Products.CMFCore.permissions import ReviewPortalContent
-from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.atapi import DisplayList
 from plone import api
@@ -48,11 +50,10 @@ from Products.PloneMeeting.utils import sendMailIfRelevant
 
 from Products.MeetingCommunes.adapters import CustomMeeting
 from Products.MeetingCommunes.adapters import CustomMeetingItem
-from Products.MeetingCommunes.adapters import CustomMeetingGroup
-from Products.MeetingCommunes.adapters import MeetingItemCollegeWorkflowActions
-from Products.MeetingCommunes.adapters import MeetingItemCollegeWorkflowConditions
-from Products.MeetingCommunes.adapters import MeetingCollegeWorkflowActions
-from Products.MeetingCommunes.adapters import MeetingCollegeWorkflowConditions
+from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowActions
+from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowConditions
+from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowActions
+from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowConditions
 from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
 
 from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowConditions
@@ -403,6 +404,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         """
           If decision field is empty, it will be initialized
           with data coming from title and description.
+          Override for Namur !!!
         """
         # set keepWithNext to False as it will add a 'class' and so
         # xhtmlContentIsEmpty will never consider it empty...
@@ -489,7 +491,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
             break
         return res
 
-    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc):
+    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc, cloned_from_item_template):
         """
           Keep some new fields when item is cloned (to another mc or from itemtemplate).
         """
@@ -499,36 +501,9 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         return res
 
 
-class CustomNamurMeetingGroup(CustomMeetingGroup):
-    """Adapter that adapts a meeting group implementing IMeetingGroup to the
-       interface IMeetingGroupCustom."""
-
-    implements(IMeetingGroupCustom)
-    security = ClassSecurityInfo()
-
-    def __init__(self, item):
-        self.context = item
-
-    security.declareProtected('Modify portal content', 'onEdit')
-
-    def onEdit(self, isCreated):
-        """Add group_budgetimpactreviewers if DGF group"""
-        meeting_group = self.getSelf()
-        if meeting_group.acronym.startswith('DGF'):
-            groupId = meeting_group.getPloneGroupId('budgetimpactreviewers')
-            enc = meeting_group.portal_properties.site_properties.getProperty('default_charset')
-            groupTitle = '%s (%s)' % (
-                meeting_group.Title().decode(enc),
-                meeting_group.utranslate('budgetimpactreviewers', domain='PloneMeeting'))
-            meeting_group.portal_groups.addGroup(groupId, title=groupTitle)
-            meeting_group.portal_groups.setRolesForGroup(groupId, ('MeetingObserverGlobal',))
-            group = meeting_group.portal_groups.getGroupById(groupId)
-            group.setProperties(meetingRole='MeetingBudgetImpactReviewer', meetingGroupId=meeting_group.id)
-
-
-class MeetingNamurWorkflowActions(MeetingCollegeWorkflowActions):
+class MeetingNamurWorkflowActions(MeetingCommunesWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingCollegeWorkflowActions"""
+       interface IMeetingCommunesWorkflowActions"""
 
     implements(IMeetingNamurWorkflowActions)
     security = ClassSecurityInfo()
@@ -567,9 +542,9 @@ class MeetingNamurCouncilWorkflowActions(MeetingNamurWorkflowActions):
     implements(IMeetingNamurCouncilWorkflowActions)
 
 
-class MeetingNamurWorkflowConditions(MeetingCollegeWorkflowConditions):
+class MeetingNamurWorkflowConditions(MeetingCommunesWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingCollegeWorkflowConditions"""
+       interface MeetingCommunesWorkflowConditions"""
 
     implements(IMeetingNamurWorkflowConditions)
     security = ClassSecurityInfo()
@@ -585,9 +560,9 @@ class MeetingNamurCouncilWorkflowConditions(MeetingNamurWorkflowConditions):
     implements(IMeetingNamurCouncilWorkflowConditions)
 
 
-class MeetingItemNamurWorkflowActions(MeetingItemCollegeWorkflowActions):
+class MeetingItemNamurWorkflowActions(MeetingItemCommunesWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingItemCollegeWorkflowActions"""
+       interface MeetingItemCommunesWorkflowActions"""
 
     implements(IMeetingItemNamurWorkflowActions)
     security = ClassSecurityInfo()
@@ -679,9 +654,9 @@ class MeetingItemNamurCouncilWorkflowActions(MeetingItemNamurWorkflowActions):
     implements(IMeetingItemNamurCouncilWorkflowActions)
 
 
-class MeetingItemNamurWorkflowConditions(MeetingItemCollegeWorkflowConditions):
+class MeetingItemNamurWorkflowConditions(MeetingItemCommunesWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
-       interface IMeetingItemCollegeWorkflowConditions"""
+       interface MeetingItemCommunesWorkflowConditions"""
 
     implements(IMeetingItemNamurWorkflowConditions)
     security = ClassSecurityInfo()
@@ -715,7 +690,6 @@ class CustomNamurToolPloneMeeting(CustomToolPloneMeeting):
 
 InitializeClass(CustomNamurMeeting)
 InitializeClass(CustomNamurMeetingItem)
-InitializeClass(CustomNamurMeetingGroup)
 InitializeClass(MeetingNamurWorkflowActions)
 InitializeClass(MeetingNamurWorkflowConditions)
 InitializeClass(MeetingItemNamurWorkflowActions)
