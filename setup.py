@@ -6,7 +6,7 @@ version = '4.1  .dev0'
 setup(name='Products.MeetingNamur',
       version=version,
       description="PloneMeeting profile for city of Namur",
-      long_description=open("README.txt").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description=open("README.rst").read() + "\n" + open("CHANGES.rst").read(),
       classifiers=[
         "Environment :: Web Environment",
         "Framework :: Plone",
