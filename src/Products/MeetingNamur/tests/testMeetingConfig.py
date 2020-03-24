@@ -23,9 +23,9 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as pmtmc
+from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
 
-class testMeetingConfig(MeetingNamurTestCase, pmtmc):
+class testMeetingConfig(MeetingNamurTestCase, mctmc):
     '''Tests the MeetingConfig class methods.'''
 
     def test_pm_SearchItemsToValidateOfEveryReviewerLevelsAndLowerLevels(self):

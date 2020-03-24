@@ -23,9 +23,9 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.MeetingCommunes.tests.testColumns import testColumns as mctc
 
-
-class testColumns(MeetingNamurTestCase):
+class testColumns(MeetingNamurTestCase, mctc):
     ''' '''
 
 

@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
-from plone.testing import z2, zca
+
 from plone.app.testing import FunctionalTesting
-from plone.app.testing import PloneWithPackageLayer
+from plone.testing import z2
+from plone.testing import zca
+from Products.MeetingCommunes.testing import MCLayer
+
 import Products.MeetingNamur
+
+class MSLayer(MCLayer):
+    """ """
 
 
 MNA_ZCML = zca.ZCMLSandbox(filename="testing.zcml",
@@ -12,7 +18,7 @@ MNA_ZCML = zca.ZCMLSandbox(filename="testing.zcml",
 MNA_Z2 = z2.IntegrationTesting(bases=(z2.STARTUP, MNA_ZCML),
                                name='MNA_Z2')
 
-MNA_TESTING_PROFILE = PloneWithPackageLayer(
+MNA_TESTING_PROFILE = MSLayer(
     zcml_filename="testing.zcml",
     zcml_package=Products.MeetingNamur,
     additional_z2_products=('imio.dashboard',

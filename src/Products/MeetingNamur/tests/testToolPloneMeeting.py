@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.tests.testToolPloneMeeting import testToolPloneMeeting as pmtt
+from Products.MeetingCommunes.tests.testToolPloneMeeting import testToolPloneMeeting as mctt
 
 
-class testToolPloneMeeting(MeetingNamurTestCase, pmtt):
+class testToolPloneMeeting(MeetingNamurTestCase, mctt):
     '''Tests the ToolPloneMeeting class methods.'''
 
 def test_suite():

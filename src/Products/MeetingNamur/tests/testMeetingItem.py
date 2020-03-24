@@ -23,12 +23,12 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as pmtmi
+from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 from Products.statusmessages.interfaces import IStatusMessage
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
 
 
-class testMeetingItem(MeetingNamurTestCase, pmtmi):
+class testMeetingItem(MeetingNamurTestCase, mctmi):
     """
         Tests the MeetingItem class methods.
     """

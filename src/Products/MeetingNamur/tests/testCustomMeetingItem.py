@@ -23,11 +23,12 @@
 #
 
 from AccessControl import Unauthorized
-from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from DateTime import DateTime
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.MeetingCommunes.tests.testCustomMeetingItem import testCustomMeetingItem as mctcmi
 
 
-class testCustomMeetingItem(MeetingNamurTestCase):
+class testCustomMeetingItem(MeetingNamurTestCase, mctcmi):
     """
         Tests the Meeting adapted methods
     """
@@ -144,3 +145,9 @@ class testCustomMeetingItem(MeetingNamurTestCase):
         formCertifiedSignatures.update()
         formCertifiedSignatures.handleApplyItemCertifiedSignatures(formCertifiedSignatures, None)
         self.assertEquals(item.getItemCertifiedSignatures(), 'Item certified signatures - 2')
+
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(testCustomMeetingItem, prefix='test_pm_'))
+    return suite

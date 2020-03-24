@@ -20,12 +20,10 @@
 # 02110-1301, USA.
 #
 
-from DateTime import DateTime
-from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
+from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 
-
-class MeetingNamurTestingHelpers(PloneMeetingTestingHelpers):
-    '''Override some values of PloneMeetingTestingHelpers.'''
+class MeetingNamurTestingHelpers(MeetingCommunesTestingHelpers):
+    '''Override some values of MeetingCommunesTestingHelpers.'''
 
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = TRANSITIONS_FOR_PROPOSING_ITEM_2 = ('propose',)
     TRANSITIONS_FOR_VALIDATING_ITEM_1 = TRANSITIONS_FOR_VALIDATING_ITEM_2 = ('propose', 'validate',)

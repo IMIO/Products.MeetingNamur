@@ -29,11 +29,11 @@ from imio.actionspanel.interfaces import IContentDeletable
 from Products.CMFCore.permissions import DeleteObjects
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.tests.testAnnexes import testAnnexes as pmta
+from Products.MeetingCommunes.tests.testAnnexes import testAnnexes as mcta
 
 
 
-class testAnnexes(MeetingNamurTestCase, pmta):
+class testAnnexes(MeetingNamurTestCase, mcta):
     ''' '''
 
 

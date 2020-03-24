@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.tests.testMeeting import testMeeting as pmtm
+from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
 
 
-class testMeeting(MeetingNamurTestCase, pmtm):
+class testMeeting(MeetingNamurTestCase, mctm):
     """
         Tests the Meeting class methods.
     """
@@ -36,7 +36,7 @@ class testMeeting(MeetingNamurTestCase, pmtm):
             Give temporary manager right to pmManager.
         """
         self.portal.acl_users.portal_role_manager.assignRoleToPrincipal('Manager', 'pmManager')
-        pmtm.test_pm_RemoveOrDeleteLinkedItem(self)
+        mctm.test_pm_RemoveOrDeleteLinkedItem(self)
 
 
     def test_pm_MeetingNumbers(self):

@@ -23,9 +23,9 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.MeetingCommunes.tests.testCustomMeetingItem import testCustomMeetingItem as mctcmi
 
-
-class testCustomMeeting(MeetingNamurTestCase):
+class testCustomMeeting(MeetingNamurTestCase, mctcmi):
     """
         Tests the Meeting adapted methods
     """
@@ -192,3 +192,9 @@ class testCustomMeeting(MeetingNamurTestCase):
         self.assertEquals(i2.getDecision(), "<p>Decision Item2</p>")
         #i3 is initlaized because the decision field contained an empty_value
         self.assertEquals(i3.getDecision(), "<p>Description Item3</p>")
+
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(testCustomMeeting, prefix='test_pm_'))
+    return suite

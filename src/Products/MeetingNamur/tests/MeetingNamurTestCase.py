@@ -20,7 +20,7 @@
 # 02110-1301, USA.
 #
 
-from Products.PloneMeeting.tests.PloneMeetingTestCase import PloneMeetingTestCase
+from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
 from Products.MeetingNamur.testing import MNA_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingNamur.tests.helpers import MeetingNamurTestingHelpers
 
@@ -29,40 +29,18 @@ from Products.MeetingNamur.tests.helpers import MeetingNamurTestingHelpers
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.model import adaptations
 from Products.MeetingNamur.adapters import customWfAdaptations
-MeetingConfig.wfAdaptations = customWfAdaptations
 from Products.MeetingNamur.adapters import RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 MeetingConfig.wfAdaptations = customWfAdaptations
 adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
-class MeetingNamurTestCase(PloneMeetingTestCase, MeetingNamurTestingHelpers):
+class MeetingNamurTestCase(MeetingCommunesTestCase, MeetingNamurTestingHelpers):
     """Base class for defining MeetingNamur test cases."""
 
     layer = MNA_TESTING_PROFILE_FUNCTIONAL
 
-    def _createFinanceGroups(self):
-        """
-           Create the finance groups.
-        """
-        financeGroupsData = ({'id': 'finances',
-                              'title': 'Finances',
-                              'acronym': 'DGF', },
-                             {'id': 'taxes',
-                              'title': 'Taxes',
-                              'acronym': 'DGF - Taxes', },
-                             )
-
-        for financeGroup in financeGroupsData:
-            if not hasattr(self.tool, financeGroup['id']):
-                newGroupId = self.tool.invokeFactory('MeetingGroup',
-                                                     id=financeGroup['id'],
-                                                     title=financeGroup['title'],
-                                                     acronym=financeGroup['acronym'], )
-                newGroup = getattr(self.tool, newGroupId)
-                newGroup.processForm(values={'dummy': None})
-
     def setUp(self):
-        PloneMeetingTestCase.setUp(self)
+        MeetingCommunesTestCase.setUp(self)
         self.meetingConfig = getattr(self.tool, 'meeting-config-college')
         self.meetingConfig2 = getattr(self.tool, 'meeting-config-council')
 

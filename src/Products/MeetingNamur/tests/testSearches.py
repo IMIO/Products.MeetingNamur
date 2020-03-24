@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.tests.testSearches import testSearches as pmts
+from Products.MeetingCommunes.tests.testSearches import testSearches as mcts
 
 
-class testSearches(MeetingNamurTestCase, pmts):
+class testSearches(MeetingNamurTestCase, mcts):
     """Test searches."""
 
     def test_pm_SearchItemsToCorrectToValidateHighestHierarchicLevel(self):

@@ -30,18 +30,18 @@ from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_ST
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as pmtwfa
+from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
 
 
-class testWFAdaptations(MeetingNamurTestCase, pmtwfa):
+class testWFAdaptations(MeetingNamurTestCase, mctwfa):
     '''Tests various aspects of votes management.'''
 
     def test_pm_WFA_availableWFAdaptations(self):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
         self.assertEquals(set(self.meetingConfig.listWorkflowAdaptations()),
-                          set(('return_to_proposing_group',
+                          {'return_to_proposing_group',
                                'return_to_proposing_group_with_last_validation',
-                               'return_to_proposing_group_with_all_validations')))
+                               'return_to_proposing_group_with_all_validations'})
 
     def test_pm_WFA_no_publication(self):
         '''No sense...'''
@@ -98,10 +98,6 @@ class testWFAdaptations(MeetingNamurTestCase, pmtwfa):
     def test_pm_WFA_return_to_proposing_group_with_last_validation(self):
         '''Not used yet...'''
         pass
-
-    def test_pm_WFA_return_to_proposing_group(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        pmtwfa.test_pm_WFA_return_to_proposing_group(self)
 
     def _return_to_proposing_group_inactive(self):
         '''Tests while 'return_to_proposing_group' wfAdaptation is inactive.'''
@@ -165,7 +161,7 @@ class testWFAdaptations(MeetingNamurTestCase, pmtwfa):
         # on the meeting state.  Here, when meeting is 'created', the item is back to 'presented'
         self.do(item, 'backTo_presented_from_returned_to_proposing_group')
         self.assertEquals(item.queryState(), 'presented')
-        # XXX changed by MeetingCPASLalouviere
+        # XXX changed by MeetingNamur
         # send the item back to proposing group, set the meeting in_committee then send the item back to the meeting
         # the item should be now in the item state corresponding to the meeting frozen state, so 'itemfrozen'
         self.do(item, 'return_to_proposing_group')

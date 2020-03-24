@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.tests.testValidators import testValidators as pmtv
+from Products.MeetingCommunes.tests.testValidators import testValidators as mctv
 
 
-class testValidators(MeetingNamurTestCase, pmtv):
+class testValidators(MeetingNamurTestCase, mctv):
     """
         Tests the validators.
     """

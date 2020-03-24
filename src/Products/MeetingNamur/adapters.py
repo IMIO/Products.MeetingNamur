@@ -567,32 +567,6 @@ class MeetingItemNamurWorkflowActions(MeetingItemCommunesWorkflowActions):
     implements(IMeetingItemNamurWorkflowActions)
     security = ClassSecurityInfo()
 
-    security.declarePrivate('doValidate')
-
-    def doValidate(self, stateChange):
-        # If it is a "late" item, we must potentially send a mail to warn MeetingManagers.
-        item = self.context
-        preferredMeeting = item.getPreferredMeeting()
-        if preferredMeeting != 'whatever':
-            # Get the meeting from its UID
-            objs = item.uid_catalog.searchResults(UID=preferredMeeting)
-            if objs:
-                meeting = objs[0].getObject()
-                if item.wfConditions().isLateFor(meeting):
-                    sendMailIfRelevant(item, 'lateItem',
-                                       'MeetingManager', isRole=True)
-        # ask advice to the concerned alderman
-        oa = item.getOptionalAdvisers()
-        oal = list(oa)
-        aldermans = item.adapted().getEchevinsForProposingGroup()
-        for alderman in aldermans:
-            if alderman not in oal:
-                oal.append(alderman)
-        oa = tuple(oal)
-        item.setOptionalAdvisers(oa)
-        # If the decision field is empty, initialize it
-        item._initDecisionFieldIfEmpty()
-
     security.declarePrivate('doPresent')
 
     def doPresent(self, stateChange):
