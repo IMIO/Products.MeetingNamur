@@ -152,65 +152,6 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
 
-    def test_pm_CloseMeeting(self):
-        """
-           When we close a meeting, every items are set to accepted if they are still
-           not decided...
-        """
-        # First, define recurring items in the meeting config
-        self.changeUser('pmManager')
-        #create a meeting (with 7 items)
-        meetingDate = DateTime().strftime('%y/%m/%d %H:%M:00')
-        meeting = self.create('Meeting', date=meetingDate)
-        item1 = self.create('MeetingItem')  # id=o2
-        item1.setProposingGroup('vendors')
-        item1.setAssociatedGroups(('developers',))
-        item2 = self.create('MeetingItem')  # id=o3
-        item2.setProposingGroup('developers')
-        item3 = self.create('MeetingItem')  # id=o4
-        item3.setProposingGroup('vendors')
-        item4 = self.create('MeetingItem')  # id=o5
-        item4.setProposingGroup('developers')
-        item5 = self.create('MeetingItem')  # id=o7
-        item5.setProposingGroup('vendors')
-        item6 = self.create('MeetingItem', title='The sixth item')
-        item6.setProposingGroup('vendors')
-        item7 = self.create('MeetingItem')  # id=o8
-        item7.setProposingGroup('vendors')
-        for item in (item1, item2, item3, item4, item5, item6, item7):
-            self.presentItem(item)
-        #we freeze the meeting
-        self.do(meeting, 'freeze')
-        #a MeetingManager can put the item back to presented
-        self.do(item7, 'backToPresented')
-        #we decide the meeting
-        #while deciding the meeting, every items that where presented are frozen
-        self.do(meeting, 'decide')
-        #change all items in all different state (except first who is in good state)
-        self.do(item7, 'backToPresented')
-        self.do(item2, 'delay')
-        self.do(item3, 'pre_accept')
-        self.do(item4, 'accept_but_modify')
-        self.do(item5, 'refuse')
-        self.do(item6, 'accept')
-        #we close the meeting
-        self.do(meeting, 'close')
-        #every items must be in the 'decided' state if we close the meeting
-        wftool = self.portal.portal_workflow
-        #itemfrozen change into accepted
-        self.assertEquals('accepted', wftool.getInfoFor(item1, 'review_state'))
-        #delayed rest delayed (it's already a 'decide' state)
-        self.assertEquals('delayed', wftool.getInfoFor(item2, 'review_state'))
-        #pre_accepted change into accepted
-        self.assertEquals('accepted', wftool.getInfoFor(item3, 'review_state'))
-        #accepted_but_modified rest accepted_but_modified (it's already a 'decide' state)
-        self.assertEquals('accepted_but_modified', wftool.getInfoFor(item4, 'review_state'))
-        #refused rest refused (it's already a 'decide' state)
-        self.assertEquals('refused', wftool.getInfoFor(item5, 'review_state'))
-        #accepted rest accepted (it's already a 'decide' state)
-        self.assertEquals('accepted', wftool.getInfoFor(item6, 'review_state'))
-        #presented change into accepted
-        self.assertEquals('accepted', wftool.getInfoFor(item7, 'review_state'))
 
     def test_pm_WorkflowPermissions(self):
         """Bypass this test..."""

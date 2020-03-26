@@ -22,6 +22,7 @@
 # 02110-1301, USA.
 #
 
+from DateTime import DateTime
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
 
@@ -53,6 +54,48 @@ class testMeeting(MeetingNamurTestCase, mctm):
         self.decideMeeting(m2)
         self.assertEquals(m2.getMeetingNumber(), 2)
         self.assertEquals(self.meetingConfig.getLastMeetingNumber(), 2)
+
+    def test_pm_InsertItemOnItemDecisionFirstWords(self):
+        """Test when inserting item in a meeting using
+           'on_item_decision_first_words' insertion method."""
+        cfg = self.meetingConfig
+        cfg.setInsertingMethodsOnAddItem(({'insertingMethod': 'on_item_decision_first_words', 'reverse': '0'}, ))
+        self.changeUser('pmManager')
+        meeting = self.create('Meeting', date=DateTime('2019/09/20'))
+        # xxx Namur, creator place decision in description field and it's copied on decision field when the item is validate
+        data = ({'description': "<p>DÉCIDE d'engager Madame Untell Anne au poste proposé</p>"},
+                {'description': "<p>DÉCIDE de refuser</p>"},
+                {'description': "<p>REFUSE d'engager Madame Untell Anne au poste proposé</p>"},
+                {'description': "<p>A REFUSÉ d'engager Madame Untell Anne au poste proposé</p>"},
+                {'description': "<p>DECIDE aussi de ne pas décider</p>"},
+                {'description': "<p>ACCEPTE d'engager Madame Untell Anne au poste proposé</p>"},
+                {'description': "<p>ACCEPTENT d'engager Madame Untell Anne au poste proposé</p>"}, )
+        for itemData in data:
+            item = self.create('MeetingItem', **itemData)
+            self.presentItem(item)
+        self.assertEqual(
+            [anItem.getDecision() for anItem in meeting.getItems(ordered=True)],
+            ["<p>A REFUS\xc3\x89 d'engager Madame Untell Anne au poste propos\xc3\xa9</p>",
+             "<p>ACCEPTE d'engager Madame Untell Anne au poste propos\xc3\xa9</p>",
+             "<p>ACCEPTENT d'engager Madame Untell Anne au poste propos\xc3\xa9</p>",
+             '<p>DECIDE aussi de ne pas d\xc3\xa9cider</p>',
+             "<p>D\xc3\x89CIDE d'engager Madame Untell Anne au poste propos\xc3\xa9</p>",
+             '<p>D\xc3\x89CIDE de refuser</p>',
+             "<p>REFUSE d'engager Madame Untell Anne au poste propos\xc3\xa9</p>",
+             '<p>This is the first recurring item.</p>',
+             '<p>This is the second recurring item.</p>'])
+        self.assertEqual(
+            [anItem._findOrderFor('on_item_decision_first_words') for anItem in meeting.getItems(ordered=True)],
+            [u"a refuse d'engager madame untell",
+             u"accepte d'engager madame untell anne",
+             u"acceptent d'engager madame untell anne",
+             u'decide aussi de ne pas',
+             u"decide d'engager madame untell anne",
+             u'decide de refuser',
+             u"refuse d'engager madame untell anne",
+             u'this is the first recurring',
+             u'this is the second recurring'])
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -24,12 +24,11 @@
 
 from AccessControl import Unauthorized
 from DateTime import DateTime
-
-from imio.actionspanel.interfaces import IContentDeletable
-from Products.CMFCore.permissions import DeleteObjects
-
+from plone import api
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.MeetingCommunes.tests.testAnnexes import testAnnexes as mcta
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 
 
@@ -117,6 +116,127 @@ class testAnnexes(MeetingNamurTestCase, mcta):
         # view._annexDecisionCategories is memoized
         view = item.restrictedTraverse('@@categorized-annexes')
         self.assertFalse(view.showDecisionAnnexesSection())
+
+    def test_pm_AnnexRestrictShownAndEditableAttributes(self):
+        """Test MeetingConfig.annexRestrictShownAndEditableAttributes
+           that defines what annex attributes are displayed/editable only to MeetingManagers."""
+        # enable every attributes
+        self.changeUser('siteadmin')
+        cfg = self.meetingConfig
+        cfg.setAnnexRestrictShownAndEditableAttributes(())
+        config = cfg.annexes_types.item_annexes
+        annex_attr_names = (
+            'confidentiality_activated',
+            'signed_activated',
+            'publishable_activated',
+            'to_be_printed_activated')
+        # enable every attr for annex, none for annexDecision
+        for attr_name in annex_attr_names:
+            setattr(config, attr_name, True)
+
+        # helper check method
+        annex_attr_change_view_names = (
+            '@@iconified-confidential',
+            '@@iconified-signed',
+            '@@iconified-publishable',
+            '@@iconified-print')
+
+        def _check(annexes_table,
+                   annex,
+                   annex_decision,
+                   displayed=annex_attr_change_view_names,
+                   editable=annex_attr_change_view_names):
+            ''' '''
+            # nothing displayed for annexDecision
+            for view_name in displayed:
+                self.assertTrue(view_name in annexes_table.table_render(portal_type='annex'))
+                self.assertFalse(view_name in annexes_table.table_render(portal_type='annexDecision'))
+            for view_name in editable:
+                self.assertTrue(annex.restrictedTraverse(view_name)._may_set_values({}))
+                self.assertFalse(annex_decision.restrictedTraverse(view_name)._may_set_values({}))
+
+        # xxx Namur, creator can't create decsion, annexe
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        annex = self.addAnnex(item)
+        self.assertRaises(Unauthorized, self.addAnnex, item, relatedTo='item_decision')
+        self.changeUser('admin')
+        annex_decision = self.addAnnex(item, relatedTo='item_decision')
+        self.changeUser('pmCreator1')
+        annexes_table = item.restrictedTraverse('@@iconifiedcategory')
+        # everything displayed/editable by user
+        self.assertEqual(cfg.getAnnexRestrictShownAndEditableAttributes(), ())
+        _check(annexes_table, annex, annex_decision)
+        # confidential no more editable but viewable
+        cfg.setAnnexRestrictShownAndEditableAttributes(('confidentiality_edit'))
+        list_editable_annex_attr_change_view_names = list(annex_attr_change_view_names)
+        list_editable_annex_attr_change_view_names.remove('@@iconified-confidential')
+        _check(annexes_table, annex, annex_decision, editable=list_editable_annex_attr_change_view_names)
+        # confidential and signed no more editable but viewable
+        cfg.setAnnexRestrictShownAndEditableAttributes(('confidentiality_edit', 'signed_edit'))
+        list_editable_annex_attr_change_view_names.remove('@@iconified-signed')
+        _check(annexes_table, annex, annex_decision, editable=list_editable_annex_attr_change_view_names)
+        # when someting not displayed, not editable automatically
+        cfg.setAnnexRestrictShownAndEditableAttributes(('confidentiality_edit',
+                                                        'signed_edit',
+                                                        'publishable_display'))
+        list_editable_annex_attr_change_view_names.remove('@@iconified-publishable')
+        list_displayed_annex_attr_change_view_names = list(annex_attr_change_view_names)
+        list_displayed_annex_attr_change_view_names.remove('@@iconified-publishable')
+        _check(annexes_table, annex, annex_decision,
+               editable=list_editable_annex_attr_change_view_names,
+               displayed=list_displayed_annex_attr_change_view_names)
+
+    def test_pm_ParentModificationDateUpdatedWhenAnnexChanged(self):
+        """When an annex is added/modified/removed, the parent modification date is updated."""
+
+        catalog = api.portal.get_tool('portal_catalog')
+
+        def _check_parent_modified(parent, parent_modified, annex):
+            """ """
+            parent_uid = parent.UID()
+            # modification date was updated
+            self.assertNotEqual(parent_modified, item.modified())
+            parent_modified = parent.modified()
+            self.assertEqual(catalog(UID=parent_uid)[0].modified, parent_modified)
+
+            # edit the annex
+            notify(ObjectModifiedEvent(annex))
+            # modification date was updated
+            self.assertNotEqual(parent_modified, item.modified())
+            parent_modified = parent.modified()
+            self.assertEqual(catalog(UID=parent_uid)[0].modified, parent_modified)
+
+            # remove an annex
+            self.portal.restrictedTraverse('@@delete_givenuid')(annex.UID())
+            # modification date was updated
+            self.assertNotEqual(parent_modified, item.modified())
+            parent_modified = parent.modified()
+            self.assertEqual(catalog(UID=parent_uid)[0].modified, parent_modified)
+
+        # on MeetingItem
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        parent_modified = item.modified()
+        self.assertEqual(catalog(UID=item.UID())[0].modified, parent_modified)
+        # add an annex
+        annex = self.addAnnex(item)
+        _check_parent_modified(item, parent_modified, annex)
+        # add a decision annex
+        self.changeUser('admin')
+        decision_annex = self.addAnnex(item, relatedTo='item_decision')
+        self.changeUser('pmCreator1')
+        _check_parent_modified(item, parent_modified, decision_annex)
+
+        # on Meeting
+        self.changeUser('pmManager')
+        meeting = self.create('Meeting', date=DateTime('2018/03/19'))
+        parent_modified = meeting.modified()
+        self.assertEqual(catalog(UID=meeting.UID())[0].modified, parent_modified)
+        # add an annex
+        annex = self.addAnnex(meeting)
+        _check_parent_modified(meeting, parent_modified, annex)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

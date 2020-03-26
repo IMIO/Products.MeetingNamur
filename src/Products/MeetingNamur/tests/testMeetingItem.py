@@ -24,8 +24,9 @@
 
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
-from Products.statusmessages.interfaces import IStatusMessage
+from Products.PloneMeeting.utils import get_annexes
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
+from Products.statusmessages.interfaces import IStatusMessage
 
 
 class testMeetingItem(MeetingNamurTestCase, mctmi):
@@ -62,7 +63,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         # make sure relevant fields are there or no more there
         self.assertEquals(clonedItem.Title(), item.Title())
         self.assertEquals(clonedItem.Description(), item.Description())
-        # for Namur, the decision field is fill when item go to te meetingManager (validated)
+        # xxx Namur, the decision field is fill when item go to te meetingManager (validated)
         # an item who is send to other config didn't have decision
         self.assertEquals(clonedItem.getDecision(), '<p>&nbsp;</p>')
         self.failIf(clonedItem.getMotivation())
@@ -128,6 +129,27 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         messages = IStatusMessage(self.request).show()
         self.assertTrue(messages[-1].message == ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR % ('decision',
                                                                                          "'some_wrong_tal_expression'"))
+    def test_pm_DuplicatedItemDoesNotKeepDecisionAnnexes(self):
+        """When an item is duplicated using the 'duplicate and keep link',
+           decision annexes are not kept."""
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        self.addAnnex(item)
+        #xxx Namur, creator can't create "Annexe decision"
+        self.changeUser('admin')
+        self.addAnnex(item, relatedTo='item_decision')
+        self.changeUser('pmCreator1')
+        self.assertTrue(get_annexes(item, portal_types=['annex']))
+        self.assertTrue(get_annexes(item, portal_types=['annexDecision']))
+        # cloned and link not kept, decison annexes are removed
+        clonedItem = item.clone()
+        self.assertTrue(get_annexes(clonedItem, portal_types=['annex']))
+        self.assertFalse(get_annexes(clonedItem, portal_types=['annexDecision']))
+        # cloned but link kept, decison annexes are also removed
+        clonedItemWithLink = item.clone(setCurrentAsPredecessor=True)
+        self.assertTrue(get_annexes(clonedItemWithLink, portal_types=['annex']))
+        self.assertFalse(get_annexes(clonedItemWithLink, portal_types=['annexDecision']))
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

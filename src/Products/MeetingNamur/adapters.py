@@ -567,6 +567,14 @@ class MeetingItemNamurWorkflowActions(MeetingItemCommunesWorkflowActions):
     implements(IMeetingItemNamurWorkflowActions)
     security = ClassSecurityInfo()
 
+    security.declarePrivate('doValidate')
+
+    def doValidate(self, stateChange):
+        MeetingItemWorkflowActions.doValidate(self, stateChange)
+        item = self.context
+        # If the decision field is empty, initialize it
+        item._initDecisionFieldIfEmpty()
+
     security.declarePrivate('doPresent')
 
     def doPresent(self, stateChange):
