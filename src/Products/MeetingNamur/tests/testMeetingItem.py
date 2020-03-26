@@ -26,7 +26,10 @@ from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCas
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 from Products.PloneMeeting.utils import get_annexes
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
+from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from Products.PloneMeeting.utils import setFieldFromAjax
 from Products.statusmessages.interfaces import IStatusMessage
+from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 
 
 class testMeetingItem(MeetingNamurTestCase, mctmi):
@@ -59,10 +62,10 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         item.setOtherMeetingConfigsClonableTo((cfg2Id,))
         item.at_post_edit_script()
         clonedItem = item.cloneToOtherMeetingConfig(cfg2Id)
-
         # make sure relevant fields are there or no more there
+        # xxx Namur, Description is removed
         self.assertEquals(clonedItem.Title(), item.Title())
-        self.assertEquals(clonedItem.Description(), item.Description())
+        self.assertEquals(clonedItem.Description(), '')
         # xxx Namur, the decision field is fill when item go to te meetingManager (validated)
         # an item who is send to other config didn't have decision
         self.assertEquals(clonedItem.getDecision(), '<p>&nbsp;</p>')
@@ -150,6 +153,64 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         self.assertTrue(get_annexes(clonedItemWithLink, portal_types=['annex']))
         self.assertFalse(get_annexes(clonedItemWithLink, portal_types=['annexDecision']))
 
+    def test_pm_ItemExternalImagesStoredLocally(self):
+        """External images are stored locally."""
+        cfg = self.meetingConfig
+        if 'creator_initiated_decisions' in cfg.listWorkflowAdaptations():
+            cfg.setWorkflowAdaptations(('creator_initiated_decisions', ))
+            performWorkflowAdaptations(cfg, logger=pm_logger)
+        self.changeUser('pmCreator1')
+        # creation time
+        text = '<p>Working external image <img src="https://i.picsum.photos/id/22/400/400.jpg"/>.</p>'
+        pmFolder = self.getMeetingFolder()
+        # do not use self.create to be sure that it works correctly with invokeFactory
+        itemId = pmFolder.invokeFactory(cfg.getItemTypeName(),
+                                        id='item',
+                                        proposingGroup=self.developers_uid,
+                                        description=text)
+        item = getattr(pmFolder, itemId)
+        item.processForm()
+        # contact.png was saved in the item
+        self.assertTrue('22-400x400.jpg' in item.objectIds())
+        img = item.get('22-400x400.jpg')
+        # external image link was updated
+        self.assertEqual(
+            item.getRawDescription(),
+            '<p>Working external image <img src="resolveuid/{0}">.</p>'.format(img.UID()))
+        # xxx Namur creator can't complete decision field continue with admin
+        self.changeUser('admin')
+        # test using the quickedit, test with field 'decision' where getRaw was overrided
+        decision = '<p>Working external image <img src="https://i.picsum.photos/id/1025/400/300.jpg"/>.</p>'
+        setFieldFromAjax(item, 'decision', decision)
+        self.assertTrue('1025-400x300.jpg' in item.objectIds())
+        img2 = item.get('1025-400x300.jpg')
+        # external image link was updated
+        self.assertEqual(
+            item.getRawDecision(),
+            '<p>Working external image <img src="resolveuid/{0}">.</p>'.format(img2.UID()))
+
+        # test using at_post_edit_script, aka full edit form
+        decision = '<p>Working external image <img src="https://i.picsum.photos/id/1035/600/400.jpg"/>.</p>'
+        item.setDecision(decision)
+        item._update_after_edit()
+        self.assertTrue('1035-600x400.jpg' in item.objectIds())
+        img3 = item.get('1035-600x400.jpg')
+        # external image link was updated
+        self.assertEqual(
+            item.getRawDecision(),
+            '<p>Working external image <img src="resolveuid/{0}">.</p>'.format(img3.UID()))
+
+        # link to unknown external image, like during copy/paste of content
+        # that has a link to an unexisting image or so
+        decision = '<p>Not working external image <img src="https://i.picsum.photos/id/449/400.png">.</p>'
+        item.setDecision(decision)
+        item._update_after_edit()
+        self.assertTrue('1035-600x400.jpg' in item.objectIds())
+        # nothing was done
+        self.assertListEqual(
+            sorted(item.objectIds()),
+            ['1025-400x300.jpg', '1035-600x400.jpg', '22-400x400.jpg'])
+        self.assertEqual(item.getRawDecision(), decision)
 
 def test_suite():
     from unittest import TestSuite, makeSuite

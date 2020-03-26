@@ -68,9 +68,9 @@ class testViews(MeetingNamurTestCase, mctv):
         # item has been created with a filled proposing group
         # and privacy is still ok
         self.assertTrue(newItem2.getId() in folder.objectIds())
-        userGroups = self.tool.getGroupsForUser(suffixes=['creators'])
-        self.assertTrue(newItem2.getProposingGroup() == userGroups[0].getId())
-        self.assertTrue(newItem2.getPrivacy() == itemTemplate.getPrivacy())
+        userGroups = self.tool.get_orgs_for_user(suffixes=['creators'])
+        self.assertEqual(newItem2.getProposingGroup(), userGroups[0].UID())
+        self.assertEqual(newItem2.getPrivacy(), itemTemplate.getPrivacy())
 
 def test_suite():
     from unittest import TestSuite, makeSuite

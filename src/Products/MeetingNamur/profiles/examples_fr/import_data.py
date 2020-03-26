@@ -24,6 +24,7 @@ councilMeeting.itemActionsInterface = 'Products.MeetingNamur.interfaces.IMeeting
 councilMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowConditions'
 councilMeeting.meetingActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowActions'
 councilMeeting.workflowAdaptations = []
+councilMeeting.itemCopyGroupsStates = []
 
 # no recurring items for this meetingConfig, only for tests !!!
 # so we can test a meetingConfig with recurring items (college) and without (council)
