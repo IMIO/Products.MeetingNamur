@@ -214,7 +214,7 @@ class CustomNamurMeeting(CustomMeeting):
         items = self.context.getItems(uids=itemUids, listTypes=listTypes, ordered=True)
 
         if by_proposing_group:
-            groups = tool.getMeetingGroups()
+            groups = get_organizations()
         else:
             groups = None
         if items:
