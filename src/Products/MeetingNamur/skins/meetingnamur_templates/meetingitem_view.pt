@@ -467,9 +467,11 @@
     <fieldset>
       <legend i18n:translate="">Budget</legend>
         <p class="item-before-budget-related"></p>
-        <legend i18n:translate="MeetingNamur_label_grpBudgetInfos">Group Budgetary informations</legend>
-        <span metal:use-macro="python: here.widget('grpBudgetInfos', mode='view')" />
         <metal:budgetInfos use-macro="here/@@pm-macros/budgetInfos" />
+        <fieldset tal:condition="python:context.getGrpBudgetInfos() and context.getBudgetRelated()">
+          <legend i18n:translate="MeetingNamur_label_grpBudgetInfos">Group Budgetary informations</legend>
+          <span metal:use-macro="python: here.widget('grpBudgetInfos', mode='view')" />
+        </fieldset>
 
         <tal:displayBudgetInfos define="fieldName string:budgetInfos;
                                         ajaxEdit string:True;">
