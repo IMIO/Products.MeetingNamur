@@ -34,11 +34,11 @@ from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.atapi import DisplayList
 from plone import api
 
+from collective.contact.plonegroup.utils import get_organizations
 from imio.helpers.xhtml import xhtmlContentIsEmpty
 from Products.PloneMeeting.adapters import ItemPrettyLinkAdapter
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
-from Products.PloneMeeting.interfaces import IMeetingGroupCustom
 from Products.PloneMeeting.interfaces import IToolPloneMeetingCustom
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
@@ -46,7 +46,6 @@ from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.utils import sendMail
-from Products.PloneMeeting.utils import sendMailIfRelevant
 
 from Products.MeetingCommunes.adapters import CustomMeeting
 from Products.MeetingCommunes.adapters import CustomMeetingItem
@@ -360,10 +359,9 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         acronym group start with DGF"""
         res = []
         res.append(('', self.utranslate('make_a_choice', domain='PloneMeeting')))
-        tool = getToolByName(self, "portal_plonemeeting")
-        for group in tool.getMeetingGroups(onlyActive=True):
-            if group.acronym.startswith('DGF'):
-                res.append((group.id, group.getProperty('title')))
+        orgs = get_organizations(not_empty_suffix='budgetimpactreviewers')
+        for group in orgs:
+            res.append((group.id, group.getProperty('title')))
         return DisplayList(tuple(res))
 
     MeetingItem.listGrpBudgetInfosAdviser = listGrpBudgetInfosAdviser
