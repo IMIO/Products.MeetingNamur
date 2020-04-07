@@ -89,7 +89,7 @@ class ManageItemCertifiedSignaturesForm(form.Form):
     contentProviders['itemCertifiedSignatures'] = DisplayCertifiedSignaturesProvider
     # put the 'itemCertifiedSignatures' in first position
     contentProviders['itemCertifiedSignatures'].position = 0
-    contentProviders['itemCertifiedSignatures'].size = 24
+    contentProviders['itemCertifiedSignatures'].size = 8
     label = _(u"Manage item certified signatures")
     description = u''
     _finishedSent = False
