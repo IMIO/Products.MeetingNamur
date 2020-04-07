@@ -3,4 +3,8 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone">
 
+   <!-- IPrettyLink for MeetingItem -->
+    <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
+             factory=".adapters.MNAItemPrettyLinkAdapter"
+             provides="imio.prettylink.interfaces.IPrettyLink" />
 </configure>

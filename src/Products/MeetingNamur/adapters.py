@@ -679,9 +679,9 @@ InitializeClass(CustomNamurToolPloneMeeting)
 
 # ------------------------------------------------------------------------------
 
-class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
+class MNAItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
     """
-      Override to take into account MeetingLiege use cases...
+      Override to take into account Meetingnamur use cases...
     """
 
     def _leadingIcons(self):
@@ -689,7 +689,7 @@ class MLItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
           Manage icons to display before the icons managed by PrettyLink._icons.
         """
         # Default PM item icons
-        icons = super(MLItemPrettyLinkAdapter, self)._leadingIcons()
+        icons = super(MNAItemPrettyLinkAdapter, self)._leadingIcons()
 
         if self.context.isDefinedInTool():
             return icons
