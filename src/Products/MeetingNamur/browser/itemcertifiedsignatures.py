@@ -21,6 +21,7 @@
 #
 
 from AccessControl import Unauthorized
+from plone import api
 from zope.contentprovider.provider import ContentProviderBase
 from zope.i18n import translate
 from zope import interface, schema
@@ -88,7 +89,7 @@ class ManageItemCertifiedSignaturesForm(form.Form):
     contentProviders['itemCertifiedSignatures'] = DisplayCertifiedSignaturesProvider
     # put the 'itemCertifiedSignatures' in first position
     contentProviders['itemCertifiedSignatures'].position = 0
-    contentProviders['itemCertifiedSignatures'].size = 8
+    contentProviders['itemCertifiedSignatures'].size = 24
     label = _(u"Manage item certified signatures")
     description = u''
     _finishedSent = False
@@ -117,7 +118,7 @@ class ManageItemCertifiedSignaturesForm(form.Form):
     def update(self):
         """ """
         # raise Unauthorized if current user can not manage itemAssembly
-        if not self.context.portal_plonemeeting.getUser().has_permission('MeetingNamur: Write certified signatures',
+        if not api.user.get_current().has_permission('MeetingNamur: Write certified signatures',
                                                                          self.context):
             raise Unauthorized
 
