@@ -269,13 +269,13 @@ class CustomNamurMeeting(CustomMeeting):
             for cat in allCategories:
                 if cat not in usedCategories:
                     # no empty service, we want only show department
-                    if cat.getAcronym().find('-') > 0:
+                    if not hasattr(cat, 'acronym') or cat.get_acronym().find('-') > 0:
                         continue
                     else:
                         # no empty department
                         dpt_empty = True
                         for uc in usedCategories:
-                            if uc.getAcronym().startswith(cat.getAcronym()):
+                            if uc.get_acronym().startswith(cat.get_acronym()):
                                 dpt_empty = False
                                 break
                         if dpt_empty:
@@ -285,7 +285,7 @@ class CustomNamurMeeting(CustomMeeting):
                     i = 0
                     for obj in res:
                         try:
-                            if not obj[0].getAcronym().startswith(cat.getAcronym()):
+                            if not obj[0].get_acronym().startswith(cat.get_acronym()):
                                 i = i + 1
                                 continue
                             else:

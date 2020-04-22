@@ -141,7 +141,8 @@ class ManageItemCertifiedSignaturesForm(form.Form):
           The method actually do the job, set the itemSignatures on self.context
           and following items if defined
         """
-        if not self.context.portal_plonemeeting.getUser().has_permission('MeetingNamur: Write certified signatures',
+        user = self.context.portal_membership.getAuthenticatedMember()
+        if not user.has_permission('MeetingNamur: Write certified signatures',
                                                                          self.context):
             raise Unauthorized
 

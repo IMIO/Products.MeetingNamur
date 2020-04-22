@@ -33,38 +33,6 @@ class testCustomMeetingItem(MeetingNamurTestCase, mctcmi):
         Tests the Meeting adapted methods
     """
 
-    def test_GetEchevinsForProposingGroup(self):
-        """Check a meetingItem for developers group return an echevin (the Same group in our case)
-           and a meetingItem for vendors return no echevin."""
-        # create items
-        self.changeUser('pmCreator1')
-        i1 = self.create('MeetingItem')
-        i1.setProposingGroup('vendors')
-        # for vendor, certfiedSignatures must be empty
-        res = i1.adapted().getEchevinsForProposingGroup()
-        self.assertEquals(res, [])
-        self.changeUser('pmCreator1')
-        i2 = self.create('MeetingItem')
-        i2.setProposingGroup('developers')
-        # for developer, certfiedSignatures must be equal to
-        res = i2.adapted().getEchevinsForProposingGroup()
-        self.assertEquals(res, ['developers'])
-
-    def test_listGrpBudgetInfosAdviser(self):
-        """Check if the list of groups that can be selected on an item to modify budgetInfos field
-        correspond to group with accronym start with DGF (finance and taxe))"""
-        self.changeUser('admin')
-        self._createFinanceGroups()
-        self.changeUser('pmCreator1')
-        i1 = self.create('MeetingItem')
-        list_GBIA = i1.listGrpBudgetInfosAdviser()
-        from Products.Archetypes.atapi import DisplayList
-        res = DisplayList([('', u'--make_a_choice--'), ('finances', u'Finances'), ('taxes', u'Taxes')])
-        self.assertEquals(len(list_GBIA), 3)
-        self.assertEquals(list_GBIA[0], res[0])
-        self.assertEquals(list_GBIA[1], res[1])
-        self.assertEquals(list_GBIA[2], res[2])
-
     def test_onEdit(self):
         """check MeetingBudgetImpactReviewer role on an item, when a group is choosen in BudgetInfosAdviser
         and state is, at least "itemFrozen". Retrieve role for other grp_budgetimpactreviewers
@@ -108,7 +76,7 @@ class testCustomMeetingItem(MeetingNamurTestCase, mctcmi):
         item = self.create('MeetingItem')
         item.setDecision('<p>A decision</p>')
         self.changeUser('pmManager')
-        meeting = self._createMeetingWithItems(withItems=False, meetingDate=DateTime() + 1)
+        meeting = self.create('Meeting', date=DateTime() + 1)
         # define an assembly on the meeting
         meeting.setAssembly('Meeting assembly')
         meeting.setSignatures('Meeting signatures')
@@ -149,5 +117,5 @@ class testCustomMeetingItem(MeetingNamurTestCase, mctcmi):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testCustomMeetingItem, prefix='test_pm_'))
+    suite.addTest(makeSuite(testCustomMeetingItem, prefix='test_'))
     return suite
