@@ -21,7 +21,6 @@ from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.MeetingNamur.config import PROJECTNAME
 
 
-
 def isNotMeetingNamurProfile(context):
     return context.readDataFile("MeetingNamur_marker.txt") is None
 
@@ -55,14 +54,6 @@ def logStep(method, context):
 def isMeetingNamurConfigureProfile(context):
     return context.readDataFile("MeetingNamur_examples_fr_marker.txt") or \
         context.readDataFile("MeetingNamur_tests_marker.txt")
-
-
-def isMeetingNamurTestingProfile(context):
-    return context.readDataFile("MeetingNamur_tests_marker.txt")
-
-
-def isMeetingNamurMigrationProfile(context):
-    return context.readDataFile("MeetingNamur_migrations_marker.txt")
 
 
 def installMeetingNamur(context):
