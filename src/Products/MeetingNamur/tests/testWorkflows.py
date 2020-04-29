@@ -55,7 +55,6 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         # pmCreator1 creates an item
         self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.addAnnex(item1)
         # manager add decision annex because only manager or meeting manager can add it
         self.changeUser('pmManager')
@@ -76,8 +75,6 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         self.do(item2, 'propose')
         # pmReviewer1 validates item1
         self.changeUser('pmReviewer1')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
-        self.changeUser('pmManager')
         self.addAnnex(item1, relatedTo='item_decision')
         self.changeUser('pmReviewer1')
         self.do(item1, 'validate')
