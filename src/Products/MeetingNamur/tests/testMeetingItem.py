@@ -28,8 +28,8 @@ from Products.PloneMeeting.utils import get_annexes
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 from Products.PloneMeeting.utils import setFieldFromAjax
-from Products.statusmessages.interfaces import IStatusMessage
 from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
+from Products.statusmessages.interfaces import IStatusMessage
 
 
 class testMeetingItem(MeetingNamurTestCase, mctmi):
@@ -132,13 +132,14 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         messages = IStatusMessage(self.request).show()
         self.assertTrue(messages[-1].message == ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR % ('decision',
                                                                                          "'some_wrong_tal_expression'"))
+
     def test_pm_DuplicatedItemDoesNotKeepDecisionAnnexes(self):
         """When an item is duplicated using the 'duplicate and keep link',
            decision annexes are not kept."""
         self.changeUser('pmCreator1')
         item = self.create('MeetingItem')
         self.addAnnex(item)
-        #xxx Namur, creator can't create "Annexe decision"
+        # xxx Namur, creator can't create "Annexe decision"
         self.changeUser('admin')
         self.addAnnex(item, relatedTo='item_decision')
         self.changeUser('pmCreator1')
@@ -211,6 +212,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
             sorted(item.objectIds()),
             ['1025-400x300.jpg', '1035-600x400.jpg', '22-400x400.jpg'])
         self.assertEqual(item.getRawDecision(), decision)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
