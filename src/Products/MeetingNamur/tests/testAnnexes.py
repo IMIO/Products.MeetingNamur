@@ -31,10 +31,8 @@ from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 
 
-
 class testAnnexes(MeetingNamurTestCase, mcta):
     ''' '''
-
 
     def test_pm_DecisionAnnexesDeletableByOwner(self):
         """annexDecision may be deleted by the Owner, aka the user that added the annex."""
@@ -72,120 +70,6 @@ class testAnnexes(MeetingNamurTestCase, mcta):
         """annex/annexDecision may be deleted if user may edit the item."""
         # not sense
         pass
-
-    def test_pm_CategorizedAnnexesShowMethods(self):
-        """Test the @@categorized-annexes view."""
-        cfg = self.meetingConfig
-        self.changeUser('pmCreator1')
-        item = self.create('MeetingItem')
-        view = item.restrictedTraverse('@@categorized-annexes')
-        # both annex and annexDecision are displayed and addable
-        self.assertTrue(view.showAddAnnex())
-        # for Namur, only MeetingManager can add decision'annex
-        self.assertFalse(view.showAddAnnexDecision())
-        self.changeUser('pmManager')
-        self.assertTrue(view.showAddAnnexDecision())
-        self.changeUser('pmCreator1')
-        self.assertTrue(view.showDecisionAnnexesSection())
-        # add an annex and an annexDecision
-        self.addAnnex(item)
-        self.changeUser('pmManager')
-        annexDecision = self.addAnnex(item, relatedTo='item_decision')
-        self.changeUser('pmCreator1')
-        self.assertTrue(view.showAddAnnex())
-        self.assertFalse(view.showAddAnnexDecision())
-        self.assertTrue(view.showAnnexesSection())
-        self.assertTrue(view.showDecisionAnnexesSection())
-        # propose item, annex sections are still shown but not addable
-        self.proposeItem(item)
-        self.assertFalse(view.showAddAnnex())
-        self.assertFalse(view.showAddAnnexDecision())
-        self.assertTrue(view.showAnnexesSection())
-        self.assertTrue(view.showDecisionAnnexesSection())
-
-        # annexDecision section is shown if annexDecision are stored or if
-        # annexDecision annex types are available (active), disable the annexDecision annex types
-        for annex_type in cfg.annexes_types.item_decision_annexes.objectValues():
-            annex_type.enabled = False
-            annex_type.reindexObject(idxs=['enabled'])
-        # view._annexDecisionCategories is memoized
-        view = item.restrictedTraverse('@@categorized-annexes')
-        # showDecisionAnnexesSection still True because annexDecision exists
-        self.assertTrue(view.showDecisionAnnexesSection())
-        self.deleteAsManager(annexDecision.UID())
-        # view._annexDecisionCategories is memoized
-        view = item.restrictedTraverse('@@categorized-annexes')
-        self.assertFalse(view.showDecisionAnnexesSection())
-
-    def test_pm_AnnexRestrictShownAndEditableAttributes(self):
-        """Test MeetingConfig.annexRestrictShownAndEditableAttributes
-           that defines what annex attributes are displayed/editable only to MeetingManagers."""
-        # enable every attributes
-        self.changeUser('siteadmin')
-        cfg = self.meetingConfig
-        cfg.setAnnexRestrictShownAndEditableAttributes(())
-        config = cfg.annexes_types.item_annexes
-        annex_attr_names = (
-            'confidentiality_activated',
-            'signed_activated',
-            'publishable_activated',
-            'to_be_printed_activated')
-        # enable every attr for annex, none for annexDecision
-        for attr_name in annex_attr_names:
-            setattr(config, attr_name, True)
-
-        # helper check method
-        annex_attr_change_view_names = (
-            '@@iconified-confidential',
-            '@@iconified-signed',
-            '@@iconified-publishable',
-            '@@iconified-print')
-
-        def _check(annexes_table,
-                   annex,
-                   annex_decision,
-                   displayed=annex_attr_change_view_names,
-                   editable=annex_attr_change_view_names):
-            ''' '''
-            # nothing displayed for annexDecision
-            for view_name in displayed:
-                self.assertTrue(view_name in annexes_table.table_render(portal_type='annex'))
-                self.assertFalse(view_name in annexes_table.table_render(portal_type='annexDecision'))
-            for view_name in editable:
-                self.assertTrue(annex.restrictedTraverse(view_name)._may_set_values({}))
-                self.assertFalse(annex_decision.restrictedTraverse(view_name)._may_set_values({}))
-
-        # xxx Namur, creator can't create decsion, annexe
-        self.changeUser('pmCreator1')
-        item = self.create('MeetingItem')
-        annex = self.addAnnex(item)
-        self.assertRaises(Unauthorized, self.addAnnex, item, relatedTo='item_decision')
-        self.changeUser('admin')
-        annex_decision = self.addAnnex(item, relatedTo='item_decision')
-        self.changeUser('pmCreator1')
-        annexes_table = item.restrictedTraverse('@@iconifiedcategory')
-        # everything displayed/editable by user
-        self.assertEqual(cfg.getAnnexRestrictShownAndEditableAttributes(), ())
-        _check(annexes_table, annex, annex_decision)
-        # confidential no more editable but viewable
-        cfg.setAnnexRestrictShownAndEditableAttributes(('confidentiality_edit'))
-        list_editable_annex_attr_change_view_names = list(annex_attr_change_view_names)
-        list_editable_annex_attr_change_view_names.remove('@@iconified-confidential')
-        _check(annexes_table, annex, annex_decision, editable=list_editable_annex_attr_change_view_names)
-        # confidential and signed no more editable but viewable
-        cfg.setAnnexRestrictShownAndEditableAttributes(('confidentiality_edit', 'signed_edit'))
-        list_editable_annex_attr_change_view_names.remove('@@iconified-signed')
-        _check(annexes_table, annex, annex_decision, editable=list_editable_annex_attr_change_view_names)
-        # when someting not displayed, not editable automatically
-        cfg.setAnnexRestrictShownAndEditableAttributes(('confidentiality_edit',
-                                                        'signed_edit',
-                                                        'publishable_display'))
-        list_editable_annex_attr_change_view_names.remove('@@iconified-publishable')
-        list_displayed_annex_attr_change_view_names = list(annex_attr_change_view_names)
-        list_displayed_annex_attr_change_view_names.remove('@@iconified-publishable')
-        _check(annexes_table, annex, annex_decision,
-               editable=list_editable_annex_attr_change_view_names,
-               displayed=list_displayed_annex_attr_change_view_names)
 
     def test_pm_ParentModificationDateUpdatedWhenAnnexChanged(self):
         """When an annex is added/modified/removed, the parent modification date is updated."""
