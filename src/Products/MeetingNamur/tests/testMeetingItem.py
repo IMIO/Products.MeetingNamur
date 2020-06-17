@@ -162,7 +162,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
             performWorkflowAdaptations(cfg, logger=pm_logger)
         self.changeUser('pmCreator1')
         # creation time
-        text = '<p>Working external image <img src="https://i.picsum.photos/id/22/400/400.jpg"/>.</p>'
+        text = '<p>Working external image <img src="%s"/>.</p>' % self.external_image1
         pmFolder = self.getMeetingFolder()
         # do not use self.create to be sure that it works correctly with invokeFactory
         itemId = pmFolder.invokeFactory(cfg.getItemTypeName(),
@@ -181,7 +181,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         # xxx Namur creator can't complete decision field continue with admin
         self.changeUser('admin')
         # test using the quickedit, test with field 'decision' where getRaw was overrided
-        decision = '<p>Working external image <img src="https://i.picsum.photos/id/1025/400/300.jpg"/>.</p>'
+        decision = '<p>Working external image <img src="%s"/>.</p>' % self.external_image2
         setFieldFromAjax(item, 'decision', decision)
         self.assertTrue('1025-400x300.jpg' in item.objectIds())
         img2 = item.get('1025-400x300.jpg')
@@ -191,7 +191,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
             '<p>Working external image <img src="resolveuid/{0}">.</p>'.format(img2.UID()))
 
         # test using at_post_edit_script, aka full edit form
-        decision = '<p>Working external image <img src="https://i.picsum.photos/id/1035/600/400.jpg"/>.</p>'
+        decision = '<p>Working external image <img src="%s"/>.</p>' % self.external_image3
         item.setDecision(decision)
         item._update_after_edit()
         self.assertTrue('1035-600x400.jpg' in item.objectIds())

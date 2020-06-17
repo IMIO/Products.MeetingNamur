@@ -7,7 +7,7 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.1 (unreleased)
 ----------------
 - Using MeetingCommunes
-- Compatible for PloneMeeting 4.1
+- Compatible for PloneMeeting 4.1.26
 
 4.0 (2017)
 ----------
