@@ -33,5 +33,5 @@ PMconfig.EXTRA_GROUP_SUFFIXES = [
                   'dgf-observateurs',
                   'tutelle',
                   'redevances',
-                  'taxes']},
+                  'taxes'], 'enabled': True},
 ]
