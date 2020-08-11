@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+
 from copy import deepcopy
-from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
+from Products.MeetingCommunes.profiles.examples_fr import import_data as mc_import_data
 
 
 data = deepcopy(mc_import_data.data)
@@ -15,6 +16,8 @@ collegeMeeting.itemActionsInterface = 'Products.MeetingNamur.interfaces.IMeeting
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowConditions'
 collegeMeeting.meetingActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowActions'
 collegeMeeting.workflowAdaptations = []
+collegeMeeting.transitionsToConfirm = []
+collegeMeeting.podTemplates = []
 
 # Conseil communal
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
@@ -26,9 +29,8 @@ councilMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IM
 councilMeeting.meetingActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowActions'
 councilMeeting.workflowAdaptations = []
 councilMeeting.itemCopyGroupsStates = []
-
-# no recurring items for this meetingConfig, only for tests !!!
-# so we can test a meetingConfig with recurring items (college) and without (council)
+councilMeeting.transitionsToConfirm = []
+councilMeeting.podTemplates = []
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)
 # ------------------------------------------------------------------------------
