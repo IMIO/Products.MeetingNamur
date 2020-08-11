@@ -25,8 +25,8 @@
 from AccessControl import Unauthorized
 from DateTime import DateTime
 from plone import api
-from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.MeetingCommunes.tests.testAnnexes import testAnnexes as mcta
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 

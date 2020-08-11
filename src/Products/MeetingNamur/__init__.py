@@ -36,18 +36,21 @@ __docformat__ = 'plaintext'
 #   - To perform custom initialisation after types have been registered,
 #       use the protected code section at the bottom of initialize().
 
+from config import product_globals
+from Products.CMFCore import DirectoryView
+
+import adapters  # noqa
 import logging
+import model.pm_updates  # noqa
+
+
 logger = logging.getLogger('MeetingNamur')
 logger.debug('Installing Product')
 
 
-from Products.CMFCore import DirectoryView
-from config import product_globals
 
 DirectoryView.registerDirectory('skins', product_globals)
 
-import model.pm_updates  # noqa
-import adapters  # noqa
 
 
 def initialize(context):

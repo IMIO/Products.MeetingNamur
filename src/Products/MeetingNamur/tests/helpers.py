@@ -22,6 +22,7 @@
 
 from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 
+
 class MeetingNamurTestingHelpers(MeetingCommunesTestingHelpers):
     '''Override some values of MeetingCommunesTestingHelpers.'''
 

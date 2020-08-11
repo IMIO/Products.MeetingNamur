@@ -23,18 +23,19 @@
 #
 
 from AccessControl import Unauthorized
-from datetime import datetime
 from DateTime import DateTime
-from plone.dexterity.utils import createContentInContainer
-from plone.app.textfield.value import RichTextValue
+from datetime import datetime
 from plone import api
+from plone.app.textfield.value import RichTextValue
+from plone.dexterity.utils import createContentInContainer
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import View
-from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 from zope.schema.interfaces import RequiredMissing
+
 
 class testAdvices(MeetingNamurTestCase, mcta):
     """Tests various aspects of advices management.

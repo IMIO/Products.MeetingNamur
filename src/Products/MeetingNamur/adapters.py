@@ -1,41 +1,31 @@
 # -*- coding: utf-8 -*-
-# ------------------------------------------------------------------------------
-# Copyright (c) 2017 by Imio.be
-#
-# GNU General Public License (GPL)# group suffixes
-# PMconfig.EXTRA_GROUP_SUFFIXES = [
-#     {'fct_title': u'serviceheads', 'fct_id': u'serviceheads', 'fct_orgs': []},
-#     {'fct_title': u'officemanagers', 'fct_id': u'officemanagers', 'fct_orgs': []},
-#     {'fct_title': u'divisionheads', 'fct_id': u'divisionheads',  'fct_orgs': []},
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public LicensePloneMeeting: Read budget infos
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
-# ------------------------------------------------------------------------------
 
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
-from zope.interface import implements
-from zope.i18n import translate
-
-from Products.CMFCore.utils import getToolByName
-from Products.Archetypes.atapi import DisplayList
-from plone import api
-
 from collective.contact.plonegroup.utils import get_organizations
 from imio.helpers.xhtml import xhtmlContentIsEmpty
+from plone import api
+from Products.Archetypes.atapi import DisplayList
+from Products.CMFCore.utils import getToolByName
+from Products.MeetingCommunes.adapters import CustomMeeting
+from Products.MeetingCommunes.adapters import CustomMeetingItem
+from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
+from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowActions
+from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowConditions
+from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowActions
+from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingItemNamurCollegeWorkflowActions
+from Products.MeetingNamur.interfaces import IMeetingItemNamurCollegeWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingItemNamurCouncilWorkflowActions
+from Products.MeetingNamur.interfaces import IMeetingItemNamurCouncilWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowActions
+from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingNamurCollegeWorkflowActions
+from Products.MeetingNamur.interfaces import IMeetingNamurCollegeWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowActions
+from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowConditions
+from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowActions
+from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowConditions
 from Products.PloneMeeting.adapters import ItemPrettyLinkAdapter
 from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
@@ -46,27 +36,9 @@ from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.utils import sendMail
+from zope.i18n import translate
+from zope.interface import implements
 
-from Products.MeetingCommunes.adapters import CustomMeeting
-from Products.MeetingCommunes.adapters import CustomMeetingItem
-from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowActions
-from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowConditions
-from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowActions
-from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowConditions
-from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
-
-from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowConditions
-from Products.MeetingNamur.interfaces import IMeetingItemNamurWorkflowActions
-from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowConditions
-from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowActions
-from Products.MeetingNamur.interfaces import IMeetingItemNamurCollegeWorkflowConditions
-from Products.MeetingNamur.interfaces import IMeetingItemNamurCollegeWorkflowActions
-from Products.MeetingNamur.interfaces import IMeetingNamurCollegeWorkflowConditions
-from Products.MeetingNamur.interfaces import IMeetingNamurCollegeWorkflowActions
-from Products.MeetingNamur.interfaces import IMeetingItemNamurCouncilWorkflowConditions
-from Products.MeetingNamur.interfaces import IMeetingItemNamurCouncilWorkflowActions
-from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowConditions
-from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowActions
 
 # Names of available workflow adaptations.
 customWfAdaptations = ('return_to_proposing_group', 'return_to_proposing_group_with_last_validation',

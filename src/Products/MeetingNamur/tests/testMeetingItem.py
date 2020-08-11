@@ -22,13 +22,13 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 from Products.PloneMeeting.utils import get_annexes
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 from Products.PloneMeeting.utils import setFieldFromAjax
-from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 from Products.statusmessages.interfaces import IStatusMessage
 
 

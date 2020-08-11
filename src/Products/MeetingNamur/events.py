@@ -12,6 +12,7 @@ __docformat__ = 'plaintext'
 
 from Products.PloneMeeting.utils import forceHTMLContentTypeForEmptyRichFields
 
+
 def onItemDuplicated(original, event):
     """After item's cloning, we copy in description field the decision field
        and clear decision field.

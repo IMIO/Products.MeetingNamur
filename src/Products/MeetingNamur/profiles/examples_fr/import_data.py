@@ -2,6 +2,7 @@
 from copy import deepcopy
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
 
+
 data = deepcopy(mc_import_data.data)
 
 # Meeting configurations -------------------------------------------------------

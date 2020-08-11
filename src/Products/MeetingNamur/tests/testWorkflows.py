@@ -23,9 +23,9 @@
 #
 
 from AccessControl import Unauthorized
-from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 from DateTime import DateTime
+from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 
 
 class testWorkflows(MeetingNamurTestCase, mctw):

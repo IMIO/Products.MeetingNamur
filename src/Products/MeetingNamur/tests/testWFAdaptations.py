@@ -24,13 +24,11 @@
 
 from DateTime import DateTime
 from Products.CMFCore.permissions import DeleteObjects
-
+from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
-
-from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
 
 
 class testWFAdaptations(MeetingNamurTestCase, mctwfa):

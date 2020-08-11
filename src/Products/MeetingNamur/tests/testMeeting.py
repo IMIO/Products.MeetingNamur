@@ -23,8 +23,8 @@
 #
 
 from DateTime import DateTime
-from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 
 
 class testMeeting(MeetingNamurTestCase, mctm):

@@ -13,12 +13,15 @@ __author__ = """Andre Nuyens <andre@imio.be>"""
 __docformat__ = 'plaintext'
 
 
-import os
-import logging
-logger = logging.getLogger('MeetingNamur: setuphandlers')
 from plone import api
-from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.MeetingNamur.config import PROJECTNAME
+from Products.PloneMeeting.exportimport.content import ToolInitializer
+
+import logging
+import os
+
+
+logger = logging.getLogger('MeetingNamur: setuphandlers')
 
 
 def isNotMeetingNamurProfile(context):

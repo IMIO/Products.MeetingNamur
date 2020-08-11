@@ -3,6 +3,7 @@
 from Products.CMFCore.permissions import setDefaultRoles
 from Products.PloneMeeting import config as PMconfig
 
+
 PROJECTNAME = "MeetingNamur"
 
 # Permissions

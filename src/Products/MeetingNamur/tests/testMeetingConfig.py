@@ -22,8 +22,9 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
+from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+
 
 class testMeetingConfig(MeetingNamurTestCase, mctmc):
     '''Tests the MeetingConfig class methods.'''

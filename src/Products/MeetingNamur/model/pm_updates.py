@@ -1,15 +1,15 @@
+from Products.Archetypes.atapi import BooleanField
+from Products.Archetypes.atapi import LinesField
 from Products.Archetypes.atapi import MultiSelectionWidget
 from Products.Archetypes.atapi import RichWidget
-from Products.Archetypes.atapi import LinesField
-from Products.Archetypes.atapi import BooleanField
-from Products.Archetypes.atapi import TextField
-from Products.Archetypes.atapi import TextAreaWidget
-from Products.Archetypes.atapi import StringField
 from Products.Archetypes.atapi import Schema
-from Products.PloneMeeting.Meeting import Meeting
-from Products.PloneMeeting.MeetingItem import MeetingItem
-from Products.PloneMeeting.MeetingGroup import MeetingGroup
+from Products.Archetypes.atapi import StringField
+from Products.Archetypes.atapi import TextAreaWidget
+from Products.Archetypes.atapi import TextField
 from Products.PloneMeeting.config import registerClasses
+from Products.PloneMeeting.Meeting import Meeting
+from Products.PloneMeeting.MeetingGroup import MeetingGroup
+from Products.PloneMeeting.MeetingItem import MeetingItem
 
 
 def update_group_schema(baseSchema):
