@@ -48,7 +48,7 @@ originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
 
 RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemnamur_workflow':
                                                 # view permissions
-                                                    {'Access contents information':
+                                                   {'Access contents information':
                                                          ('Manager', 'MeetingManager', 'MeetingMember',
                                                           'MeetingTaxController',
                                                           'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
@@ -176,7 +176,6 @@ class CustomNamurMeeting(CustomMeeting):
 
         res = []
         items = []
-        previousCatId = None
         tool = getToolByName(self.context, 'portal_plonemeeting')
         # Retrieve the list of items
         for elt in itemUids:
@@ -236,7 +235,7 @@ class CustomNamurMeeting(CustomMeeting):
                 self.context)
             # onlySelectable = False will also return disabled categories...
             allCategories = [cat for cat in meetingConfig.getCategories(onlySelectable=False)
-                             if api.content.get_state(cat) == 'active']
+                             if cat.enabled]
             usedCategories = [elem[0] for elem in res]
             for cat in allCategories:
                 if cat not in usedCategories:

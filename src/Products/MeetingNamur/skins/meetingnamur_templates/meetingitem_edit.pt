@@ -121,6 +121,7 @@
         <metal:field use-macro="python:here.widget('budgetRelated', mode='edit')"/>
         <div id="hideBudgetInfosIfNotBudgetRelated">
             <metal:field use-macro="python:here.widget('budgetInfos', mode='edit')"/>
+            <tal:comment replace="nothing">XXX MeetingNamur</tal:comment>
             <metal:field use-macro="python:here.widget('grpBudgetInfos', mode='edit')"/>
         </div>
     </fieldset>
@@ -129,6 +130,9 @@
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
     <tal:field define="fieldName python: 'decision'">
+      <metal:f use-macro="context/@@pm-macros/editContentField"/>
+    </tal:field>
+    <tal:field define="fieldName python: 'decisionSuite'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
     <tal:comment replace="nothing">XXX Specific for Namur : vote</tal:comment>
@@ -169,9 +173,11 @@
     <metal:field use-macro="python:here.widget('itemAssemblyGuests', mode='edit')"/>
     <metal:field use-macro="python:here.widget('itemSignatures', mode='edit')"/>
     <metal:field use-macro="python:here.widget('textCheckList', mode='edit')"/>
+    <tal:comment replace="nothing">XXX MeetingNamur</tal:comment>
     <metal:field use-macro="python:here.widget('itemCertifiedSignatures', mode='edit')"/>
   </tal:allfield>
 
+  <tal:comment replace="nothing">XXX MeetingNamur</tal:comment>
   <tal:notAllfield condition="not:isFullField">
       <tal:comment replace="nothing">Budget-related information</tal:comment>
       <tal:budget define="cbChecked  python: (request.get('budgetRelated',None)==True) or context.getBudgetRelated()"

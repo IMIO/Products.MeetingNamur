@@ -8,6 +8,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 ----------------
 - Using MeetingCommunes
 - Compatible for PloneMeeting 4.1.26
+- Adapted code and tests regarding DX meetingcategory
+- Adapted templates regarding last changes in Products.PloneMeeting
 
 4.0 (2017)
 ----------
