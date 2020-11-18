@@ -7,8 +7,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fixed failing tests for which name changed in `Products.PloneMeeting`.
+  [gbastien]
 
 4.1 (2020-10-20)
 ----------------
