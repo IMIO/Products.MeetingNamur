@@ -236,6 +236,9 @@ class CustomNamurMeeting(CustomMeeting):
             # onlySelectable = False will also return disabled categories...
             allCategories = [cat for cat in meetingConfig.getCategories(onlySelectable=False)
                              if cat.enabled]
+            if meetingConfig.getUseGroupsAsCategories():
+                allCategories = get_organizations()
+
             usedCategories = [elem[0] for elem in res]
             for cat in allCategories:
                 if cat not in usedCategories:

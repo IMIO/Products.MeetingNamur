@@ -9,6 +9,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 
 - Fixed failing tests for which name changed in `Products.PloneMeeting`.
   [gbastien]
+- Fixed a bug in `getPrintableItemsByCategory` where first level category was not taken into account.
+  [aduchene]
 
 4.1 (2020-10-20)
 ----------------
