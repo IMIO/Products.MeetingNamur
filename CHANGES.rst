@@ -4,7 +4,7 @@ Products.MeetingNamur Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/
 The Products.MeetingNamur version must be the same as the Products.PloneMeeting version
 
-4.1.2 (unreleased)
+4.1.2 (2021-04-28)
 ------------------
 
 - Added additional_catalog_query parameter in `getPrintableItemsByCategory`.
