@@ -129,7 +129,7 @@ class CustomNamurMeeting(CustomMeeting):
                                     ignore_review_states=[], by_proposing_group=False, group_prefixes={},
                                     privacy='*', oralQuestion='both', toDiscuss='both', categories=[],
                                     excludedCategories=[], groupIds=[], excludedGroupIds=[],
-                                    firstNumber=1, renumber=False,
+                                    firstNumber=1, renumber=False, additional_catalog_query={},
                                     includeEmptyCategories=False, includeEmptyGroups=False,
                                     forceCategOrderFromConfig=False, allNoConfidentialItems=False):
         """Returns a list of (late or normal or both) items (depending on p_listTypes)
@@ -182,7 +182,10 @@ class CustomNamurMeeting(CustomMeeting):
             if elt == '':
                 itemUids.remove(elt)
 
-        items = self.context.getItems(uids=itemUids, listTypes=listTypes, ordered=True)
+        items = self.context.getItems(uids=itemUids,
+                                      listTypes=listTypes,
+                                      ordered=True,
+                                      additional_catalog_query=additional_catalog_query)
 
         if by_proposing_group:
             groups = get_organizations()

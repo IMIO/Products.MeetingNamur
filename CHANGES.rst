@@ -7,8 +7,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Added additional_catalog_query parameter in `getPrintableItemsByCategory`.
+  [aduchene]
 
 4.1.1 (2021-02-15)
 ------------------
