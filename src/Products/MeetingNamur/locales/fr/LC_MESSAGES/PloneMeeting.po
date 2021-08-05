@@ -67,10 +67,6 @@ msgstr "Extrait du Procès-verbal"
 msgid "PloneMeeting_label_description"
 msgstr "Description"
 
-#. Default: "Detailed description"
-msgid "PloneMeeting_label_detailedDescription"
-msgstr "Interpellation"
-
 #. Default: "Gives mandatory advice on"
 msgid "PloneMeeting_label_givesMandatoryAdviceOn"
 msgstr "L'avis sera automatiquement demandé si"
@@ -152,7 +148,7 @@ msgstr "Signatures certifiées"
 
 #. Default: "Vote"
 msgid "item_vote_descr"
-msgstr "Si vous laissez vide cette zone de vote, la phrase : ""Cette décision a été prise à l'unanimité des membres présents"" sera indiquée dans les modèles générés."
+msgstr "Observations pour le vote"
 
 #. Default: "Acronym"
 msgid "meetingNamur_acronym_descri_msgid"
