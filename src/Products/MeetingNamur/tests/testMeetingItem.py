@@ -24,11 +24,11 @@
 
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from Products.PloneMeeting.model.adaptations import _performWorkflowAdaptations
 from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 from Products.PloneMeeting.utils import get_annexes
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
-from Products.PloneMeeting.utils import setFieldFromAjax
+from Products.PloneMeeting.utils import set_field_from_ajax
 from Products.statusmessages.interfaces import IStatusMessage
 
 
@@ -84,7 +84,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         meeting = self._createMeetingWithItems()
         self.decideMeeting(meeting)
         # we will adapt item decision when the item is delayed
-        item1 = meeting.getItems()[0]
+        item1 = meeting.get_items()[0]
         originalDecision = '<p>Current item decision.</p>'
         item1.setDecision(originalDecision)
         # for now, as nothing is defined, nothing happens when item is delayed
@@ -96,7 +96,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
             ({'transition': 'delay',
               'field_name': 'MeetingItem.decision',
               'tal_expression': 'string:%s' % delayedItemDecision},))
-        item2 = meeting.getItems()[1]
+        item2 = meeting.get_items()[1]
         item2.setDecision(originalDecision)
         self.do(item2, 'delay')
         self.assertTrue(item2.getDecision(keepWithNext=False) == delayedItemDecision)
@@ -107,7 +107,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         self.assertTrue(duplicatedItem.getPredecessor() == item2)
         self.assertTrue(duplicatedItem.getDecision(keepWithNext=False) == '<p>&nbsp;</p>')
         # this work also when triggering any other item or meeting transition with every rich fields
-        item3 = meeting.getItems()[2]
+        item3 = meeting.get_items()[2]
         self.meetingConfig.setOnTransitionFieldTransforms(
             ({'transition': 'accept',
               'field_name': 'MeetingItem.description',
@@ -121,11 +121,11 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
             ({'transition': 'accept',
               'field_name': 'MeetingItem.decision',
               'tal_expression': 'some_wrong_tal_expression'},))
-        item4 = meeting.getItems()[3]
+        item4 = meeting.get_items()[3]
         item4.setDecision('<p>My decision that will not be touched.</p>')
         self.do(item4, 'accept')
         # transition was triggered
-        self.assertTrue(item4.queryState() == 'accepted')
+        self.assertTrue(item4.query_state() == 'accepted')
         # original decision was not touched
         self.assertTrue(item4.getDecision(keepWithNext=False) == '<p>My decision that will not be touched.</p>')
         # a portal_message is displayed to the user that triggered the transition
@@ -159,7 +159,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         cfg = self.meetingConfig
         if 'creator_initiated_decisions' in cfg.listWorkflowAdaptations():
             cfg.setWorkflowAdaptations(('creator_initiated_decisions', ))
-            performWorkflowAdaptations(cfg, logger=pm_logger)
+            _performWorkflowAdaptations(cfg, logger=pm_logger)
         self.changeUser('pmCreator1')
         # creation time
         text = '<p>Working external image <img src="%s"/>.</p>' % self.external_image1
@@ -182,7 +182,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         self.changeUser('admin')
         # test using the quickedit, test with field 'decision' where getRaw was overrided
         decision = '<p>Working external image <img src="%s"/>.</p>' % self.external_image2
-        setFieldFromAjax(item, 'decision', decision)
+        set_field_from_ajax(item, 'decision', decision)
         self.assertTrue('1025-400x300.jpg' in item.objectIds())
         img2 = item.get('1025-400x300.jpg')
         # external image link was updated

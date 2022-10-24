@@ -19,7 +19,7 @@ def onItemDuplicated(original, event):
     """
     newItem = event.newItem
     # copy decision from source items in destination's deliberation if item is accepted
-    if original.queryState() in ['accepted', 'accepted_but_modified'] and newItem != original:
+    if original.query_state() in ['accepted', 'accepted_but_modified'] and newItem != original:
         newItem.setDescription(original.getDecision())
     # clear decision for new item
     newItem.setDecision('<p>&nbsp;</p>')

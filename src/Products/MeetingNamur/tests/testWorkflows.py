@@ -66,7 +66,7 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # pmManager creates a meeting
         self.changeUser('pmManager')
-        meeting = self.create('Meeting', date='2007/12/11 09:00:00')
+        meeting = self.create('Meeting', date=DateTime('2007/12/11 09:00:00').asdatetime())
         self.addAnnex(item1, relatedTo='item_decision')
         # pmCreator2 creates and proposes an item
         self.changeUser('pmCreator2')
@@ -100,8 +100,8 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         self.do(item2, 'present')
         self.addAnnex(item2)
         # So now we should have 3 normal item (2 recurring + 1) and one late item in the meeting
-        self.failUnless(len(meeting.getItems()) == 4)
-        self.failUnless(len(meeting.getItems(listTypes='late')) == 1)
+        self.failUnless(len(meeting.get_items()) == 4)
+        self.failUnless(len(meeting.get_items(listTypes='late')) == 1)
         # pmManager adds a decision to item1 and freezes the meeting
         self.changeUser('pmManager')
         item1.setDecision(self.decisionText)
@@ -123,7 +123,7 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         # First, define recurring items in the meeting config
         self.changeUser('pmManager')
         #create a meeting
-        meeting = self.create('Meeting', date='2007/12/11 09:00:00')
+        meeting = self.create('Meeting', date=DateTime('2007/12/11 09:00:00').asdatetime())
         #create 2 items and present them to the meeting
         item1 = self.create('MeetingItem', title='The first item')
         self.do(item1, 'propose')

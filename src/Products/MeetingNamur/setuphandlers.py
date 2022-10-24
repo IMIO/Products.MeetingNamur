@@ -126,24 +126,6 @@ def reorderSkinsLayers(context, site):
     site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingNamur:default', 'skins')
 
 
-def addTaxControllerGroup(context):
-    """
-      Add a Plone group configured to receive MeetingTaxController
-      These users can modify the items since they are frozen
-      This group recieved the MeetingPowerObserverRôle
-    """
-    if isNotMeetingNamurProfile(context):
-        return
-    logStep("addTaxControllerGroup", context)
-    portal = context.getSite()
-    groupId = "meetingtaxcontroller"
-    if groupId not in portal.portal_groups.listGroupIds():
-        portal.portal_groups.addGroup(groupId,
-                                      title=portal.utranslate("taxControllerGroupTitle", domain='PloneMeeting'))
-        portal.portal_groups.setRolesForGroup(groupId, ('MeetingObserverGlobal', 'MeetingPowerObserverLocal',
-                                                        'MeetingTaxController'))
-
-
 def reorderCss(context):
     """
        Make sure CSS are correctly reordered in portal_css so things

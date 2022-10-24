@@ -22,13 +22,10 @@
 # 02110-1301, USA.
 #
 
-from DateTime import DateTime
+from datetime import datetime
 from Products.CMFCore.permissions import DeleteObjects
 from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
-from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
-from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
 
 
 class testWFAdaptations(MeetingNamurTestCase, mctwfa):
@@ -108,17 +105,17 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
            In our usecase, this is Nonsense as we use RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS.'''
         return
 
-    def _return_to_proposing_group_active_custom_permissions(self):
-        '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
-           RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS defined value.
-           In our use case, just test that permissions of 'returned_to_proposing_group' state
-           are the one defined in RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS.'''
-        cfg = self.meetingConfig
-        itemWF = self.wfTool.getWorkflowsFor(cfg.getItemTypeName())[0]
-        returned_to_proposing_group_state_permissions = itemWF.states['returned_to_proposing_group'].permission_roles
-        for permission in returned_to_proposing_group_state_permissions:
-            self.assertEquals(returned_to_proposing_group_state_permissions[permission],
-                              RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS[cfg.getItemWorkflow()][permission])
+    # def _return_to_proposing_group_active_custom_permissions(self):
+    #     '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
+    #        RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS defined value.
+    #        In our use case, just test that permissions of 'returned_to_proposing_group' state
+    #        are the one defined in RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS.'''
+    #     cfg = self.meetingConfig
+    #     itemWF = self.wfTool.getWorkflowsFor(cfg.getItemTypeName())[0]
+    #     returned_to_proposing_group_state_permissions = itemWF.states['returned_to_proposing_group'].permission_roles
+    #     for permission in returned_to_proposing_group_state_permissions:
+    #         self.assertEquals(returned_to_proposing_group_state_permissions[permission],
+    #                           RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS[cfg.getItemWorkflow()][permission])
 
     def _return_to_proposing_group_active_wf_functionality(self):
         '''Tests the workflow functionality of using the 'return_to_proposing_group' wfAdaptation.
@@ -131,7 +128,7 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
         self.validateItem(item)
         # create a Meeting and add the item to it
         self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime())
+        meeting = self.create('Meeting', date=datetime.now())
         self.presentItem(item)
         # now that it is presented, the pmCreator1/pmReviewer1 can not edit it anymore
         for userId in ('pmCreator1', 'pmReviewer1'):
@@ -158,7 +155,7 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
         # when the creator send the item back to the meeting, it is in the right state depending
         # on the meeting state.  Here, when meeting is 'created', the item is back to 'presented'
         self.do(item, 'backTo_presented_from_returned_to_proposing_group')
-        self.assertEquals(item.queryState(), 'presented')
+        self.assertEquals(item.query_state(), 'presented')
         # XXX changed by MeetingNamur
         # send the item back to proposing group, set the meeting in_committee then send the item back to the meeting
         # the item should be now in the item state corresponding to the meeting frozen state, so 'itemfrozen'
@@ -166,45 +163,45 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
         self.do(meeting, 'freeze')
 
 
-def _return_to_proposing_group_with_validation_active_state_to_clone(self):
-    '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
-       RETURN_TO_PROPOSING_GROUP_VALIDATING_STATES defined value.'''
-    # make sure permissions of the new state correspond to permissions of the state
-    # defined in the model.adaptations.RETURN_TO_PROPOSING_GROUP_WITH_LAST_VALIDATION_STATE_TO_CLONE item state name
-    # just take care that for new state, MeetingManager have been added to every permissions
-    # this has only sense if using it, aka no RETURN_TO_PROPOSING_GROUP_WITH_LAST_VALIDATION_CUSTOM_PERMISSIONS
-    # this could be the case if a subproduct (MeetingXXX) calls this test...
-    itemWF = self.wfTool.getWorkflowsFor(self.meetingConfig.getItemTypeName())[0]
-    cfgItemWFId = self.meetingConfig.getItemWorkflow()
-
-    state_to_clone_ids = (RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE.get(cfgItemWFId).split('.')[1],) + \
-        RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
-    for state_to_clone_id in state_to_clone_ids:
-        cloned_state_permissions = itemWF.states[state_to_clone_id].permission_roles
-        returned_state = 'returned_to_proposing_group'
-        if state_to_clone_id != 'itemcreated':
-            returned_state += '_{0}'.format(state_to_clone_id)
-        new_state_permissions = itemWF.states[returned_state].permission_roles
-        for permission in cloned_state_permissions:
-            cloned_state_permission_with_meetingmanager = []
-            acquired = isinstance(cloned_state_permissions[permission], list) and True or False
-            if 'MeetingManager' not in cloned_state_permissions[permission]:
-                cloned_state_permission_with_meetingmanager = list(cloned_state_permissions[permission])
-                cloned_state_permission_with_meetingmanager.append('MeetingManager')
-            else:
-                cloned_state_permission_with_meetingmanager = list(cloned_state_permissions[permission])
-
-            # 'Delete objects' is only given to ['Manager', ]
-            if permission == DeleteObjects:
-                cloned_state_permission_with_meetingmanager = ['Manager', ]
-            if not acquired:
-                cloned_state_permission_with_meetingmanager = tuple(cloned_state_permission_with_meetingmanager)
-            self.assertEquals(cloned_state_permission_with_meetingmanager,
-                              new_state_permissions[permission])
-            # Permission acquisition is also cloned
-            self.assertEquals(
-                itemWF.states[state_to_clone_id].getPermissionInfo(permission)['acquired'],
-                itemWF.states[returned_state].getPermissionInfo(permission)['acquired'])
+# def _return_to_proposing_group_with_validation_active_state_to_clone(self):
+#     '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
+#        RETURN_TO_PROPOSING_GROUP_VALIDATING_STATES defined value.'''
+#     # make sure permissions of the new state correspond to permissions of the state
+#     # defined in the model.adaptations.RETURN_TO_PROPOSING_GROUP_WITH_LAST_VALIDATION_STATE_TO_CLONE item state name
+#     # just take care that for new state, MeetingManager have been added to every permissions
+#     # this has only sense if using it, aka no RETURN_TO_PROPOSING_GROUP_WITH_LAST_VALIDATION_CUSTOM_PERMISSIONS
+#     # this could be the case if a subproduct (MeetingXXX) calls this test...
+#     itemWF = self.wfTool.getWorkflowsFor(self.meetingConfig.getItemTypeName())[0]
+#     cfgItemWFId = self.meetingConfig.getItemWorkflow()
+#
+#     state_to_clone_ids = (RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE.get(cfgItemWFId).split('.')[1],) + \
+#         RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
+#     for state_to_clone_id in state_to_clone_ids:
+#         cloned_state_permissions = itemWF.states[state_to_clone_id].permission_roles
+#         returned_state = 'returned_to_proposing_group'
+#         if state_to_clone_id != 'itemcreated':
+#             returned_state += '_{0}'.format(state_to_clone_id)
+#         new_state_permissions = itemWF.states[returned_state].permission_roles
+#         for permission in cloned_state_permissions:
+#             cloned_state_permission_with_meetingmanager = []
+#             acquired = isinstance(cloned_state_permissions[permission], list) and True or False
+#             if 'MeetingManager' not in cloned_state_permissions[permission]:
+#                 cloned_state_permission_with_meetingmanager = list(cloned_state_permissions[permission])
+#                 cloned_state_permission_with_meetingmanager.append('MeetingManager')
+#             else:
+#                 cloned_state_permission_with_meetingmanager = list(cloned_state_permissions[permission])
+#
+#             # 'Delete objects' is only given to ['Manager', ]
+#             if permission == DeleteObjects:
+#                 cloned_state_permission_with_meetingmanager = ['Manager', ]
+#             if not acquired:
+#                 cloned_state_permission_with_meetingmanager = tuple(cloned_state_permission_with_meetingmanager)
+#             self.assertEquals(cloned_state_permission_with_meetingmanager,
+#                               new_state_permissions[permission])
+#             # Permission acquisition is also cloned
+#             self.assertEquals(
+#                 itemWF.states[state_to_clone_id].getPermissionInfo(permission)['acquired'],
+#                 itemWF.states[returned_state].getPermissionInfo(permission)['acquired'])
 
 
 def test_suite():

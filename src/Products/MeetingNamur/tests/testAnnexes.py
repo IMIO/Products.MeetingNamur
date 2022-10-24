@@ -43,11 +43,11 @@ class testAnnexes(MeetingNamurTestCase, mcta):
         self.validateItem(item)
         # when an item is 'accepted', the MeetingMember may add annexDecision
         self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime('2016/11/11'))
+        meeting = self.create('Meeting', date=DateTime('2016/11/11').asdatetime())
         self.presentItem(item)
         self.decideMeeting(meeting)
         self.do(item, 'accept')
-        self.assertEqual(item.queryState(), 'accepted')
+        self.assertEqual(item.query_state(), 'accepted')
         # creator can't add decision annex
         self.changeUser('pmCreator1')
         self.assertRaises(Unauthorized, self.addAnnex, item, relatedTo='item_decision')
@@ -114,7 +114,7 @@ class testAnnexes(MeetingNamurTestCase, mcta):
 
         # on Meeting
         self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime('2018/03/19'))
+        meeting = self.create('Meeting', date=DateTime('2018/03/19').asdatetime())
         parent_modified = meeting.modified()
         self.assertEqual(catalog(UID=meeting.UID())[0].modified, parent_modified)
         # add an annex

@@ -1,5 +1,4 @@
 from Products.Archetypes.atapi import BooleanField
-from Products.Archetypes.atapi import LinesField
 from Products.Archetypes.atapi import MultiSelectionWidget
 from Products.Archetypes.atapi import RichWidget
 from Products.Archetypes.atapi import Schema
@@ -7,19 +6,8 @@ from Products.Archetypes.atapi import StringField
 from Products.Archetypes.atapi import TextAreaWidget
 from Products.Archetypes.atapi import TextField
 from Products.PloneMeeting.config import registerClasses
-from Products.PloneMeeting.Meeting import Meeting
-from Products.PloneMeeting.MeetingGroup import MeetingGroup
 from Products.PloneMeeting.MeetingItem import MeetingItem
 
-
-def update_group_schema(baseSchema):
-    completeSchema = baseSchema
-    completeSchema['acronym'].widget.description = "Acronym"
-    completeSchema['acronym'].widget.description_msgid = "meetingNamur_acronym_descri_msgid"
-    return completeSchema
-
-
-MeetingGroup.schema = update_group_schema(MeetingGroup.schema)
 
 
 def update_item_schema(baseSchema):
@@ -61,7 +49,7 @@ def update_item_schema(baseSchema):
             name='isConfidentialItem',
             default=False,
             widget=BooleanField._properties['widget'](
-                condition="python: here.portal_plonemeeting.isManager(here)",
+                condition="python: here.portal_plonemeeting.isManager(cfg)",
                 label='IsConfidentialItem',
                 label_msgid='MeetingNamur_isConfidentialItem',
                 i18n_domain='PloneMeeting',
@@ -95,19 +83,6 @@ def update_item_schema(baseSchema):
 
 
 MeetingItem.schema = update_item_schema(MeetingItem.schema)
-
-
-def update_meeting_schema(baseSchema):
-    specificSchema = Schema((
-    ), )
-
-    baseSchema['assembly'].widget.description_msgid = "assembly_meeting_descr"
-
-    completeSchema = baseSchema + specificSchema.copy()
-    return completeSchema
-
-
-Meeting.schema = update_meeting_schema(Meeting.schema)
 
 # Classes have already been registered, but we register them again here
 # because we have potentially applied some schema adaptations (see above).

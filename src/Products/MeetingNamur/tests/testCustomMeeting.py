@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from DateTime import DateTime
 from Products.MeetingCommunes.tests.testCustomMeetingItem import testCustomMeetingItem as mctcmi
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 
@@ -76,7 +76,7 @@ class testCustomMeeting(MeetingNamurTestCase, mctcmi):
         self._removeConfigObjectsFor(self.meetingConfig)
         # add a Meeting and present several items in different categories
         self.changeUser('pmManager')
-        m = self.create('Meeting', date='2007/12/11 09:00:00')
+        m = self.create('Meeting', date=DateTime('2007/12/11 09:00:00').asdatetime)
         i1 = self.create('MeetingItem', title='Item1')
         i1.setProposingGroup(self.developers_uid)
         i2 = self.create('MeetingItem', title='Item2')
@@ -130,7 +130,7 @@ class testCustomMeeting(MeetingNamurTestCase, mctcmi):
         self.changeUser('admin')
         self._removeConfigObjectsFor(self.meetingConfig)
         self.changeUser('pmManager')
-        m = self.create('Meeting', date='2007/12/11 09:00:00')
+        m = self.create('Meeting', date=DateTime('2007/12/11 09:00:00').asdatetime())
         # create some items
         # empty decision
         i1 = self.create('MeetingItem', title='Item1')

@@ -34,7 +34,6 @@ from Products.PloneMeeting.Meeting import MeetingWorkflowActions
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
-from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.utils import sendMail
 from zope.i18n import translate
 from zope.interface import implements
@@ -44,71 +43,6 @@ from zope.interface import implements
 customWfAdaptations = ('return_to_proposing_group', 'return_to_proposing_group_with_last_validation',
                        'return_to_proposing_group_with_all_validations')
 MeetingConfig.wfAdaptations = customWfAdaptations
-originalPerformWorkflowAdaptations = adaptations.performWorkflowAdaptations
-
-RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemnamur_workflow':
-                                                # view permissions
-                                                   {'Access contents information':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
-                                                          'MeetingTaxController',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
-                                                     'View':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
-                                                          'MeetingTaxController',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
-                                                     'PloneMeeting: Read decision':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
-                                                          'MeetingTaxController',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
-                                                     'PloneMeeting: Read item observations':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
-                                                          'MeetingTaxController',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
-                                                     'PloneMeeting: Read budget infos':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
-                                                          'MeetingTaxController',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
-                                                     # edit permissions
-                                                     'Modify portal content':
-                                                         ('Manager', 'MeetingMember', 'MeetingManager',
-                                                          'MeetingReviewer',),
-                                                     'PloneMeeting: Write decision':
-                                                         ('Manager',),
-                                                     'Review portal content':
-                                                         ('Manager', 'MeetingMember', 'MeetingManager',
-                                                          'MeetingReviewer',),
-                                                     'Add portal content':
-                                                         ('Manager', 'MeetingMember', 'MeetingManager',
-                                                          'MeetingReviewer',),
-                                                     'PloneMeeting: Add annex':
-                                                         ('Manager', 'MeetingMember', 'MeetingManager',
-                                                          'MeetingReviewer',),
-                                                     'PloneMeeting: Add annexDecision':
-                                                         ('Manager', 'MeetingMember', 'MeetingManager',
-                                                          'MeetingReviewer',),
-                                                     'PloneMeeting: Write budget infos':
-                                                         ('Manager', 'MeetingMember', 'MeetingReviewer',
-                                                          'MeetingBudgetImpactEditor', 'MeetingManager',
-                                                          'MeetingBudgetImpactReviewer',),
-                                                     'MeetingNamur: Write description':
-                                                         ('Manager', 'MeetingMember', 'MeetingManager',
-                                                          'MeetingReviewer',),
-                                                     # MeetingManagers edit permissions
-                                                     'MeetingNamur: Write certified signatures':
-                                                         ('Manager',),
-                                                     'PloneMeeting: Write marginal notes':
-                                                         ('Manager',),
-                                                     'PloneMeeting: Write item MeetingManager reserved fields':
-                                                         ('Manager', 'MeetingManager',),
-                                                     'Delete objects':
-                                                         ['Manager', ], }
-                                                }
-
-adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
-
-RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {'meetingitemnamur_workflow': 'meetingitemnamur_workflow.itemcreated'}
-
-adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 
 class CustomNamurMeeting(CustomMeeting):
@@ -125,14 +59,14 @@ class CustomNamurMeeting(CustomMeeting):
 
     security.declarePublic('getPrintableItemsByCategory')
 
-    def getPrintableItemsByCategory(self, itemUids=[], listTypes=['normal'],
+    def getPrintableItemsByCategory(self, itemUids=[], list_types=['normal'],
                                     ignore_review_states=[], by_proposing_group=False, group_prefixes={},
                                     privacy='*', oralQuestion='both', toDiscuss='both', categories=[],
                                     excludedCategories=[], groupIds=[], excludedGroupIds=[],
                                     firstNumber=1, renumber=False,
                                     includeEmptyCategories=False, includeEmptyGroups=False,
                                     forceCategOrderFromConfig=False, allNoConfidentialItems=False):
-        """Returns a list of (late or normal or both) items (depending on p_listTypes)
+        """Returns a list of (late or normal or both) items (depending on p_list_types)
            ordered by category. Items being in a state whose name is in
            p_ignore_review_state will not be included in the result.
            If p_by_proposing_group is True, items are grouped by proposing group
@@ -157,7 +91,7 @@ class CustomNamurMeeting(CustomMeeting):
         # - at position 0: the category object (MeetingCategory or MeetingGroup)
         # - at position 1 to n: the items in this category
         # If by_proposing_group is True, the structure is more complex.
-        # listTypes is a list that can be filled with 'normal' and/or 'late'
+        # list_types is a list that can be filled with 'normal' and/or 'late'
         # oralQuestion can be 'both' or False or True
         # toDiscuss can be 'both' or 'False' or 'True'
         # privacy can be '*' or 'public' or 'secret'
@@ -182,7 +116,7 @@ class CustomNamurMeeting(CustomMeeting):
             if elt == '':
                 itemUids.remove(elt)
 
-        items = self.context.getItems(uids=itemUids, listTypes=listTypes, ordered=True)
+        items = self.context.get_items(uids=itemUids, list_types=list_types, ordered=True)
 
         if by_proposing_group:
             groups = get_organizations()
@@ -191,7 +125,7 @@ class CustomNamurMeeting(CustomMeeting):
         if items:
             for item in items:
                 # Check if the review_state has to be taken into account
-                if item.queryState() in ignore_review_states:
+                if item.query_state() in ignore_review_states:
                     continue
                 elif not (privacy == '*' or item.getPrivacy() == privacy):
                     continue
@@ -228,7 +162,7 @@ class CustomNamurMeeting(CustomMeeting):
                     res.append([currentCat])
                     self._insertItemInCategory(res[-1], item,
                                                by_proposing_group, group_prefixes, groups)
-        if forceCategOrderFromConfig or cmp(listTypes.sort(), ['late', 'normal']) == 0:
+        if forceCategOrderFromConfig or cmp(list_types.sort(), ['late', 'normal']) == 0:
             res.sort(cmp=_comp)
         if includeEmptyCategories:
             meetingConfig = tool.getMeetingConfig(
@@ -346,7 +280,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         """
         item = self.getSelf()
         grp_roles = []
-        if item.queryState() in ('presented', 'itemfrozen', 'accepted', 'delayed', 'accepted_but_modified',
+        if item.query_state() in ('presented', 'itemfrozen', 'accepted', 'delayed', 'accepted_but_modified',
                                  'pre_accepted', 'refused'):
             # add new MeetingBudgetImpactReviewerRole
             for grpBudgetInfo in item.grpBudgetInfos:
@@ -395,7 +329,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         tool = api.portal.get_tool('portal_plonemeeting')
         item = self.getSelf()
         cfg = tool.getMeetingConfig(self)
-        ignoreDuplicateButton = item.queryState() == 'pre_accepted'
+        ignoreDuplicateButton = item.query_state() == 'pre_accepted'
         if not cfg.getEnableItemDuplication() or \
                 self.isDefinedInTool() or \
                 not tool.userIsAmong(['creators']) or \
@@ -418,7 +352,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
             accepted_but_modified : Approved with a modification
         """
         item = self.getSelf()
-        state = item.queryState()
+        state = item.query_state()
         if state == 'accepted_but_modified':
             state = 'approved_but_modified'
         elif state == 'accepted':
@@ -485,7 +419,7 @@ class MeetingNamurWorkflowActions(MeetingCommunesWorkflowActions):
            MeetingConfig.initItemDecisionIfEmptyOnDecide is True, we
            initialize the decision field with content of Title+Description
            if decision field is empty."""
-        for item in self.context.getItems():
+        for item in self.context.get_items():
             # If deliberation (decision) is empty,
             # initialize it the decision field
             item._initDecisionFieldIfEmpty()
@@ -495,8 +429,8 @@ class MeetingNamurWorkflowActions(MeetingCommunesWorkflowActions):
     def doClose(self, stateChange):
         """We initialize the decision field with content of Title+Description
            if no decision has already been written."""
-        MeetingWorkflowActions.doClose(self, stateChange)
-        for item in self.context.getItems():
+        super(MeetingNamurWorkflowActions, self).doClose(stateChange)
+        for item in self.context.get_items():
             # If the decision field is empty, initialize it
             item._initDecisionFieldIfEmpty()
 
@@ -560,12 +494,12 @@ class MeetingItemNamurWorkflowActions(MeetingItemCommunesWorkflowActions):
         MeetingItemWorkflowActions.doCorrect(self, stateChange)
         item = self.context
         # send mail to creator if item return to owner
-        if (item.queryState() == "itemcreated") or \
+        if (item.query_state() == "itemcreated") or \
                 (stateChange.old_state.id == "presented" and stateChange.new_state.id == "validated"):
             recipients = (item.portal_membership.getMemberById(str(item.Creator())).getProperty('email'),)
             sendMail(recipients, item, "itemMustBeCorrected")
             # Clear the decision field if item going back to service
-            if item.queryState() == "itemcreated":
+            if item.query_state() == "itemcreated":
                 item.setDecision("<p>&nbsp;</p>")
                 item.reindexObject()
         if stateChange.old_state.id == "returned_to_proposing_group":
@@ -611,9 +545,6 @@ class MeetingItemNamurWorkflowConditions(MeetingItemCommunesWorkflowConditions):
 
     implements(IMeetingItemNamurWorkflowConditions)
     security = ClassSecurityInfo()
-
-    def __init__(self, item):
-        self.context = item  # Implements IMeetingItem
 
 
 class MeetingItemNamurCollegeWorkflowConditions(MeetingItemNamurWorkflowConditions):
