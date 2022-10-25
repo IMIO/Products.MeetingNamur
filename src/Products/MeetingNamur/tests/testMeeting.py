@@ -40,21 +40,6 @@ class testMeeting(MeetingNamurTestCase, mctm):
         mctm.test_pm_RemoveOrDeleteLinkedItem(self)
 
 
-    def test_pm_MeetingNumbers(self):
-        '''Tests that meetings receive correctly their numbers from the config
-           when they are freezing.'''
-        self.changeUser('pmManager')
-        m1 = self._createMeetingWithItems()
-        self.assertEquals(self.meetingConfig.getLastMeetingNumber(), 0)
-        self.assertEquals(m1.getMeetingNumber(), -1)
-        self.decideMeeting(m1)
-        self.assertEquals(m1.getMeetingNumber(), 1)
-        self.assertEquals(self.meetingConfig.getLastMeetingNumber(), 1)
-        m2 = self._createMeetingWithItems()
-        self.decideMeeting(m2)
-        self.assertEquals(m2.getMeetingNumber(), 2)
-        self.assertEquals(self.meetingConfig.getLastMeetingNumber(), 2)
-
     def test_pm_InsertItemOnItemDecisionFirstWords(self):
         """Test when inserting item in a meeting using
            'on_item_decision_first_words' insertion method."""

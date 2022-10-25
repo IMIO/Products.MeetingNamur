@@ -46,7 +46,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         # enable motivation and budgetInfos in cfg1, not in cfg2
         cfg.setUsedItemAttributes(('motivation', 'budgetInfos'))
         cfg2.setUsedItemAttributes(('itemIsSigned', 'privacy'))
-        cfg.setItemManualSentToOtherMCStates((self.WF_STATE_NAME_MAPPINGS['itemcreated'],))
+        cfg.setItemManualSentToOtherMCStates(self._stateMappingFor('itemcreated'))
 
         # create and send
         self.changeUser('pmManager')

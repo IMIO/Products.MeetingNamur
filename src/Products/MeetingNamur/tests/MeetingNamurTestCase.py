@@ -29,6 +29,9 @@ class MeetingNamurTestCase(MeetingCommunesTestCase, MeetingNamurTestingHelpers):
     """Base class for defining MeetingNamur test cases."""
 
     layer = MNA_TESTING_PROFILE_FUNCTIONAL
+    subproductIgnoredTestFiles = ['testPerformances.py',
+                                  'testVotes.py',
+                                  'test_robot.py']
 
     def setUp(self):
         MeetingCommunesTestCase.setUp(self)
