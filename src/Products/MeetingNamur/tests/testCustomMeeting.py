@@ -29,7 +29,7 @@ class testCustomMeeting(MeetingNamurTestCase, mctcmi):
         self.presentItem(i6)
         self.presentItem(i7)
         # build the list of uids
-        itemUids = [anItem.UID() for anItem in meeting.getItems(ordered=True)]
+        itemUids = [anItem.UID() for anItem in meeting.get_items(ordered=True)]
         # the 2 new development items are moved to the end of the meeting
         view = i6.restrictedTraverse('@@change-item-order')
         view('number', '7')
@@ -76,7 +76,7 @@ class testCustomMeeting(MeetingNamurTestCase, mctcmi):
         self._removeConfigObjectsFor(self.meetingConfig)
         # add a Meeting and present several items in different categories
         self.changeUser('pmManager')
-        m = self.create('Meeting', date=DateTime('2007/12/11 09:00:00').asdatetime)
+        m = self.create('Meeting', date=DateTime('2007/12/11 09:00:00').asdatetime())
         i1 = self.create('MeetingItem', title='Item1')
         i1.setProposingGroup(self.developers_uid)
         i2 = self.create('MeetingItem', title='Item2')
