@@ -53,6 +53,10 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         '''This test covers the whole decision workflow. It begins with the
            creation of some items, and ends by closing a meeting.'''
         # pmCreator1 creates an item
+        self._activate_wfas(
+            ('namur_meetingmanager_may_not_edit_description',),
+            keep_existing=True
+        )
         self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
         self.addAnnex(item1)

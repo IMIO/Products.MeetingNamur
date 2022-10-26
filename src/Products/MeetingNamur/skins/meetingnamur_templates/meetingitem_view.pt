@@ -231,6 +231,27 @@
                 </span>
             </div>
 
+            <tal:comment replace="nothing">XXX MeetingNamur</tal:comment>
+            <tal:comment replace="nothing">Item certified signatures</tal:comment>
+            <div class="discreet" tal:condition="python: meeting">
+                <tal:defines define="redefinedItemCertifiedSignatures python: context.getItemCertifiedSignatures();
+                       mayQuickEdit python: member.has_permission('MeetingNamur: Write certified signatures', context);
+                       class_if_highlighted python: redefinedItemCertifiedSignatures and 'highlightRedefinedValue' or '';
+                       class_to_use python: mayQuickEdit and (class_if_highlighted and class_if_highlighted + ' itemAssemblyEditable' or 'itemAssemblyEditable') or class_if_highlighted">
+                    <div tal:attributes="class class_to_use"><i>
+                        <a tal:condition="mayQuickEdit" href="manage_item_certified_signatures_form"
+                                                        class="link-overlay-pm">
+                            <span i18n:translate="item_certifiedSignatures"></span>
+                        </a>
+                        <span tal:condition="not: mayQuickEdit"
+                                 tal:attributes="class class_to_use"
+                                 i18n:translate="item_certified"></span>
+                    </i>:&nbsp;&nbsp;
+                    </div>
+                    <div tal:content="structure context/getItemCertifiedSignatures"/>
+                </tal:defines>
+            </div>
+
             <tal:comment replace="nothing">Send to authority?</tal:comment>
             <div class="discreet" tal:condition="python: 'sendToAuthority' in usedAttrs">
                 <span class="item_attribute_label"
@@ -296,6 +317,16 @@
                 <span class="item_attribute_label" i18n:translate="this_item_is_not_an_oral_question">This item is not an oral question</span>
               </tal:not_oral_question>
              </tal:defines>
+            </div>
+
+            <tal:comment replace="nothing">XXX MeetingNamur</tal:comment>
+            <tal:comment replace="nothing">Confidential item ?</tal:comment>
+            <div class="discreet">
+                <i>
+                    <div tal:condition="python: context.getIsConfidentialItem()">
+                        <span i18n:translate="MeetingNamur_isConfidentialItem"></span>
+                    </div>
+                </i>
             </div>
 
             <tal:comment replace="nothing">Item initiator</tal:comment>
@@ -462,6 +493,12 @@
         <p class="item-before-budget-related"></p>
         <metal:budgetInfos use-macro="here/@@pm-macros/budgetInfos" />
 
+        <tal:comment replace="nothing">XXX MeetingNamur</tal:comment>
+        <fieldset tal:condition="python:context.getGrpBudgetInfos() and context.getBudgetRelated()">
+          <legend i18n:translate="MeetingNamur_label_grpBudgetInfos">Group Budgetary informations</legend>
+          <span metal:use-macro="python: here.widget('grpBudgetInfos', mode='view')" />
+        </fieldset>
+
         <tal:displayBudgetInfos define="fieldName string:budgetInfos;
                                         ajaxEdit string:True;">
           <div id="hideBudgetInfosIfNotBudgetRelated"
@@ -493,6 +530,11 @@
     <tal:comment replace="nothing">DecisionEnd</tal:comment>
     <tal:field define="fieldName python: 'decisionEnd'; ajaxEdit python:True">
        <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
+
+    <tal:comment replace="nothing">XXX Specific for Namur Votes</tal:comment>
+    <tal:field define="fieldName python: 'vote'; ajaxEdit python:True">
+        <metal:f use-macro="context/@@pm-macros/viewContentField"/>
     </tal:field>
 
     <tal:comment replace="nothing">Other meetingConfigs clonable to</tal:comment>

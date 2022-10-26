@@ -60,8 +60,9 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
                            'accepted_out_of_meeting_emergency_and_duplicated',
                            'transfered',
                            'transfered_and_duplicated',
-                           'meetingmanager_correct_closed_meeting'})
-
+                           'meetingmanager_correct_closed_meeting',
+                           'namur_meetingmanager_may_not_edit_description'
+                           })
 
     def test_pm_Validate_workflowAdaptations_dependencies(self):
         '''Not all WFA are available yet...'''

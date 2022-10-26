@@ -51,6 +51,10 @@
 
   <configure package="Products.MeetingCommunes">
 
+      <adapter for="Products.PloneMeeting.interfaces.IMeetingConfig"
+         factory="Products.MeetingNamur.adapters.CustomNamurMeetingConfig"
+         provides="Products.PloneMeeting.interfaces.IMeetingConfigCustom"/>
+
       <adapter for="Products.PloneMeeting.content.meeting.IMeeting"
                factory="Products.MeetingNamur.adapters.CustomNamurMeeting"
                provides="Products.PloneMeeting.interfaces.IMeetingCustom"/>

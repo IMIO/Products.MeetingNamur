@@ -2,12 +2,14 @@
 
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
+from Products.MeetingNamur.config import WriteDescription
+from Products.PloneMeeting.model.adaptations import WF_APPLIED
 from collective.contact.plonegroup.utils import get_organizations
 from imio.helpers.xhtml import xhtmlContentIsEmpty
 from plone import api
 from Products.Archetypes.atapi import DisplayList
 from Products.CMFCore.utils import getToolByName
-from Products.MeetingCommunes.adapters import CustomMeeting
+from Products.MeetingCommunes.adapters import CustomMeeting, CustomMeetingConfig
 from Products.MeetingCommunes.adapters import CustomMeetingItem
 from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
 from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowActions
@@ -27,7 +29,7 @@ from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowConditi
 from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowActions
 from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowConditions
 from Products.PloneMeeting.adapters import ItemPrettyLinkAdapter
-from Products.PloneMeeting.interfaces import IMeetingCustom
+from Products.PloneMeeting.interfaces import IMeetingCustom, IMeetingConfigCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.interfaces import IToolPloneMeetingCustom
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions
@@ -36,9 +38,6 @@ from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
 from Products.PloneMeeting.utils import sendMail
 from zope.i18n import translate
-from zope.interface import implements
-
-
 customWfAdaptations = (
     'item_validation_shortcuts',
     'item_validation_no_validate_shortcuts',
@@ -56,6 +55,8 @@ customWfAdaptations = (
     'refused',
     'delayed',
     'pre_accepted',
+    # Custom for MeetingNamur it must be located before return_to_proposing_group_*
+    'namur_meetingmanager_may_not_edit_description',
     # then other adaptations
     'reviewers_take_back_validated_item',
     'presented_item_back_to_validation_state',
@@ -70,8 +71,22 @@ customWfAdaptations = (
     'transfered_and_duplicated',
     'meetingmanager_correct_closed_meeting'
 )
+from zope.interface import implements
+
 MeetingConfig.wfAdaptations = customWfAdaptations
 
+
+class CustomNamurMeetingConfig(CustomMeetingConfig):
+    implements(IMeetingConfigCustom)
+    security = ClassSecurityInfo()
+
+    def get_item_custom_suffix_roles(self, item, item_state):
+        suffix_roles = None
+        if item_state in self.getSelf().getItemDecidedStates():
+            suffix_roles = {
+                'creators': ['Reader', 'MeetingCertifiedSignaturesWriter']
+            }
+        return True, suffix_roles
 
 class CustomNamurMeeting(CustomMeeting):
     """Adapter that adapts a meeting implementing IMeeting to the
@@ -119,7 +134,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         item = self.getSelf()
         grp_roles = []
         if item.query_state() in ('presented', 'itemfrozen', 'accepted', 'delayed', 'accepted_but_modified',
-                                 'pre_accepted', 'refused'):
+                                  'pre_accepted', 'refused'):
             # add new MeetingBudgetImpactReviewerRole
             for grpBudgetInfo in item.grpBudgetInfos:
                 grp_role = '%s_budgetimpactreviewers' % grpBudgetInfo
@@ -224,8 +239,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         roles = item.portal_membership.getAuthenticatedMember().getRolesInContext(item)
         res = False
         for role in roles:
-            if (role == 'Authenticated') or (role == 'Member') or \
-                    (role == 'MeetingTaxController') or (role == 'MeetingBudgetImpactReviewer') or \
+            if (role == 'Authenticated') or (role == 'Member') or (role == 'MeetingBudgetImpactReviewer') or \
                     (role == 'MeetingObserverGlobal') or (role == 'Reader'):
                 continue
             res = True
@@ -395,8 +409,29 @@ class CustomNamurToolPloneMeeting(CustomToolPloneMeeting):
         self.context = item
 
 
+    def performCustomWFAdaptations(
+            self, meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow
+    ):
+        """This function applies workflow changes as specified by the
+        p_meetingConfig."""
+        itemStates = itemWorkflow.states
+
+        if wfAdaptation == "namur_meetingmanager_may_not_edit_description":
+            # TODO : we should probably do the reciprocal of this WFA (aka 'namur_meetingmanager_may_edit_description')
+            # Otherwise, nobody will be able to edit the description field !
+            itemStates.itemcreated.permission_roles[WriteDescription] = ("Manager", "Editor")
+            for validation_level in meetingConfig.getItemWFValidationLevels():
+                state_id = validation_level['state']
+                if validation_level['enabled'] == '1' and state_id in itemStates:
+                    itemStates[state_id].permission_roles[WriteDescription] = ("Manager", "Editor")
+            logger.info(WF_APPLIED % ("namur_meetingmanager_may_not_edit_description", meetingConfig.getId()))
+            return True
+
+        return False
+
 # ------------------------------------------------------------------------------
 
+InitializeClass(CustomNamurMeetingConfig)
 InitializeClass(CustomNamurMeeting)
 InitializeClass(CustomNamurMeetingItem)
 InitializeClass(MeetingNamurWorkflowActions)
