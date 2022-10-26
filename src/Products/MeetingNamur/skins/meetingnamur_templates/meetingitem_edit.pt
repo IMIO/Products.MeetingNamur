@@ -16,7 +16,9 @@
                        cfg python: tool.getMeetingConfig(context);
                        usedAttrs cfg/getUsedItemAttributes;
                        showClonableToOtherMCs context/showClonableToOtherMCs;
-                       showAdvancedClonableToOtherMCs python: context.adapted().showAdvancedClonableToOtherMCs(showClonableToOtherMCs);">
+                       showAdvancedClonableToOtherMCs python: context.adapted().showAdvancedClonableToOtherMCs(showClonableToOtherMCs);
+                       isFullField python: context.adapted().viewFullFieldInItemEdit();">
+
 
     <tal:showWarningWillInvalidateAdvices condition="context/willInvalidateAdvices">
     <dl class="portalMessage warning">

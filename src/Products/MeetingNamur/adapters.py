@@ -237,14 +237,10 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         """
         item = self.getSelf()
         roles = item.portal_membership.getAuthenticatedMember().getRolesInContext(item)
-        res = False
         for role in roles:
-            if (role == 'Authenticated') or (role == 'Member') or (role == 'MeetingBudgetImpactReviewer') or \
-                    (role == 'MeetingObserverGlobal') or (role == 'Reader'):
-                continue
-            res = True
-            break
-        return res
+            if role not in ('Authenticated', 'Member', 'MeetingBudgetImpactReviewer', 'MeetingObserverGlobal', 'Reader'):
+                return True
+        return False
 
     def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc, cloned_from_item_template):
         """
