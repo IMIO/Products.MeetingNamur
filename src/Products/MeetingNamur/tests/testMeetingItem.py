@@ -88,7 +88,6 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         originalDecision = '<p>Current item decision.</p>'
         item1.setDecision(originalDecision)
         # for now, as nothing is defined, nothing happens when item is delayed
-        import ipdb; ipdb.set_trace() # TODO: REMOVE ME <-----------------------------------------------------------------------
         self.do(item1, 'delay')
         self.assertTrue(item1.getDecision(keepWithNext=False) == originalDecision)
         # configure onTransitionFieldTransforms and delay another item
@@ -103,9 +102,9 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         self.assertTrue(item2.getDecision(keepWithNext=False) == delayedItemDecision)
         # if the item was duplicated (often the case when delaying an item), the duplicated
         # item keep the original decision
-        duplicatedItem = item2.getBRefs('ItemPredecessor')[0]
+        duplicatedItem = item2.get_successor()
         # right duplicated item
-        self.assertTrue(duplicatedItem.getPredecessor() == item2)
+        self.assertTrue(duplicatedItem.get_predecessor() == item2)
         self.assertTrue(duplicatedItem.getDecision(keepWithNext=False) == '<p>&nbsp;</p>')
         # this work also when triggering any other item or meeting transition with every rich fields
         item3 = meeting.get_items()[2]
@@ -155,6 +154,9 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         self.assertTrue(get_annexes(clonedItemWithLink, portal_types=['annex']))
         self.assertFalse(get_annexes(clonedItemWithLink, portal_types=['annexDecision']))
 
+    def test_pm_ItemTemplateImage(self):
+        ''' decision field is cleared in MeetingNamur '''
+        pass
 
 
 def test_suite():

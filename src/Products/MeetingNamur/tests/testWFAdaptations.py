@@ -49,7 +49,7 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
                            'delayed',
                            'pre_accepted',
                            'reviewers_take_back_validated_item',
-                           'presented_item_back_to_proposed',
+                           'presented_item_back_to_itemcreated',
                            'presented_item_back_to_proposed',
                            'return_to_proposing_group',
                            'return_to_proposing_group_with_last_validation',

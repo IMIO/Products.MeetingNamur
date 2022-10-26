@@ -82,24 +82,7 @@ class IMeetingItemNamurCouncilWorkflowConditions(IMeetingItemNamurWorkflowCondit
 
 
 class IMeetingNamurWorkflowActions(IMeetingWorkflowActions):
-    '''This interface represents a meeting as viewed by the specific meeting
-       workflow that is defined in this MeetingNamur product.'''
-    def doClose():
-        """
-          Triggered while doing the 'close' transition
-        """
-    def doDecide():
-        """
-          Triggered while doing the 'decide' transition
-        """
-    def doFreeze():
-        """
-          Triggered while doing the 'freeze' transition
-        """
-    def doBackToCreated():
-        """
-          Triggered while doing the 'doBackToCreated' transition
-        """
+    '''inherit class'''
 
 
 class IMeetingNamurCollegeWorkflowActions(IMeetingNamurWorkflowActions):
