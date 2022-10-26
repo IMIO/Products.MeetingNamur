@@ -49,7 +49,7 @@ def update_item_schema(baseSchema):
             name='isConfidentialItem',
             default=False,
             widget=BooleanField._properties['widget'](
-                condition="python: here.portal_plonemeeting.isManager(cfg)",
+                condition="python: here.showMeetingManagerReservedField('isConfidentialItem')",
                 label='IsConfidentialItem',
                 label_msgid='MeetingNamur_isConfidentialItem',
                 i18n_domain='PloneMeeting',

@@ -13,7 +13,6 @@ collegeMeeting.itemConditionsInterface = 'Products.MeetingNamur.interfaces.IMeet
 collegeMeeting.itemActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowActions'
 collegeMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowConditions'
 collegeMeeting.meetingActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowActions'
-collegeMeeting.workflowAdaptations = []
 
 # Conseil communal
 councilMeeting = deepcopy(mc_import_data.councilMeeting)
@@ -21,8 +20,6 @@ councilMeeting.workflowAdaptations = ['delayed', 'no_publication']
 councilMeeting.itemConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowConditions'
 councilMeeting.itemActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowActions'
 councilMeeting.meetingConditionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowConditions'
-councilMeeting.meetingActionsInterface = 'Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowActions'
-councilMeeting.workflowAdaptations = []
 councilMeeting.itemCopyGroupsStates = []
 
 data.meetingConfigs = (collegeMeeting, councilMeeting)

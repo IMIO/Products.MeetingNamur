@@ -39,9 +39,37 @@ from zope.i18n import translate
 from zope.interface import implements
 
 
-# Names of available workflow adaptations.
-customWfAdaptations = ('return_to_proposing_group', 'return_to_proposing_group_with_last_validation',
-                       'return_to_proposing_group_with_all_validations')
+customWfAdaptations = (
+    'item_validation_shortcuts',
+    'item_validation_no_validate_shortcuts',
+    'only_creator_may_delete',
+    # first define meeting workflow state removal
+    'no_freeze',
+    'no_publication',
+    'no_decide',
+    # then define added item decided states
+    'accepted_but_modified',
+    'postpone_next_meeting',
+    'mark_not_applicable',
+    'removed',
+    'removed_and_duplicated',
+    'refused',
+    'delayed',
+    'pre_accepted',
+    # then other adaptations
+    'reviewers_take_back_validated_item',
+    'presented_item_back_to_validation_state',
+    'return_to_proposing_group',
+    'return_to_proposing_group_with_last_validation',
+    'return_to_proposing_group_with_all_validations',
+    'accepted_out_of_meeting',
+    'accepted_out_of_meeting_and_duplicated',
+    'accepted_out_of_meeting_emergency',
+    'accepted_out_of_meeting_emergency_and_duplicated',
+    'transfered',
+    'transfered_and_duplicated',
+    'meetingmanager_correct_closed_meeting'
+)
 MeetingConfig.wfAdaptations = customWfAdaptations
 
 

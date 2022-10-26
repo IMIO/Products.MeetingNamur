@@ -100,7 +100,7 @@ class testCustomMeeting(MeetingNamurTestCase, mctcmi):
 
         # build the list of uids
         itemUids = []
-        for item in m.getItemsInOrder():
+        for item in m.get_items(ordered=True):
             itemUids.append(item.UID())
         # test on the meeting
         # we should have a list containing 3 lists, 1 list by category
@@ -164,9 +164,7 @@ class testCustomMeeting(MeetingNamurTestCase, mctcmi):
         self.assertEquals(i2.getDecision(), "<p>Decision Item2</p>")
         # i3 is initlaized because the decision field contained an empty_value
         self.assertEquals(i3.getDecision(), "<p>Description Item3</p>")
-        # decide the meeting (freez it before ;-))
-        self.do(m, 'freeze')
-        self.do(m, 'decide')
+        self.decideMeeting(m)
         # now that the meeting is decided, the decision field not change
         # i1 should be initialized
         self.assertEquals(i1.getDecision(), "<p>Description Item1</p>")
