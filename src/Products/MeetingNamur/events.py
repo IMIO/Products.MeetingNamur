@@ -12,6 +12,9 @@ __docformat__ = 'plaintext'
 
 from Products.PloneMeeting.utils import forceHTMLContentTypeForEmptyRichFields
 
+def onItemLocalRolesUpdated(item, event):
+    """Called after localRoles have been updated on the item."""
+    item.adapted().updateMeetingCertifiedSignaturesWriterLocalRoles()
 
 def onItemDuplicated(original, event):
     """After item's cloning, we copy in description field the decision field

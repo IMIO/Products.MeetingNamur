@@ -61,7 +61,7 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
                            'transfered',
                            'transfered_and_duplicated',
                            'meetingmanager_correct_closed_meeting',
-                           'namur_meetingmanager_may_not_edit_description'
+                           'namur_meetingmanager_may_not_edit_decision_project'
                            })
 
     def test_pm_Validate_workflowAdaptations_dependencies(self):

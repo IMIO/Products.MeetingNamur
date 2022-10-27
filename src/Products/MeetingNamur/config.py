@@ -7,9 +7,8 @@ from Products.PloneMeeting import config as PMconfig
 PROJECTNAME = "MeetingNamur"
 
 # Permissions
-WriteDescription = 'MeetingNamur: Write description'
-#  for test, we must give writeDescription for Member
-setDefaultRoles(WriteDescription, ('Manager', 'Member'))
+WriteDecisionProject = 'MeetingNamur: Write decisionProject'
+setDefaultRoles(WriteDecisionProject, ('Manager', 'Member'))
 WriteCertified = 'MeetingNamur: Write certified signatures'
 setDefaultRoles(WriteCertified, ('Manager',))
 

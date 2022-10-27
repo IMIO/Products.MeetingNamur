@@ -77,6 +77,11 @@
           <metal:f use-macro="context/@@pm-macros/editContentField"/>
         </tal:field>
 
+        <tal:comment replace="nothing">XXX Specific for Namur : decisionProject</tal:comment>
+        <tal:field define="fieldName python: 'decisionProject'">
+            <metal:f use-macro="context/@@pm-macros/editContentField"/>
+        </tal:field>
+
         <tal:comment replace="nothing">Budget-related information</tal:comment>
         <fieldset tal:condition="python: 'budgetInfos' in usedAttrs">
           <legend i18n:translate="">Budget</legend>

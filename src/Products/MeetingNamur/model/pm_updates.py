@@ -72,11 +72,23 @@ def update_item_schema(baseSchema):
             allowable_content_types=('text/html',),
             default_output_type="text/x-html-safe",
         ),
+        TextField(
+            name='decisionProject',
+            widget=RichWidget(
+                condition="python: here.attributeIsUsed('decisionProject')",
+                description="decisionProject",
+                description_msgid="item_decisionProject_descr",
+                label='decisionProject',
+                label_msgid='projectOfDecision_label',
+                i18n_domain='PloneMeeting',
+            ),
+            optional=True,
+            write_permission="MeetingNamur: Write decisionProject",
+            default_content_type="text/html",
+            allowable_content_types=('text/html',),
+            default_output_type="text/x-html-safe",
+        ),
     ), )
-
-    baseSchema['description'].write_permission = "MeetingNamur: Write description"
-    baseSchema['description'].widget.label = "projectOfDecision"
-    baseSchema['description'].widget.label_msgid = "projectOfDecision_label"
 
     completeSchema = baseSchema + specificSchema.copy()
     return completeSchema

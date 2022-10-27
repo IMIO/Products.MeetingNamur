@@ -20,7 +20,7 @@
       <role name="MeetingManager"/>
       <role name="MeetingCertifiedSignaturesWriter"/>
     </permission>
-    <permission name="MeetingNamur: Write description"
+    <permission name="MeetingNamur: Write decisionProject"
                 acquire="False">
       <role name="Manager"/>
       <role name="MeetingManager"/>

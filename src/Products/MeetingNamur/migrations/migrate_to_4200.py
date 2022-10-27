@@ -67,10 +67,23 @@ class Migrate_To_4200(MCMigrate_To_4200):
                     break
         logger.info('Done.')
 
-    def _doConfigureItemWFValidationLevels(self, cfg):
-        """Apply correct itemWFValidationLevels and fix WFAs."""
-        pass
-        # TODO
+    def _migrateDescriptionAttributeToDecisionProject(self):
+        """ Field Description is migrated to a new field with is own set of features """
+        logger.info("Adapting meetingConfigs...")
+        for cfg in self.tool.objectValues("MeetingConfig"):
+            used_item_attrs = list(cfg.getUsedItemAttributes())
+            if "decisionProject" not in used_item_attrs:
+                used_item_attrs.append("decisionProject")
+                used_item_attrs = [attr for attr in used_item_attrs if attr != 'description']
+            cfg.setUsedItemAttributes(used_item_attrs)
+        logger.info("Adapting items...")
+        catalog = api.portal.get_tool("portal_catalog")
+        brains = catalog(meta_type=["MeetingItem"])
+        for brain in brains:
+            item = brain.getObject()
+            if hasattr(item, "description"):
+                item.setDecisionProject(item.description)
+                delattr(item, "description")
 
     def run(self,
             profile_name=u'profile-Products.MeetingNamur:default',
@@ -78,7 +91,7 @@ class Migrate_To_4200(MCMigrate_To_4200):
         self._fixUsedWFs()
         super(Migrate_To_4200, self).run(extra_omitted=extra_omitted)
         self._adaptWFHistoryForItemsAndMeetings()
-
+        self._migrateDescriptionAttributeToDecisionProject()
         logger.info('Done migrating to MeetingNamur 4200...')
 
 
