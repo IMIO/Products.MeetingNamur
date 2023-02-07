@@ -4,7 +4,34 @@ Products.MeetingNamur Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/
 The Products.MeetingNamur version must be the same as the Products.PloneMeeting version
 
-4.1 (unreleased)
+4.1.4 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+4.1.3 (2021-08-05)
+------------------
+
+- Changed translations.
+  [aduchene]
+
+
+4.1.2 (2021-04-28)
+------------------
+
+- Added additional_catalog_query parameter in `getPrintableItemsByCategory`.
+  [aduchene]
+
+4.1.1 (2021-02-15)
+------------------
+
+- Fixed failing tests for which name changed in `Products.PloneMeeting`.
+  [gbastien]
+- Fixed a bug in `getPrintableItemsByCategory` where first level category was not taken into account.
+  [aduchene]
+
+4.1 (2020-10-20)
 ----------------
 - Using MeetingCommunes
 - Compatible for PloneMeeting 4.1.26

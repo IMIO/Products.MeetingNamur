@@ -29,6 +29,7 @@ from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCas
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_VALIDATION_STATES
+from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 
 
 class testWFAdaptations(MeetingNamurTestCase, mctwfa):
@@ -38,64 +39,78 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
         self.assertEquals(set(self.meetingConfig.listWorkflowAdaptations()),
                           {'return_to_proposing_group',
-                               'return_to_proposing_group_with_last_validation',
-                               'return_to_proposing_group_with_all_validations'})
+                           'return_to_proposing_group_with_last_validation',
+                           'return_to_proposing_group_with_all_validations'})
 
     def test_pm_WFA_no_publication(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_no_proposal(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_pre_validation(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_items_come_validated(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_only_creator_may_delete(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_no_global_observation(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_everyone_reads_all(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_creator_edits_unless_closed(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_add_published_state(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_creator_initiated_decisions(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_local_meeting_managers(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_return_to_proposing_group_with_hide_decisions_when_under_writing(self):
         '''No sense...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_return_to_proposing_group_with_all_validations(self):
         '''Not used yet...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_WFA_return_to_proposing_group_with_last_validation(self):
         '''Not used yet...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def _return_to_proposing_group_inactive(self):
         '''Tests while 'return_to_proposing_group' wfAdaptation is inactive.'''
