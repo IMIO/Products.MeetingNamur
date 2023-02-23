@@ -26,42 +26,6 @@ from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 class MeetingNamurTestingHelpers(MeetingCommunesTestingHelpers):
     '''Override some values of MeetingCommunesTestingHelpers.'''
 
-    TRANSITIONS_FOR_PROPOSING_ITEM_1 = TRANSITIONS_FOR_PROPOSING_ITEM_2 = ('propose',)
-    TRANSITIONS_FOR_VALIDATING_ITEM_1 = TRANSITIONS_FOR_VALIDATING_ITEM_2 = ('propose', 'validate',)
-    TRANSITIONS_FOR_PRESENTING_ITEM_1 = TRANSITIONS_FOR_PRESENTING_ITEM_2 = ('propose', 'validate', 'present',)
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = TRANSITIONS_FOR_ACCEPTING_ITEMS_2 =('freeze', 'decide',)
-
-    TRANSITIONS_FOR_DECIDING_MEETING_1 = TRANSITIONS_FOR_DECIDING_MEETING_2 = ('freeze', 'decide',)
-    TRANSITIONS_FOR_CLOSING_MEETING_1 = TRANSITIONS_FOR_CLOSING_MEETING_2 = ('freeze', 'decide', 'close',)
-    BACK_TO_WF_PATH_1 = BACK_TO_WF_PATH_2 = {
-        # Meeting
-        'created': ('backToDecided',
-                    'backToFrozen',
-                    'backToCreated',),
-        # MeetingItem
-        'itemcreated': ('backToItemFrozen',
-                        'backToPresented',
-                        'backToValidated',
-                        'backToItemCreated', ),
-        'proposed': ('backToItemFrozen',
-                     'backToPresented',
-                     'backToValidated',
-                     'backToItemCreated',
-                     'propose', ),
-        'validated': ('backToItemFrozen',
-                      'backToPresented',
-                      'backToValidated', ),
-        'presented': ('backToItemFrozen',
-                      'backToPresented', )}
-
-    WF_STATE_NAME_MAPPINGS = {'itemcreated': 'itemcreated',
-                              'proposed': 'proposed',
-                              'validated': 'validated',
-                              'presented': 'presented',
-                              'itemfrozen': 'itemfrozen'}
-
     # in which state an item must be after an particular meeting transition?
     ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {'publish_decisions': 'accepted',
                                               'close': 'accepted'}
-
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = ('freeze', 'decide', )

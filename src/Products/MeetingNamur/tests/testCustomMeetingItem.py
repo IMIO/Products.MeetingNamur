@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+from datetime import timedelta
 
 from AccessControl import Unauthorized
-from DateTime import DateTime
 from Products.MeetingCommunes.tests.testCustomMeetingItem import testCustomMeetingItem as mctcmi
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 
@@ -18,7 +19,7 @@ class testCustomMeetingItem(MeetingNamurTestCase, mctcmi):
         self.changeUser('pmManager')
         m = self._createMeetingWithItems()
         self.do(m, 'freeze')
-        item = m.getItems()[0]
+        item = m.get_items()[0]
         # no MeetingBudgetImpactReviewer in rôle
         self.assertEquals((u'developers_budgetimpactreviewers', (
             'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
@@ -54,10 +55,10 @@ class testCustomMeetingItem(MeetingNamurTestCase, mctcmi):
         item = self.create('MeetingItem')
         item.setDecision('<p>A decision</p>')
         self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime() + 1)
+        meeting = self.create('Meeting', date=datetime.now() + timedelta(days=1))
         # define an assembly on the meeting
-        meeting.setAssembly('Meeting assembly')
-        meeting.setSignatures('Meeting signatures')
+        meeting.assembly = 'Meeting assembly'
+        meeting.signatures = 'Meeting signatures'
         self.presentItem(item)
         # make the form item_assembly_default works
         self.request['PUBLISHED'].context = item

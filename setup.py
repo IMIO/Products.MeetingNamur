@@ -1,7 +1,8 @@
 from setuptools import setup, find_packages
 import os
 
-version = '4.1.4.dev0'
+
+version = '4.2.0a1'
 
 setup(name='Products.MeetingNamur',
       version=version,
@@ -25,8 +26,21 @@ setup(name='Products.MeetingNamur',
       include_package_data=True,
       zip_safe=False,
       extras_require=dict(
-          test=['Products.PloneMeeting[test]']),
+          test=['unittest2',
+                'zope.testing',
+                'plone.testing',
+                'plone.app.testing',
+                'plone.app.robotframework',
+                'Products.CMFPlacefulWorkflow',
+                'zope.testing',
+                'Products.PloneTestCase',
+                'Products.PloneMeeting[test]'],
+          templates=['Genshi', ]),
       install_requires=[
+          'setuptools',
+          'Products.CMFPlone',
+          'Pillow',
+          'Products.PloneMeeting',
           'Products.MeetingCommunes'],
       entry_points={},
       )

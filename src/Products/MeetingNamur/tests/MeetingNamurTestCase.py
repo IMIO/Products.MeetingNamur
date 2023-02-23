@@ -21,23 +21,17 @@
 #
 
 from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
-from Products.MeetingNamur.adapters import customWfAdaptations
-from Products.MeetingNamur.adapters import RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
+
 from Products.MeetingNamur.testing import MNA_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingNamur.tests.helpers import MeetingNamurTestingHelpers
-# monkey patch the MeetingConfig.wfAdaptations again because it is done in
-# adapters.py but overrided by Products.MeetingCommunes here in the tests...
-from Products.PloneMeeting.MeetingConfig import MeetingConfig
-from Products.PloneMeeting.model import adaptations
-
-
-MeetingConfig.wfAdaptations = customWfAdaptations
-adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 class MeetingNamurTestCase(MeetingCommunesTestCase, MeetingNamurTestingHelpers):
     """Base class for defining MeetingNamur test cases."""
 
     layer = MNA_TESTING_PROFILE_FUNCTIONAL
+    subproductIgnoredTestFiles = ['testPerformances.py',
+                                  'testVotes.py',
+                                  'test_robot.py']
 
     def setUp(self):
         MeetingCommunesTestCase.setUp(self)

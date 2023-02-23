@@ -23,7 +23,7 @@
 #
 
 from DateTime import DateTime
-from Products.MeetingCommunes.tests.testMeeting import testMeeting as mctm
+from Products.MeetingCommunes.tests.testMeeting import testMeetingType as mctm
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 
 
@@ -40,28 +40,13 @@ class testMeeting(MeetingNamurTestCase, mctm):
         mctm.test_pm_RemoveOrDeleteLinkedItem(self)
 
 
-    def test_pm_MeetingNumbers(self):
-        '''Tests that meetings receive correctly their numbers from the config
-           when they are freezing.'''
-        self.changeUser('pmManager')
-        m1 = self._createMeetingWithItems()
-        self.assertEquals(self.meetingConfig.getLastMeetingNumber(), 0)
-        self.assertEquals(m1.getMeetingNumber(), -1)
-        self.decideMeeting(m1)
-        self.assertEquals(m1.getMeetingNumber(), 1)
-        self.assertEquals(self.meetingConfig.getLastMeetingNumber(), 1)
-        m2 = self._createMeetingWithItems()
-        self.decideMeeting(m2)
-        self.assertEquals(m2.getMeetingNumber(), 2)
-        self.assertEquals(self.meetingConfig.getLastMeetingNumber(), 2)
-
     def test_pm_InsertItemOnItemDecisionFirstWords(self):
         """Test when inserting item in a meeting using
            'on_item_decision_first_words' insertion method."""
         cfg = self.meetingConfig
         cfg.setInsertingMethodsOnAddItem(({'insertingMethod': 'on_item_decision_first_words', 'reverse': '0'}, ))
         self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime('2019/09/20'))
+        meeting = self.create('Meeting', date=DateTime('2019/09/20').asdatetime())
         # xxx Namur, creator place decision in description field and it's copied on decision field when the item is validate
         data = ({'description': "<p>DÉCIDE d'engager Madame Untell Anne au poste proposé</p>"},
                 {'description': "<p>DÉCIDE de refuser</p>"},
@@ -74,7 +59,7 @@ class testMeeting(MeetingNamurTestCase, mctm):
             item = self.create('MeetingItem', **itemData)
             self.presentItem(item)
         self.assertEqual(
-            [anItem.getDecision() for anItem in meeting.getItems(ordered=True)],
+            [anItem.getDecision() for anItem in meeting.get_items(ordered=True)],
             ["<p>A REFUS\xc3\x89 d'engager Madame Untell Anne au poste propos\xc3\xa9</p>",
              "<p>ACCEPTE d'engager Madame Untell Anne au poste propos\xc3\xa9</p>",
              "<p>ACCEPTENT d'engager Madame Untell Anne au poste propos\xc3\xa9</p>",
@@ -85,7 +70,7 @@ class testMeeting(MeetingNamurTestCase, mctm):
              '<p>This is the first recurring item.</p>',
              '<p>This is the second recurring item.</p>'])
         self.assertEqual(
-            [anItem._findOrderFor('on_item_decision_first_words') for anItem in meeting.getItems(ordered=True)],
+            [anItem._findOrderFor('on_item_decision_first_words') for anItem in meeting.get_items(ordered=True)],
             [u"a refuse d'engager madame untell",
              u"accepte d'engager madame untell anne",
              u"acceptent d'engager madame untell anne",

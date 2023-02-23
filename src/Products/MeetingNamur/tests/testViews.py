@@ -24,6 +24,8 @@
 
 from Products.MeetingCommunes.tests.testViews import testViews as mctv
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.PloneMeeting.MeetingItem import MeetingItem
+from ftw.labels.interfaces import ILabeling
 
 
 class testViews(MeetingNamurTestCase, mctv):
@@ -37,24 +39,34 @@ class testViews(MeetingNamurTestCase, mctv):
         cfg = self.meetingConfig
         self.changeUser('pmCreator1')
         self.getMeetingFolder()
-        folder = getattr(self.portal.Members.pmCreator1.mymeetings, self.meetingConfig.getId())
+        folder = self.getMeetingFolder()
         itemTemplateView = folder.restrictedTraverse('createitemfromtemplate')
         # the template we will use
         itemTemplates = cfg.getItemTemplates(filtered=True)
         itemTemplate = itemTemplates[0].getObject()
-        self.assertTrue(itemTemplate.portal_type == cfg.getItemTypeName(configType='MeetingItemTemplate'))
+        self.assertEqual(itemTemplate.portal_type, cfg.getItemTypeName(configType='MeetingItemTemplate'))
         itemTemplateUID = itemTemplate.UID()
+        # add a ftw label as it is kept when item created from item template
+        self.changeUser('siteadmin')
+        labelingview = itemTemplate.restrictedTraverse('@@labeling')
+        self.request.form['activate_labels'] = ['label']
+        labelingview.update()
+        item_labeling = ILabeling(itemTemplate)
+        self.assertEqual(item_labeling.storage, {'label': []})
+        self.changeUser('pmCreator1')
         # for now, no items in the user folder
-        self.assertTrue(not folder.objectIds('MeetingItem'))
+        self.assertFalse(folder.objectIds('MeetingItem'))
         newItem = itemTemplateView.createItemFromTemplate(itemTemplateUID)
-        self.assertTrue(newItem.portal_type == cfg.getItemTypeName())
+        self.assertEqual(newItem.portal_type, cfg.getItemTypeName())
         # the new item is the itemTemplate clone
-        self.assertTrue(newItem.Title() == itemTemplate.Title())
-        self.assertTrue(newItem.Description() == itemTemplate.Description())
-        # for Namur, the decision is always empty at creation
+        self.assertEqual(newItem.Title(), itemTemplate.Title())
+        self.assertEqual(newItem.Description(), itemTemplate.Description())
         self.assertTrue(newItem.getDecision() == '<p>&nbsp;</p>')
         # and it has been created in the user folder
         self.assertTrue(newItem.getId() in folder.objectIds())
+        # labels are kept
+        newItem_labeling = ILabeling(newItem)
+        self.assertEqual(item_labeling.storage, newItem_labeling.storage)
         # now check that the user can use a 'secret' item template if no proposing group is selected on it
         self.changeUser('admin')
         itemTemplate.setPrivacy('secret')
@@ -64,12 +76,14 @@ class testViews(MeetingNamurTestCase, mctv):
         # use this template
         self.changeUser('pmCreator1')
         newItem2 = itemTemplateView.createItemFromTemplate(itemTemplateUID)
-        self.assertTrue(newItem2.portal_type == cfg.getItemTypeName())
+        # _at_rename_after_creation is correct
+        self.assertEqual(newItem2._at_rename_after_creation, MeetingItem._at_rename_after_creation)
+        self.assertEqual(newItem2.portal_type, cfg.getItemTypeName())
         # item has been created with a filled proposing group
         # and privacy is still ok
         self.assertTrue(newItem2.getId() in folder.objectIds())
-        userGroups = self.tool.get_orgs_for_user(suffixes=['creators'])
-        self.assertEqual(newItem2.getProposingGroup(), userGroups[0].UID())
+        userGroupUids = self.tool.get_orgs_for_user(suffixes=['creators'])
+        self.assertEqual(newItem2.getProposingGroup(), userGroupUids[0])
         self.assertEqual(newItem2.getPrivacy(), itemTemplate.getPrivacy())
 
 def test_suite():

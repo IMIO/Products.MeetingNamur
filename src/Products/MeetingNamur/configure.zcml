@@ -25,11 +25,11 @@
            factory="Products.MeetingNamur.adapters.MeetingItemNamurCollegeWorkflowConditions"
            provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCollegeWorkflowConditions"/>
 
-  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+  <adapter for="Products.PloneMeeting.content.meeting.IMeeting"
            factory="Products.MeetingNamur.adapters.MeetingNamurCollegeWorkflowActions"
            provides="Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowActions"/>
 
-  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+  <adapter for="Products.PloneMeeting.content.meeting.IMeeting"
            factory="Products.MeetingNamur.adapters.MeetingNamurCollegeWorkflowConditions"
            provides="Products.MeetingNamur.interfaces.IMeetingNamurCollegeWorkflowConditions"/>
 
@@ -41,17 +41,21 @@
            factory="Products.MeetingNamur.adapters.MeetingItemNamurCouncilWorkflowConditions"
            provides="Products.MeetingNamur.interfaces.IMeetingItemNamurCouncilWorkflowConditions"/>
 
-  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+  <adapter for="Products.PloneMeeting.content.meeting.IMeeting"
            factory="Products.MeetingNamur.adapters.MeetingNamurCouncilWorkflowActions"
            provides="Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowActions"/>
 
-  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+  <adapter for="Products.PloneMeeting.content.meeting.IMeeting"
            factory="Products.MeetingNamur.adapters.MeetingNamurCouncilWorkflowConditions"
            provides="Products.MeetingNamur.interfaces.IMeetingNamurCouncilWorkflowConditions"/>
 
   <configure package="Products.MeetingCommunes">
 
-      <adapter for="Products.PloneMeeting.interfaces.IMeeting"
+      <adapter for="Products.PloneMeeting.interfaces.IMeetingConfig"
+         factory="Products.MeetingNamur.adapters.CustomNamurMeetingConfig"
+         provides="Products.PloneMeeting.interfaces.IMeetingConfigCustom"/>
+
+      <adapter for="Products.PloneMeeting.content.meeting.IMeeting"
                factory="Products.MeetingNamur.adapters.CustomNamurMeeting"
                provides="Products.PloneMeeting.interfaces.IMeetingCustom"/>
 

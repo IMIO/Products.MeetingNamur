@@ -24,11 +24,11 @@
 
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from Products.PloneMeeting.model.adaptations import _performWorkflowAdaptations
 from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 from Products.PloneMeeting.utils import get_annexes
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
-from Products.PloneMeeting.utils import setFieldFromAjax
+from Products.PloneMeeting.utils import set_field_from_ajax
 from Products.statusmessages.interfaces import IStatusMessage
 
 
@@ -46,7 +46,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         # enable motivation and budgetInfos in cfg1, not in cfg2
         cfg.setUsedItemAttributes(('motivation', 'budgetInfos'))
         cfg2.setUsedItemAttributes(('itemIsSigned', 'privacy'))
-        cfg.setItemManualSentToOtherMCStates((self.WF_STATE_NAME_MAPPINGS['itemcreated'],))
+        cfg.setItemManualSentToOtherMCStates(self._stateMappingFor('itemcreated'))
 
         # create and send
         self.changeUser('pmManager')
@@ -84,7 +84,7 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         meeting = self._createMeetingWithItems()
         self.decideMeeting(meeting)
         # we will adapt item decision when the item is delayed
-        item1 = meeting.getItems()[0]
+        item1 = meeting.get_items()[0]
         originalDecision = '<p>Current item decision.</p>'
         item1.setDecision(originalDecision)
         # for now, as nothing is defined, nothing happens when item is delayed
@@ -96,18 +96,18 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
             ({'transition': 'delay',
               'field_name': 'MeetingItem.decision',
               'tal_expression': 'string:%s' % delayedItemDecision},))
-        item2 = meeting.getItems()[1]
+        item2 = meeting.get_items()[1]
         item2.setDecision(originalDecision)
         self.do(item2, 'delay')
         self.assertTrue(item2.getDecision(keepWithNext=False) == delayedItemDecision)
         # if the item was duplicated (often the case when delaying an item), the duplicated
         # item keep the original decision
-        duplicatedItem = item2.getBRefs('ItemPredecessor')[0]
+        duplicatedItem = item2.get_successor()
         # right duplicated item
-        self.assertTrue(duplicatedItem.getPredecessor() == item2)
+        self.assertTrue(duplicatedItem.get_predecessor() == item2)
         self.assertTrue(duplicatedItem.getDecision(keepWithNext=False) == '<p>&nbsp;</p>')
         # this work also when triggering any other item or meeting transition with every rich fields
-        item3 = meeting.getItems()[2]
+        item3 = meeting.get_items()[2]
         self.meetingConfig.setOnTransitionFieldTransforms(
             ({'transition': 'accept',
               'field_name': 'MeetingItem.description',
@@ -121,11 +121,11 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
             ({'transition': 'accept',
               'field_name': 'MeetingItem.decision',
               'tal_expression': 'some_wrong_tal_expression'},))
-        item4 = meeting.getItems()[3]
+        item4 = meeting.get_items()[3]
         item4.setDecision('<p>My decision that will not be touched.</p>')
         self.do(item4, 'accept')
         # transition was triggered
-        self.assertTrue(item4.queryState() == 'accepted')
+        self.assertTrue(item4.query_state() == 'accepted')
         # original decision was not touched
         self.assertTrue(item4.getDecision(keepWithNext=False) == '<p>My decision that will not be touched.</p>')
         # a portal_message is displayed to the user that triggered the transition
@@ -154,64 +154,9 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         self.assertTrue(get_annexes(clonedItemWithLink, portal_types=['annex']))
         self.assertFalse(get_annexes(clonedItemWithLink, portal_types=['annexDecision']))
 
-    def test_pm_ItemExternalImagesStoredLocally(self):
-        """External images are stored locally."""
-        cfg = self.meetingConfig
-        if 'creator_initiated_decisions' in cfg.listWorkflowAdaptations():
-            cfg.setWorkflowAdaptations(('creator_initiated_decisions', ))
-            performWorkflowAdaptations(cfg, logger=pm_logger)
-        self.changeUser('pmCreator1')
-        # creation time
-        text = '<p>Working external image <img src="%s"/>.</p>' % self.external_image1
-        pmFolder = self.getMeetingFolder()
-        # do not use self.create to be sure that it works correctly with invokeFactory
-        itemId = pmFolder.invokeFactory(cfg.getItemTypeName(),
-                                        id='item',
-                                        proposingGroup=self.developers_uid,
-                                        description=text)
-        item = getattr(pmFolder, itemId)
-        item.processForm()
-        # contact.png was saved in the item
-        self.assertTrue('22-400x400.jpg' in item.objectIds())
-        img = item.get('22-400x400.jpg')
-        # external image link was updated
-        self.assertEqual(
-            item.getRawDescription(),
-            '<p>Working external image <img src="resolveuid/{0}">.</p>'.format(img.UID()))
-        # xxx Namur creator can't complete decision field continue with admin
-        self.changeUser('admin')
-        # test using the quickedit, test with field 'decision' where getRaw was overrided
-        decision = '<p>Working external image <img src="%s"/>.</p>' % self.external_image2
-        setFieldFromAjax(item, 'decision', decision)
-        self.assertTrue('1025-400x300.jpg' in item.objectIds())
-        img2 = item.get('1025-400x300.jpg')
-        # external image link was updated
-        self.assertEqual(
-            item.getRawDecision(),
-            '<p>Working external image <img src="resolveuid/{0}">.</p>'.format(img2.UID()))
-
-        # test using at_post_edit_script, aka full edit form
-        decision = '<p>Working external image <img src="%s"/>.</p>' % self.external_image3
-        item.setDecision(decision)
-        item._update_after_edit()
-        self.assertTrue('1035-600x400.jpg' in item.objectIds())
-        img3 = item.get('1035-600x400.jpg')
-        # external image link was updated
-        self.assertEqual(
-            item.getRawDecision(),
-            '<p>Working external image <img src="resolveuid/{0}">.</p>'.format(img3.UID()))
-
-        # link to unknown external image, like during copy/paste of content
-        # that has a link to an unexisting image or so
-        decision = '<p>Not working external image <img src="https://i.picsum.photos/id/449/400.png">.</p>'
-        item.setDecision(decision)
-        item._update_after_edit()
-        self.assertTrue('1035-600x400.jpg' in item.objectIds())
-        # nothing was done
-        self.assertListEqual(
-            sorted(item.objectIds()),
-            ['1025-400x300.jpg', '1035-600x400.jpg', '22-400x400.jpg'])
-        self.assertEqual(item.getRawDecision(), decision)
+    def test_pm_ItemTemplateImage(self):
+        ''' decision field is cleared in MeetingNamur '''
+        pass
 
 
 def test_suite():

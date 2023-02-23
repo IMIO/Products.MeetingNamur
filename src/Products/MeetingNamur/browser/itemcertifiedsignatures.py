@@ -146,6 +146,7 @@ class ManageItemCertifiedSignaturesForm(form.Form):
         user = self.context.portal_membership.getAuthenticatedMember()
         if not user.has_permission('MeetingNamur: Write certified signatures',
                                                                          self.context):
+
             raise Unauthorized
 
         self.context.setItemCertifiedSignatures(self.item_certified_signatures)

@@ -35,43 +35,6 @@ from zope.lifecycleevent import ObjectModifiedEvent
 class testAnnexes(MeetingNamurTestCase, mcta):
     ''' '''
 
-    def test_pm_DecisionAnnexesDeletableByOwner(self):
-        """annexDecision may be deleted by the Owner, aka the user that added the annex."""
-        cfg = self.meetingConfig
-        self.changeUser('pmCreator1')
-        item = self.create('MeetingItem')
-        item.setDecision('<p>Decision</p>')
-        self.validateItem(item)
-        # when an item is 'accepted', the MeetingMember may add annexDecision
-        self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime('2016/11/11'))
-        self.presentItem(item)
-        self.decideMeeting(meeting)
-        self.do(item, 'accept')
-        self.assertEqual(item.queryState(), 'accepted')
-        # creator can't add decision annex
-        self.changeUser('pmCreator1')
-        self.assertRaises(Unauthorized, self.addAnnex, item, relatedTo='item_decision')
-        # manager can
-        self.changeUser('pmManager')
-        decisionAnnex1 = self.addAnnex(item, relatedTo='item_decision')
-        self.assertTrue(decisionAnnex1 in item.objectValues())
-        # doable if cfg.ownerMayDeleteAnnexDecision is True
-        self.assertFalse(cfg.getOwnerMayDeleteAnnexDecision())
-        self.assertRaises(Unauthorized, item.restrictedTraverse('@@delete_givenuid'), decisionAnnex1.UID())
-        cfg.setOwnerMayDeleteAnnexDecision(True)
-        item.restrictedTraverse('@@delete_givenuid')(decisionAnnex1.UID())
-        self.assertFalse(decisionAnnex1 in item.objectValues())
-        # add an annex and another user having same groups for item can not remove it
-        decisionAnnex2 = self.addAnnex(item, relatedTo='item_decision')
-        self.changeUser('pmCreator1b')
-        self.assertRaises(Unauthorized, item.restrictedTraverse('@@delete_givenuid'), decisionAnnex2.UID())
-
-    def test_pm_AnnexesDeletableByItemEditor(self):
-        """annex/annexDecision may be deleted if user may edit the item."""
-        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
-            self._testMethodName))
-
     def test_pm_ParentModificationDateUpdatedWhenAnnexChanged(self):
         """When an annex is added/modified/removed, the parent modification date is updated."""
 
@@ -115,7 +78,7 @@ class testAnnexes(MeetingNamurTestCase, mcta):
 
         # on Meeting
         self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime('2018/03/19'))
+        meeting = self.create('Meeting', date=DateTime('2018/03/19').asdatetime())
         parent_modified = meeting.modified()
         self.assertEqual(catalog(UID=meeting.UID())[0].modified, parent_modified)
         # add an annex
