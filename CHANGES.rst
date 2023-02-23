@@ -4,8 +4,8 @@ Products.MeetingNamur Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/
 The Products.MeetingNamur version must be the same as the Products.PloneMeeting version
 
-4.2.0a1 (unreleased)
-------------------
+4.2.0a1 (2023-02-23)
+--------------------
 
 - Compatible for PloneMeeting 4.2.
   [aduchene]
