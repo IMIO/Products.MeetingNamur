@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
+
 version = '4.2.0a1'
 
 setup(name='Products.MeetingNamur',
@@ -15,7 +16,7 @@ setup(name='Products.MeetingNamur',
         "Programming Language :: Python :: 2.7",
       ],
       keywords='',
-      author=u'André Nuyens',
+      author='Andre Nuyens',
       author_email='andre.nuyens@imio.be',
       url='http://www.imio.be/produits/gestion-des-deliberations',
       license='GPL',

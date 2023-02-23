@@ -27,13 +27,13 @@ from DateTime import DateTime
 from plone import api
 from Products.MeetingCommunes.tests.testAnnexes import testAnnexes as mcta
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 
 
 class testAnnexes(MeetingNamurTestCase, mcta):
     ''' '''
-
 
     def test_pm_ParentModificationDateUpdatedWhenAnnexChanged(self):
         """When an annex is added/modified/removed, the parent modification date is updated."""

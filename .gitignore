@@ -16,7 +16,8 @@ logrotate.conf
 parts
 python-eggs
 versions-picked.cfg
-*.egg-info
+*.egg-infoCol
 .idea/
 *.pyc
 *.mo
+dist

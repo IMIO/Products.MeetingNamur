@@ -2,44 +2,17 @@
 #
 # File: testWorkflows.py
 #
-# Copyright (c) 2007-2010 by PloneGov
-#
 # GNU General Public License (GPL)
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
 #
 
 from AccessControl import Unauthorized
-from DateTime import DateTime
 from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 
 
 class testWorkflows(MeetingNamurTestCase, mctw):
-    """Tests the default workflows implemented in MeetingNamur.
-
-       WARNING:
-       The Plone test system seems to be bugged: it does not seem to take into
-       account the write_permission and read_permission tags that are defined
-       on some attributes of the Archetypes model. So when we need to check
-       that a user is not authorized to set the value of a field protected
-       in this way, we do not try to use the accessor to trigger an exception
-       (self.assertRaise). Instead, we check that the user has the permission
-       to do so (getSecurityManager().checkPermission)."""
-
+    """Tests the default workflows implemented in MeetingNamur."""
 
     def test_pm_WholeDecisionProcess(self):
         """
@@ -137,30 +110,30 @@ class testWorkflows(MeetingNamurTestCase, mctw):
         self.do(item2, 'validate')
         self.do(item2, 'present')
         wftool = self.portal.portal_workflow
-        #every presented items are in the 'presented' state
+        # every presented items are in the 'presented' state
         self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
-        #every items must be in the 'itemfrozen' state if we freeze the meeting
+        # every items must be in the 'itemfrozen' state if we freeze the meeting
         self.do(meeting, 'freeze')
         self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
-        #when correcting the meeting back to created, the items must be corrected
-        #back to "presented"
+        # when correcting the meeting back to created, the items must be corrected
+        # back to "presented"
         self.do(meeting, 'backToCreated')
-        #when a point is in 'itemfrozen' it's must return in presented state
-        #because in import_datea we define a transition if meeting  return in created state
+        # when a point is in 'itemfrozen' it's must return in presented state
+        # because in import_datea we define a transition if meeting  return in created state
         self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
 
-
     def test_pm_WorkflowPermissions(self):
         """Bypass this test..."""
-        pass
-
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_RecurringItems(self):
         """Bypass this test..."""
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
 
 def test_suite():

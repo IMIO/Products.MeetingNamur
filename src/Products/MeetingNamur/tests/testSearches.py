@@ -24,26 +24,31 @@
 
 from Products.MeetingCommunes.tests.testSearches import testSearches as mcts
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
 
 
 class testSearches(MeetingNamurTestCase, mcts):
     """Test searches."""
 
-    def test_pm_SearchItemsToCorrectToValidateHighestHierarchicLevel(self):
+    def test_pm_SearchItemsToCorrectToValidateOfHighestHierarchicLevel(self):
         '''Not used yet...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_SearchItemsToCorrectToValidateOfEveryReviewerGroups(self):
         '''Not used yet...'''
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_SearchItemsToValidateOfHighestHierarchicLevel(self):
         """Not sense, only one level of validation"""
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
     def test_pm_SearchItemsToValidateOfMyReviewerGroups(self):
         """Not sense, only one level of validation"""
-        pass
+        pm_logger.info("Bypassing , {0} not used in MeetingNamur".format(
+            self._testMethodName))
 
 
 def test_suite():
