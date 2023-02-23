@@ -6,6 +6,7 @@
 #
 
 from AccessControl import Unauthorized
+from DateTime import DateTime
 from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.PloneMeeting.tests.PloneMeetingTestCase import pm_logger
