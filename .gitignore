@@ -15,9 +15,7 @@ lib
 logrotate.conf
 parts
 python-eggs
+src
 versions-picked.cfg
-*.egg-infoCol
-.idea/
-*.pyc
-*.mo
+*.egg-info
 dist
