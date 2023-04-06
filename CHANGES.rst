@@ -7,8 +7,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.2.0a2 (unreleased)
 --------------------
 
-- Nothing changed yet.
-
+- Adapted code regarding removal of MeetingConfig.useGroupsAsCategories. 
+  [gbastien]
 
 4.2.0a1 (2023-02-23)
 --------------------
