@@ -7,15 +7,14 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.2.0a4 (unreleased)
 --------------------
 
-- Nothing changed yet.
-
+- Fixed translation of `Data that will be used on new item` on `meetingitem_view.pt`.
+  [gbastien]
 
 4.2.0a3 (2023-04-06)
 --------------------
 
 - New proper release.
   [aduchene]
-
 
 4.2.0a2 (2023-04-06)
 --------------------
