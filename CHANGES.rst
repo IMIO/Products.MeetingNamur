@@ -7,7 +7,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.2.0rc2 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Adapt vocabulary and i18n.
+  [aduchene]
 
 
 4.2.0rc1 (2023-07-04)

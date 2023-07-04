@@ -48,7 +48,7 @@ msgstr "Laisser vide pour utiliser les signatures certifiées définies dans la 
 
 #. Default: "GrpBudgetInfos"
 msgid "MeetingNamur_descr_grpBudgetInfos"
-msgstr "Sélectionnez les services budgétaires concernés. Sélectionnez plusieurs groupes à l'aide de CTRL+clic"
+msgstr "Sélectionnez les services budgétaires concernés."
 
 #. Default: "This item is Confidential"
 msgid "MeetingNamur_isConfidentialItem"
@@ -160,7 +160,7 @@ msgstr "Projet de délibération"
 
 #. Default: "Choose advisers that will have to issue an optional advice for this item"
 msgid "optional_advisers_item_descr"
-msgstr "Sélectionnez les groupes qui pourront remettre un avis sur ce point. Sélectionnez plusieurs groupes à l'aide de CTRL+clic"
+msgstr "Sélectionnez les groupes qui pourront remettre un avis sur ce point."
 
 #. Default: "PowerObservers"
 msgid "powerObserversGroupTitle"

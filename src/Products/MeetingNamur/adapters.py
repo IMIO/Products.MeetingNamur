@@ -321,7 +321,6 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         """Returns a list of groups that can be selected on an item to modify budgetInfos field.
         acronym group start with DGF"""
         res = []
-        res.append(('', self.utranslate('make_a_choice', domain='PloneMeeting')))
         orgs = get_organizations(not_empty_suffix='budgetimpactreviewers')
         for group in orgs:
             res.append((group.id, group.getProperty('title')))
