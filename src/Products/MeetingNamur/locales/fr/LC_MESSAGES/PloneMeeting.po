@@ -198,3 +198,7 @@ msgstr "les points validés"
 #. Default: "TaxController"
 msgid "taxControllerGroupTitle"
 msgstr "Receveur"
+
+#. Default: "wa_namur_meetingmanager_may_not_edit_decision_project"
+msgid "wa_namur_meetingmanager_may_not_edit_decision_project"
+msgstr "Les gestionnaires de séances ne peuvent pas éditer les projets de décision sauf en correction (Namur)"

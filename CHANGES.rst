@@ -4,10 +4,12 @@ Products.MeetingNamur Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/
 The Products.MeetingNamur version must be the same as the Products.PloneMeeting version
 
-4.2.0b2 (unreleased)
+4.2.0rc1 (unreleased)
 --------------------
 
 - Fixed broken tests.
+  [aduchene]
+- Don't use a custom permission for ItemCertifiedSignatures
   [aduchene]
 
 

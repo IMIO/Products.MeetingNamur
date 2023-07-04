@@ -2,9 +2,11 @@
 
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
-from Products.MeetingNamur.config import WriteDecisionProject, WriteCertified
-from Products.PloneMeeting.model.adaptations import WF_APPLIED, grantPermission
+from Products.MeetingNamur.config import WriteDecisionProject
+from Products.PloneMeeting.model.adaptations import WF_APPLIED
 from collective.contact.plonegroup.utils import get_organizations
+from collective.contact.plonegroup.utils import get_plone_group_id
+from imio.helpers.cache import get_plone_groups_for_user
 from imio.helpers.xhtml import xhtmlContentIsEmpty
 from plone import api
 from Products.Archetypes.atapi import DisplayList
@@ -32,7 +34,6 @@ from Products.PloneMeeting.adapters import ItemPrettyLinkAdapter
 from Products.PloneMeeting.interfaces import IMeetingCustom, IMeetingConfigCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.interfaces import IToolPloneMeetingCustom
-from Products.PloneMeeting.Meeting import MeetingWorkflowActions
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
@@ -283,8 +284,6 @@ class CustomNamurMeeting(CustomMeeting):
             items = res
         return res
 
-
-
 class CustomNamurMeetingItem(CustomMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCustom."""
@@ -294,6 +293,18 @@ class CustomNamurMeetingItem(CustomMeetingItem):
     def __init__(self, item):
         self.context = item
 
+    security.declarePublic('mayEditCertifiedSignatures')
+
+    def mayEditCertifiedSignatures(self):
+        """Check whether the current user may edit the certified signatures.
+           Manager may always do it but only the creators may edit them in accepted states"""
+        tool = api.portal.get_tool('portal_plonemeeting')
+        item = self.getSelf()
+        cfg = tool.getMeetingConfig(self.context)
+        if tool.isManager(cfg):
+            return True
+        is_creator = get_plone_group_id(item.getProposingGroup(), "creators") in get_plone_groups_for_user()
+        return is_creator and item.query_state() in cfg.getItemPositiveDecidedStates()
 
     security.declarePublic('print_scan_id_barcode')
 
@@ -619,22 +630,11 @@ class CustomNamurToolPloneMeeting(CustomToolPloneMeeting):
 
         if wfAdaptation == "namur_meetingmanager_may_not_edit_decision_project":
             itemStates = itemWorkflow.states
-
-            itemWorkflow.permissions = itemWorkflow.permissions + (WriteCertified, )
-            creators_certified_sign_states = ["delayed", "accepted_but_modified", "accepted"]
-            for state_id in itemStates:
-                if state_id in creators_certified_sign_states:
-                    itemStates[state_id].setPermission(WriteCertified, False, ["Manager", "Contributor"])
-                else:
-                    itemStates[state_id].setPermission(WriteCertified, False, ["Manager"])
-
-
             # First, we make sure that WriteDecisionProject perm is not acquired
             for state_id in itemStates:
                 itemStates[state_id].setPermission(WriteDecisionProject, False, [])
             # Then, we set appropriate roles for the validationWF
             itemWorkflow.permissions = itemWorkflow.permissions + (WriteDecisionProject, )
-
             if "itemcreated" in itemStates:
                 itemStates.itemcreated.setPermission(WriteDecisionProject, False, ["Manager", "Editor"])
             if "returned_to_proposing_group" in itemStates:

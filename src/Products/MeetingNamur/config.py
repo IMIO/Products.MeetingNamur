@@ -9,8 +9,6 @@ PROJECTNAME = "MeetingNamur"
 # Permissions
 WriteDecisionProject = 'MeetingNamur: Write decisionProject'
 setDefaultRoles(WriteDecisionProject, ('Manager', 'Member'))
-WriteCertified = 'MeetingNamur: Write certified signatures'
-setDefaultRoles(WriteCertified, ('Manager',))
 
 product_globals = globals()
 

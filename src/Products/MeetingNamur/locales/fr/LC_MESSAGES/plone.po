@@ -100,7 +100,7 @@ msgstr "Vous ne pouvez plus rédiger le Procès-verbal pour l'instant."
 
 #. Default: "close"
 msgid "close"
-msgstr "clôturer"
+msgstr "Clôturer"
 
 #. Default: "close_done_descr"
 msgid "close_done_descr"
@@ -121,7 +121,7 @@ msgstr "Envoyer vers Conseil Communal"
 # College meeting workflow transitions specific vocabulary
 #. Default: ""
 msgid "decide"
-msgstr "rédiger le PV"
+msgstr "Rédiger le PV"
 
 #. Default: "decide_done_descr"
 msgid "decide_done_descr"

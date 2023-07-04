@@ -8,23 +8,14 @@
     <role name="MeetingObserverGlobal"/>
     <role name="MeetingObserverLocal"/>
     <role name="MeetingReviewer"/>
-    <role name="MeetingCertifiedSignaturesWriter"/>
-    <role name="MeetingDescriptionWriter"/>
 <!-- ##code-section roles -->
 <!-- ##/code-section roles -->
   </roles>
   <permissions>
-    <permission name="MeetingNamur: Write certified signatures"
-                acquire="False">
-      <role name="Manager"/>
-      <role name="MeetingManager"/>
-      <role name="MeetingCertifiedSignaturesWriter"/>
-    </permission>
     <permission name="MeetingNamur: Write decisionProject"
                 acquire="False">
       <role name="Manager"/>
-      <role name="MeetingManager"/>
-      <role name="MeetingDescriptionWriter"/>
+      <role name="Editor"/>
     </permission>
   </permissions>
 </rolemap>

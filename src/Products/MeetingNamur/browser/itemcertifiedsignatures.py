@@ -120,10 +120,8 @@ class ManageItemCertifiedSignaturesForm(form.Form):
     def update(self):
         """ """
         # raise Unauthorized if current user can not manage itemAssembly
-        if not api.user.get_current().has_permission('MeetingNamur: Write certified signatures',
-                                                                         self.context):
+        if not self.context.adapted().mayEditCertifiedSignatures():
             raise Unauthorized
-
         super(ManageItemCertifiedSignaturesForm, self).update()
         # after calling parent's update, self.actions are available
         self.actions.get('cancel').addClass('standalone')
@@ -143,10 +141,7 @@ class ManageItemCertifiedSignaturesForm(form.Form):
           The method actually do the job, set the itemSignatures on self.context
           and following items if defined
         """
-        user = self.context.portal_membership.getAuthenticatedMember()
-        if not user.has_permission('MeetingNamur: Write certified signatures',
-                                                                         self.context):
-
+        if not self.context.adapted().mayEditCertifiedSignatures():
             raise Unauthorized
 
         self.context.setItemCertifiedSignatures(self.item_certified_signatures)
