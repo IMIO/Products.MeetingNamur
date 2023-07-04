@@ -108,7 +108,7 @@ msgstr "Le procès-verbal est maintenant clôturé, tous les points pour lesquel
 
 #. Default: "closed"
 msgid "closed"
-msgstr "clôturé"
+msgstr "Clôturé"
 
 #. Default: "Create an item college from an item council"
 msgid "create_to_meeting-config-college_from_meeting-config-council"
@@ -130,7 +130,7 @@ msgstr "Vous pouvez maintenant rédiger le Procès-verbal de cette séance."
 # College meeting workflow states specific vocabulary
 #. Default: "decided"
 msgid "decided"
-msgstr "rédaction du PV"
+msgstr "Rédaction du PV"
 
 # transitions descriptions
 #. Default: "freeze_done_descr"
@@ -139,13 +139,13 @@ msgstr "L'ordre du jour vient d'être gelé."
 
 #. Default: "frozen"
 msgid "frozen"
-msgstr "gelé"
+msgstr "Gelé"
 
 #. Default: "itemfrozen"
 msgid "itemfrozen"
-msgstr "gelé"
+msgstr "Gelé"
 
 # College item workflow states specific vocabulary
 #. Default: "validated"
 msgid "validated"
-msgstr "validé"
+msgstr "Validé"

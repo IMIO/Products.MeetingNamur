@@ -59,7 +59,7 @@ def update_item_schema(baseSchema):
         TextField(
             name='vote',
             widget=RichWidget(
-                condition="python: here.attributeIsUsed('vote')",
+                condition="python: here.attribute_is_used('vote')",
                 description="Vote",
                 description_msgid="item_vote_descr",
                 label='Vote',
@@ -75,22 +75,25 @@ def update_item_schema(baseSchema):
         TextField(
             name='decisionProject',
             widget=RichWidget(
-                condition="python: here.attributeIsUsed('decisionProject')",
-                description="decisionProject",
-                description_msgid="item_decisionProject_descr",
+                condition="python: here.attribute_is_used('decisionProject')",
                 label='decisionProject',
                 label_msgid='projectOfDecision_label',
                 i18n_domain='PloneMeeting',
             ),
             optional=True,
-            write_permission="MeetingNamur: Write decisionProject",
+            searchable=True,
+            read_permission="PloneMeeting: Read decision",
+            write_permission='PloneMeeting: Write decision',
             default_content_type="text/html",
             allowable_content_types=('text/html',),
             default_output_type="text/x-html-safe",
         ),
     ), )
 
+    baseSchema['decision'].write_permission = "PloneMeeting: Write item MeetingManager reserved fields"
+
     completeSchema = baseSchema + specificSchema.copy()
+    
     return completeSchema
 
 

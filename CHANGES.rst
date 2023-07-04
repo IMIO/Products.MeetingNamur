@@ -4,11 +4,13 @@ Products.MeetingNamur Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/
 The Products.MeetingNamur version must be the same as the Products.PloneMeeting version
 
-4.2.0a4 (unreleased)
+4.2.0b1 (unreleased)
 --------------------
 
 - Fixed translation of `Data that will be used on new item` on `meetingitem_view.pt`.
   [gbastien]
+- Fixed issue with WF, roles, permissions and fields
+  [aduchene]
 
 4.2.0a3 (2023-04-06)
 --------------------

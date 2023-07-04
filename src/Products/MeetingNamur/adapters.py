@@ -2,7 +2,7 @@
 
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
-from Products.MeetingNamur.config import WriteDecisionProject
+from Products.MeetingNamur.config import WriteDecisionProject, WriteCertified
 from Products.PloneMeeting.model.adaptations import WF_APPLIED, grantPermission
 from collective.contact.plonegroup.utils import get_organizations
 from imio.helpers.xhtml import xhtmlContentIsEmpty
@@ -36,7 +36,7 @@ from Products.PloneMeeting.Meeting import MeetingWorkflowActions
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
-from Products.PloneMeeting.utils import sendMail
+from Products.PloneMeeting.utils import sendMail, org_id_to_uid
 from zope.i18n import translate
 from zope.interface import implements
 
@@ -93,6 +93,196 @@ class CustomNamurMeeting(CustomMeeting):
 
     # Implements here methods that will be used by templates
 
+    security.declarePublic('getPrintableItemsByCategory')
+
+    def getPrintableItemsByCategory(self, itemUids=[], list_types=['normal'],
+                                    ignore_review_states=[], by_proposing_group=False, group_prefixes={},
+                                    privacy='*', oralQuestion='both', toDiscuss='both', categories=[],
+                                    excludedCategories=[], groupIds=[], excludedGroupIds=[], group_proposing_group=True,
+                                    firstNumber=1, renumber=False, additional_catalog_query={},
+                                    includeEmptyCategories=False, includeEmptyGroups=False,
+                                    forceCategOrderFromConfig=False, allNoConfidentialItems=False):
+        """Returns a list of (late or normal or both) items (depending on p_listTypes)
+           ordered by category. Items being in a state whose name is in
+           p_ignore_review_state will not be included in the result.
+           If p_by_proposing_group is True, items are grouped by proposing group
+           within every category. In this case, specifying p_group_prefixes will
+           allow to consider all groups whose acronym starts with a prefix from
+           this param prefix as a unique group. p_group_prefixes is a dict whose
+           keys are prefixes and whose values are names of the logical big
+           groups. A privacy,A toDiscuss and oralQuestion can also be given, the item is a
+           toDiscuss (oralQuestion) or not (or both) item.
+           If p_forceCategOrderFromConfig is True, the categories order will be
+           the one in the config and not the one from the meeting.
+           If p_groupIds are given, we will only consider these proposingGroups.
+           If p_includeEmptyCategories is True, categories for which no
+           item is defined are included nevertheless. If p_includeEmptyGroups
+           is True, proposing groups for which no item is defined are included
+           nevertheless.Some specific categories can be given or some categories to exclude.
+           These 2 parameters are exclusive.  If renumber is True, a list of tuple
+           will be return with first element the number and second element, the item.
+           In this case, the firstNumber value can be used."""
+
+        # The result is a list of lists, where every inner list contains:
+        # - at position 0: the category object (MeetingCategory or MeetingGroup)
+        # - at position 1 to n: the items in this category
+        # If by_proposing_group is True, the structure is more complex.
+        # listTypes is a list that can be filled with 'normal' and/or 'late'
+        # oralQuestion can be 'both' or False or True
+        # toDiscuss can be 'both' or 'False' or 'True'
+        # privacy can be '*' or 'public' or 'secret'
+        # Every inner list contains:
+        # - at position 0: the category object
+        # - at positions 1 to n: inner lists that contain:
+        #   * at position 0: the proposing group object
+        #   * at positions 1 to n: the items belonging to this group.
+        def _comp(v1, v2):
+            if v1[0].getOrder(onlySelectable=False) < v2[0].getOrder(onlySelectable=False):
+                return -1
+            elif v1[0].getOrder(onlySelectable=False) > v2[0].getOrder(onlySelectable=False):
+                return 1
+            else:
+                return 0
+
+        res = []
+        items = []
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        # Retrieve the list of items
+        for elt in itemUids:
+            if elt == '':
+                itemUids.remove(elt)
+
+        items = self.context.get_items(uids=itemUids,
+                                      list_types=list_types,
+                                      ordered=True,
+                                      additional_catalog_query=additional_catalog_query)
+
+        if by_proposing_group:
+            groups = get_organizations()
+        else:
+            groups = None
+        if items:
+            for item in items:
+                # Check if the review_state has to be taken into account
+                if item.query_state() in ignore_review_states:
+                    continue
+                elif not (privacy == '*' or item.getPrivacy() == privacy):
+                    continue
+                elif not (oralQuestion == 'both' or item.getOralQuestion() == oralQuestion):
+                    continue
+                elif not (toDiscuss == 'both' or item.getToDiscuss() == toDiscuss):
+                    continue
+                elif groupIds and not item.getProposingGroup() in groupIds:
+                    continue
+                elif categories and not item.getCategory() in categories:
+                    continue
+                elif excludedCategories and item.getCategory() in excludedCategories:
+                    continue
+                elif excludedGroupIds and item.getProposingGroup() in excludedGroupIds:
+                    continue
+                elif allNoConfidentialItems:
+                    user = self.context.portal_membership.getAuthenticatedMember()
+                    userCanView = user.has_permission('View', item)
+                    if item.getIsConfidentialItem() and not userCanView:
+                        continue
+                if group_proposing_group:
+                    currentCat = item.getProposingGroup(theObject=True)
+                else:
+                    currentCat = item.getCategory(theObject=True)
+                # Add the item to a new category, excepted if the category already exists.
+                catExists = False
+                catList = ''
+                for catList in res:
+                    if catList[0] == currentCat:
+                        catExists = True
+                        break
+                # Add the item to a new category, excepted if the category already exists.
+                if catExists:
+                    self._insertItemInCategory(catList, item,
+                                               by_proposing_group, group_prefixes, groups)
+                else:
+                    res.append([currentCat])
+                    self._insertItemInCategory(res[-1], item,
+                                               by_proposing_group, group_prefixes, groups)
+        if forceCategOrderFromConfig or cmp(list_types.sort(), ['late', 'normal']) == 0:
+            res.sort(cmp=_comp)
+        if includeEmptyCategories:
+            meetingConfig = tool.getMeetingConfig(
+                self.context)
+            # onlySelectable = False will also return disabled categories...
+            allCategories = [cat for cat in meetingConfig.getCategories(onlySelectable=False)
+                             if cat.enabled]
+            if "category" not in meetingConfig.getUsedItemAttributes():
+                allCategories = get_organizations()
+
+            usedCategories = [elem[0] for elem in res]
+            for cat in allCategories:
+                if cat not in usedCategories:
+                    # no empty service, we want only show department
+                    if not hasattr(cat, 'acronym') or cat.get_acronym().find('-') > 0:
+                        continue
+                    else:
+                        # no empty department
+                        dpt_empty = True
+                        for uc in usedCategories:
+                            if uc.get_acronym().startswith(cat.get_acronym()):
+                                dpt_empty = False
+                                break
+                        if dpt_empty:
+                            continue
+                    # Insert the category among used categories at the right place.
+                    categoryInserted = False
+                    i = 0
+                    for obj in res:
+                        try:
+                            if not obj[0].get_acronym().startswith(cat.get_acronym()):
+                                i = i + 1
+                                continue
+                            else:
+                                usedCategories.insert(i, cat)
+                                res.insert(i, [cat])
+                                categoryInserted = True
+                                break
+                        except:
+                            continue
+                    if not categoryInserted:
+                        usedCategories.append(cat)
+                        res.append([cat])
+        if by_proposing_group and includeEmptyGroups:
+            # Include, in every category list, not already used groups.
+            # But first, compute "macro-groups": we will put one group for
+            # every existing macro-group.
+            macroGroups = []  # Contains only 1 group of every "macro-group"
+            consumedPrefixes = []
+            for group in groups:
+                prefix = self._getAcronymPrefix(group, group_prefixes)
+                if not prefix:
+                    group._v_printableName = group.Title()
+                    macroGroups.append(group)
+                else:
+                    if prefix not in consumedPrefixes:
+                        consumedPrefixes.append(prefix)
+                        group._v_printableName = group_prefixes[prefix]
+                        macroGroups.append(group)
+            # Every category must have one group from every macro-group
+            for catInfo in res:
+                for group in macroGroups:
+                    self._insertGroupInCategory(catInfo, group, group_prefixes,
+                                                groups)
+                    # The method does nothing if the group (or another from the
+                    # same macro-group) is already there.
+        if renumber:
+            # return a list of tuple with first element the number and second
+            # element the item itself
+            i = firstNumber
+            res = []
+            for item in items:
+                res.append((i, item))
+                i = i + 1
+            items = res
+        return res
+
+
 
 class CustomNamurMeetingItem(CustomMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -102,6 +292,16 @@ class CustomNamurMeetingItem(CustomMeetingItem):
 
     def __init__(self, item):
         self.context = item
+
+
+    security.declarePublic('print_scan_id_barcode')
+
+    def print_scan_id_barcode(self, **kwargs):
+        """Helper that will call scan_id_barcode from imio.zamqp.core
+           and that will make sure that it is not called several times."""
+        from imio.zamqp.core.utils import scan_id_barcode
+        barcode = scan_id_barcode(self.context, **kwargs)
+        return barcode
 
     security.declarePublic('listGrpBudgetInfosAdviser')
 
@@ -117,28 +317,29 @@ class CustomNamurMeetingItem(CustomMeetingItem):
 
     MeetingItem.listGrpBudgetInfosAdviser = listGrpBudgetInfosAdviser
 
-    security.declarePublic('giveMeetingBudgetImpactReviewerRole')
+    security.declarePublic('updateMeetingBudgetImpactReviewerRole')
 
-    def giveMeetingBudgetImpactReviewerRole(self):
+    def updateMeetingBudgetImpactReviewerRole(self):
         """Add MeetingBudgetImpactReviewer role when on an item, a group is choosen in BudgetInfosAdviser and state is,
            at least, "presented". Remove role for other grp_budgetimpactreviewers or remove all
            grp_budgetimpactreviewers in local role if state back in state before presented.
         """
         item = self.getSelf()
-        grp_roles = []
+        grp_uids = []
         if item.query_state() in ('presented', 'itemfrozen', 'accepted', 'delayed', 'accepted_but_modified',
                                   'pre_accepted', 'refused'):
             # add new MeetingBudgetImpactReviewerRole
             for grpBudgetInfo in item.grpBudgetInfos:
-                grp_role = '%s_budgetimpactreviewers' % grpBudgetInfo
                 # for each group_budgetimpactreviewers add new local roles
                 if grpBudgetInfo:
-                    grp_roles.append(grp_role)
-                    item.manage_addLocalRoles(grp_role, ('Reader', 'MeetingBudgetImpactReviewer',))
+                    grp_role = '%s_budgetimpactreviewers' % grpBudgetInfo
+                    grp_uid = org_id_to_uid(grp_role)
+                    grp_uids.append(grp_uid)
+                    item.manage_addLocalRoles(grp_uid, ('Reader', 'MeetingBudgetImpactReviewer',))
         # suppress old unused group_budgetimpactreviewers
         toRemove = []
         for user, roles in item.get_local_roles():
-            if user.endswith('_budgetimpactreviewers') and user not in grp_roles:
+            if user.endswith('_budgetimpactreviewers') and user not in grp_uids:
                 toRemove.append(user)
         item.manage_delLocalRoles(toRemove)
 
@@ -149,7 +350,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         """
         item = self.getSelf()
         cfg = item.portal_plonemeeting.getMeetingConfig(item)
-        if item.query_state() in cfg.getItemDecidedStates():
+        if item.query_state() in cfg.getItemPositiveDecidedStates():
             groupId = "{}_{}".format(item.getProposingGroup(), "creators")
             item.manage_addLocalRoles(groupId, ['MeetingCertifiedSignaturesWriter'])
 
@@ -158,18 +359,18 @@ class CustomNamurMeetingItem(CustomMeetingItem):
     def onEdit(self, isCreated):
         item = self.getSelf()
         # adapt MeetingBudgetImpactReviewerRole if needed
-        item.adapted().giveMeetingBudgetImpactReviewerRole()
+        item.adapted().updateMeetingBudgetImpactReviewerRole()
 
     def _initDecisionFieldIfEmpty(self):
         """
           If decision field is empty, it will be initialized
-          with data coming from title and description.
+          with data coming from title and decisionProject.
           Override for Namur !!!
         """
         # set keepWithNext to False as it will add a 'class' and so
         # xhtmlContentIsEmpty will never consider it empty...
         if xhtmlContentIsEmpty(self.getDecision(keepWithNext=False)):
-            self.setDecision("%s" % self.Description())
+            self.setDecision("%s" % self.getDecisionProject())
             self.reindexObject()
 
     MeetingItem._initDecisionFieldIfEmpty = _initDecisionFieldIfEmpty
@@ -345,10 +546,10 @@ class MeetingItemNamurWorkflowActions(MeetingItemCommunesWorkflowActions):
                 item.reindexObject()
         if stateChange.old_state.id == "returned_to_proposing_group":
             # copy the description field into decision field
-            item.setDecision("%s" % item.Description())
+            item.setDecision("%s" % item.getDecisionProject())
             item.reindexObject()
         # adapt MeetingBudgetImpactReviewerRole if needed
-        item.adapted().giveMeetingBudgetImpactReviewerRole()
+        item.adapted().updateMeetingBudgetImpactReviewerRole()
 
     security.declarePrivate('doReturn_to_proposing_group')
 
@@ -365,7 +566,7 @@ class MeetingItemNamurWorkflowActions(MeetingItemCommunesWorkflowActions):
         """When an item is frozen, we must add local role MeetingBudgetReviewer """
         item = self.context
         # adapt MeetingBudgetImpactReviewerRole if needed
-        item.adapted().giveMeetingBudgetImpactReviewerRole()
+        item.adapted().updateMeetingBudgetImpactReviewerRole()
         # If the decision field is empty, initialize it
         item._initDecisionFieldIfEmpty()
 
@@ -417,6 +618,15 @@ class CustomNamurToolPloneMeeting(CustomToolPloneMeeting):
 
         if wfAdaptation == "namur_meetingmanager_may_not_edit_decision_project":
             itemStates = itemWorkflow.states
+
+            itemWorkflow.permissions = itemWorkflow.permissions + (WriteCertified, )
+            creators_certified_sign_states = ["delayed", "accepted_but_modified", "accepted"]
+            for state_id in itemStates:
+                if state_id in creators_certified_sign_states:
+                    itemStates[state_id].setPermission(WriteCertified, False, ["Manager", "Contributor"])
+                else:
+                    itemStates[state_id].setPermission(WriteCertified, False, ["Manager"])
+
 
             # First, we make sure that WriteDecisionProject perm is not acquired
             for state_id in itemStates:
