@@ -7,7 +7,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.2.0b2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fixed broken tests.
+  [aduchene]
 
 
 4.2.0b1 (2023-07-04)

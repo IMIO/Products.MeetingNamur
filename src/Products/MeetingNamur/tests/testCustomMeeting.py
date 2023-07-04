@@ -11,8 +11,7 @@ class testCustomMeeting(MeetingNamurTestCase, mctcmi):
 
     def test_InitializeDecisionField(self):
         """
-            In the doDecide method, we initialize the Decision field to a default value made of
-            Title+Description if the field is empty...
+            In the doDecide method, we initialize the Decision field with the decisionProject field
         """
         # check that it works
         # check that if the field contains something, it is not intialized again
@@ -24,17 +23,17 @@ class testCustomMeeting(MeetingNamurTestCase, mctcmi):
         # empty decision
         i1 = self.create('MeetingItem', title='Item1')
         i1.setDecision("")
-        i1.setDescription("<p>Description Item1</p>")
+        i1.setDecisionProject("<p>Description Item1</p>")
         i1.setProposingGroup(self.developers_uid)
         # decision field is already filled
         i2 = self.create('MeetingItem', title='Item2')
         i2.setDecision("<p>Decision Item2</p>")
-        i2.setDescription("<p>Description Item2</p>")
+        i2.setDecisionProject("<p>Description Item2</p>")
         i2.setProposingGroup(self.developers_uid)
         # create an item with the default Kupu empty value
         i3 = self.create('MeetingItem', title='Item3')
         i3.setDecision("<p></p>")
-        i3.setDescription("<p>Description Item3</p>")
+        i3.setDecisionProject("<p>Description Item3</p>")
         i3.setProposingGroup(self.developers_uid)
         # present every items in the meeting
         items = (i1, i2, i3)

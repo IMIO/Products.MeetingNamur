@@ -48,15 +48,16 @@ class testMeeting(MeetingNamurTestCase, mctm):
         self.changeUser('pmManager')
         meeting = self.create('Meeting', date=DateTime('2019/09/20').asdatetime())
         # xxx Namur, creator place decision in description field and it's copied on decision field when the item is validate
-        data = ({'description': "<p>DÉCIDE d'engager Madame Untell Anne au poste proposé</p>"},
-                {'description': "<p>DÉCIDE de refuser</p>"},
-                {'description': "<p>REFUSE d'engager Madame Untell Anne au poste proposé</p>"},
-                {'description': "<p>A REFUSÉ d'engager Madame Untell Anne au poste proposé</p>"},
-                {'description': "<p>DECIDE aussi de ne pas décider</p>"},
-                {'description': "<p>ACCEPTE d'engager Madame Untell Anne au poste proposé</p>"},
-                {'description': "<p>ACCEPTENT d'engager Madame Untell Anne au poste proposé</p>"}, )
+        data = ({'decisionProject': "<p>DÉCIDE d'engager Madame Untell Anne au poste proposé</p>"},
+                {'decisionProject': "<p>DÉCIDE de refuser</p>"},
+                {'decisionProject': "<p>REFUSE d'engager Madame Untell Anne au poste proposé</p>"},
+                {'decisionProject': "<p>A REFUSÉ d'engager Madame Untell Anne au poste proposé</p>"},
+                {'decisionProject': "<p>DECIDE aussi de ne pas décider</p>"},
+                {'decisionProject': "<p>ACCEPTE d'engager Madame Untell Anne au poste proposé</p>"},
+                {'decisionProject': "<p>ACCEPTENT d'engager Madame Untell Anne au poste proposé</p>"}, )
         for itemData in data:
-            item = self.create('MeetingItem', **itemData)
+            item = self.create('MeetingItem')
+            item.setDecisionProject(itemData["decisionProject"])
             self.presentItem(item)
         self.assertEqual(
             [anItem.getDecision() for anItem in meeting.get_items(ordered=True)],

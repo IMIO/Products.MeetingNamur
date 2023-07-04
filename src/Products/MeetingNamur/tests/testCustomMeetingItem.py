@@ -5,6 +5,7 @@ from datetime import timedelta
 from AccessControl import Unauthorized
 from Products.MeetingCommunes.tests.testCustomMeetingItem import testCustomMeetingItem as mctcmi
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.PloneMeeting.utils import org_id_to_uid
 
 
 class testCustomMeetingItem(MeetingNamurTestCase, mctcmi):
@@ -21,25 +22,19 @@ class testCustomMeetingItem(MeetingNamurTestCase, mctcmi):
         self.do(m, 'freeze')
         item = m.get_items()[0]
         # no MeetingBudgetImpactReviewer in rôle
-        self.assertEquals((u'developers_budgetimpactreviewers', (
-            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
-        self.assertEquals((u'vendors_budgetimpactreviewers', (
-            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
-        self.assertEquals((u'finances_budgetimpactreviewers', (
-            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
-        self.assertEquals((u'taxes_budgetimpactreviewers', (
-            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
-        item.setGrpBudgetInfos(('finances',))
-        item.adapted().onEdit(True)
+        developers_budgetimpactreviewers_uid = org_id_to_uid("developers_budgetimpactreviewers")
+        vendors_budgetimpactreviewers_uid = org_id_to_uid("vendors_budgetimpactreviewers")
+        self.assertFalse((developers_budgetimpactreviewers_uid, (
+            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles())
+        self.assertFalse((vendors_budgetimpactreviewers_uid, (
+            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles())
+        item.setGrpBudgetInfos(('developers',))
+        item.update_local_roles()
         # MeetingBudgetImpactReviewer role define for finance (only)
-        self.assertEquals((u'developers_budgetimpactreviewers', (
-            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
-        self.assertEquals((u'vendors_budgetimpactreviewers', (
-            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
-        self.assertEquals((u'finances_budgetimpactreviewers', (
-            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), True)
-        self.assertEquals((u'taxes_budgetimpactreviewers', (
-            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles(), False)
+        self.assertTrue((developers_budgetimpactreviewers_uid, (
+            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles())
+        self.assertFalse((vendors_budgetimpactreviewers_uid, (
+            'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles())
 
     def test_manageItemCertifiedSignatures(self):
         """

@@ -38,6 +38,8 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
                           {'item_validation_shortcuts',
                            'item_validation_no_validate_shortcuts',
                            'only_creator_may_delete',
+                           'meeting_remove_global_access',
+                           'meetingmanager_correct_closed_meeting',
                            'no_freeze',
                            'no_publication',
                            'no_decide',
@@ -61,7 +63,6 @@ class testWFAdaptations(MeetingNamurTestCase, mctwfa):
                            'accepted_out_of_meeting_emergency_and_duplicated',
                            'transfered',
                            'transfered_and_duplicated',
-                           'meetingmanager_correct_closed_meeting',
                            'namur_meetingmanager_may_not_edit_decision_project'
                            })
 
