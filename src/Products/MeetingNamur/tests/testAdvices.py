@@ -1,39 +1,15 @@
 # -*- coding: utf-8 -*-
 #
-# File: testAdvices.py
-#
-# Copyright (c) 2007-2012 by CommunesPlone.org
-#
 # GNU General Public License (GPL)
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
 #
 
 from AccessControl import Unauthorized
-from DateTime import DateTime
-from datetime import datetime
-from plone import api
 from plone.app.textfield.value import RichTextValue
 from plone.dexterity.utils import createContentInContainer
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import View
 from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
-from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
 from zope.schema.interfaces import RequiredMissing
 
 
@@ -160,7 +136,6 @@ class testAdvices(MeetingNamurTestCase, mcta):
         self.changeUser('pmReviewer2')
         self.assertEquals(item1.getAdvicesGroupsInfosForUser(), ([], []))
 
-
     def test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self, ):
         '''Test that if an item is set back to a state the user that set it back can
            not view anymore, and that the advice turn from giveable to not giveable anymore,
@@ -187,7 +162,6 @@ class testAdvices(MeetingNamurTestCase, mcta):
         self.changeUser('pmManager')
         # do the back transition that send the item back to 'proposed'
         itemWF = self.wfTool.getWorkflowsFor(item)[0]
-        backToProposedTr = None
         # make sure if a MeetingManager send the item back to 'proposed' it works...
         self.changeUser('pmManager')
         # xxx NAMUR do the back transition that send the item back to 'itemcreated'
