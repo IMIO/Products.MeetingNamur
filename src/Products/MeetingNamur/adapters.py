@@ -42,7 +42,6 @@ from zope.i18n import translate
 from zope.interface import implements
 
 
-
 customWfAdaptations = (
     'item_validation_shortcuts',
     'item_validation_no_validate_shortcuts',
@@ -82,6 +81,7 @@ MeetingConfig.wfAdaptations = customWfAdaptations
 class CustomNamurMeetingConfig(CustomMeetingConfig):
     implements(IMeetingConfigCustom)
     security = ClassSecurityInfo()
+
 
 class CustomNamurMeeting(CustomMeeting):
     """Adapter that adapts a meeting implementing IMeeting to the
@@ -155,9 +155,9 @@ class CustomNamurMeeting(CustomMeeting):
                 itemUids.remove(elt)
 
         items = self.context.get_items(uids=itemUids,
-                                      list_types=list_types,
-                                      ordered=True,
-                                      additional_catalog_query=additional_catalog_query)
+                                       list_types=list_types,
+                                       ordered=True,
+                                       additional_catalog_query=additional_catalog_query)
 
         if by_proposing_group:
             groups = get_organizations()
@@ -245,7 +245,7 @@ class CustomNamurMeeting(CustomMeeting):
                                 res.insert(i, [cat])
                                 categoryInserted = True
                                 break
-                        except:
+                        except Exception:
                             continue
                     if not categoryInserted:
                         usedCategories.append(cat)
@@ -283,6 +283,7 @@ class CustomNamurMeeting(CustomMeeting):
                 i = i + 1
             items = res
         return res
+
 
 class CustomNamurMeetingItem(CustomMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -380,7 +381,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         """
         # set keepWithNext to False as it will add a 'class' and so
         # xhtmlContentIsEmpty will never consider it empty...
-        if xhtmlContentIsEmpty(self.getDecision(keepWithNext=False)):
+        if xhtmlContentIsEmpty(self.getDecision()):
             self.setDecision("%s" % self.getDecisionProject())
             self.reindexObject()
 
@@ -454,7 +455,11 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         item = self.getSelf()
         roles = item.portal_membership.getAuthenticatedMember().getRolesInContext(item)
         for role in roles:
-            if role not in ('Authenticated', 'Member', 'MeetingBudgetImpactReviewer', 'MeetingObserverGlobal', 'Reader'):
+            if role not in ('Authenticated',
+                            'Member',
+                            'MeetingBudgetImpactReviewer',
+                            'MeetingObserverGlobal',
+                            'Reader'):
                 return True
         return False
 
@@ -526,10 +531,10 @@ class MeetingItemNamurWorkflowActions(MeetingItemCommunesWorkflowActions):
     security.declarePrivate('doValidate')
 
     def doValidate(self, stateChange):
-        MeetingItemWorkflowActions.doValidate(self, stateChange)
-        item = self.context
+        res = super(MeetingItemNamurWorkflowActions, self).doValidate(stateChange)
         # If the decision field is empty, initialize it
-        item._initDecisionFieldIfEmpty()
+        self.context._initDecisionFieldIfEmpty()
+        return res
 
     security.declarePrivate('doPresent')
 
@@ -620,7 +625,6 @@ class CustomNamurToolPloneMeeting(CustomToolPloneMeeting):
     def __init__(self, item):
         self.context = item
 
-
     def performCustomWFAdaptations(
             self, meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow
     ):
@@ -637,7 +641,8 @@ class CustomNamurToolPloneMeeting(CustomToolPloneMeeting):
             if "itemcreated" in itemStates:
                 itemStates.itemcreated.setPermission(WriteDecisionProject, False, ["Manager", "Editor"])
             if "returned_to_proposing_group" in itemStates:
-                itemStates["returned_to_proposing_group"].setPermission(WriteDecisionProject, False, ["Manager", "Editor"])
+                itemStates["returned_to_proposing_group"].setPermission(
+                    WriteDecisionProject, False, ["Manager", "Editor"])
 
             for validation_level in meetingConfig.getItemWFValidationLevels():
                 state_id = validation_level['state']
@@ -646,13 +651,14 @@ class CustomNamurToolPloneMeeting(CustomToolPloneMeeting):
                 # Handle returned_to_proposing_group
                 returned_to_proposing_group_variant = "returned_to_proposing_group_{}".format(state_id)
                 if returned_to_proposing_group_variant in itemStates:
-                    itemStates[returned_to_proposing_group_variant].setPermission(WriteDecisionProject, False, ["Manager", "Editor"])
-            logger.info(WF_APPLIED % ("namur_meetingmanager_may_not_edit_decision_project", meetingConfig.getId()))
+                    itemStates[returned_to_proposing_group_variant].setPermission(
+                        WriteDecisionProject, False, ["Manager", "Editor"])
+            logger.info(WF_APPLIED % (
+                "namur_meetingmanager_may_not_edit_decision_project", meetingConfig.getId()))
             return True
 
         return False
 
-# ------------------------------------------------------------------------------
 
 InitializeClass(CustomNamurMeetingConfig)
 InitializeClass(CustomNamurMeeting)
@@ -663,8 +669,6 @@ InitializeClass(MeetingItemNamurWorkflowActions)
 InitializeClass(MeetingItemNamurWorkflowConditions)
 InitializeClass(CustomNamurToolPloneMeeting)
 
-
-# ------------------------------------------------------------------------------
 
 class MNAItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
     """
