@@ -18,6 +18,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
   field `MeetingItem.copyGroups` is now an optional field managed by
   `MeetingConfig.usedItemAttributes`.
   [gbastien]
+- `meetingnamur.css` is now completely empty.
+  [gbastien]
 
 4.2.0rc2 (2023-07-04)
 ---------------------
