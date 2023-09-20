@@ -379,8 +379,6 @@ class CustomNamurMeetingItem(CustomMeetingItem):
           with data coming from title and decisionProject.
           Override for Namur !!!
         """
-        # set keepWithNext to False as it will add a 'class' and so
-        # xhtmlContentIsEmpty will never consider it empty...
         if xhtmlContentIsEmpty(self.getDecision()):
             self.setDecision("%s" % self.getDecisionProject())
             self.reindexObject()

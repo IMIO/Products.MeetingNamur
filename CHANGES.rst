@@ -7,8 +7,17 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.2.0rc3 (unreleased)
 ---------------------
 
-- Nothing changed yet.
-
+- In `CustomNamurMeetingItem._initDecisionFieldIfEmpty` removed parameter
+  `keepWithNext=False` when calling `MeetingItem.getDecision` as it does not
+  exist anymore.
+  [gbastien]
+- Do not manipulate item `decisionProject` field on duplication if it is a
+  reccuring or item template.
+  [gbastien]
+- Fixed `meetingitem_view.pt` as `MeetingItem.isCopiesEnabled` was removed and
+  field `MeetingItem.copyGroups` is now an optional field managed by
+  `MeetingConfig.usedItemAttributes`.
+  [gbastien]
 
 4.2.0rc2 (2023-07-04)
 ---------------------
