@@ -398,7 +398,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         item = self.getSelf()
         cfg = tool.getMeetingConfig(self)
         ignoreDuplicateButton = item.query_state() == 'pre_accepted'
-        if not cfg.getEnableItemDuplication() or \
+        if 'duplication' not in cfg.getEnabledItemActions() or \
                 self.isDefinedInTool() or \
                 not tool.userIsAmong(['creators']) or \
                 not self.adapted().isPrivacyViewable() or ignoreDuplicateButton:
