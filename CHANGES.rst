@@ -4,8 +4,8 @@ Products.MeetingNamur Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingNamur/tags/
 The Products.MeetingNamur version must be the same as the Products.PloneMeeting version
 
-4.2.0 (unreleased)
----------------------
+4.2.0 (2024-03-11)
+------------------
 
 - Fixed `MeetingItem.customshowDuplicateItemAction`.
   [aduchene]

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 
-version = '4.2.0dev0'
+version = '4.2.0'
 
 setup(name='Products.MeetingNamur',
       version=version,
