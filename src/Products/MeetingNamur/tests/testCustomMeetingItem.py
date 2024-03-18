@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
+from AccessControl import Unauthorized
 from datetime import datetime
 from datetime import timedelta
-
-from AccessControl import Unauthorized
 from Products.MeetingCommunes.tests.testCustomMeetingItem import testCustomMeetingItem as mctcmi
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
 from Products.PloneMeeting.utils import org_id_to_uid

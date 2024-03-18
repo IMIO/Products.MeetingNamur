@@ -9,7 +9,6 @@ from Products.PloneMeeting.config import registerClasses
 from Products.PloneMeeting.MeetingItem import MeetingItem
 
 
-
 def update_item_schema(baseSchema):
     specificSchema = Schema((
 

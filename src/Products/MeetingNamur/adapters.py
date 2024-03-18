@@ -2,8 +2,6 @@
 
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
-from Products.MeetingNamur.config import WriteDecisionProject
-from Products.PloneMeeting.model.adaptations import WF_APPLIED
 from collective.contact.plonegroup.utils import get_organizations
 from collective.contact.plonegroup.utils import get_plone_group_id
 from imio.helpers.cache import get_plone_groups_for_user
@@ -11,13 +9,15 @@ from imio.helpers.xhtml import xhtmlContentIsEmpty
 from plone import api
 from Products.Archetypes.atapi import DisplayList
 from Products.CMFCore.utils import getToolByName
-from Products.MeetingCommunes.adapters import CustomMeeting, CustomMeetingConfig
+from Products.MeetingCommunes.adapters import CustomMeeting
+from Products.MeetingCommunes.adapters import CustomMeetingConfig
 from Products.MeetingCommunes.adapters import CustomMeetingItem
 from Products.MeetingCommunes.adapters import CustomToolPloneMeeting
 from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowActions
 from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowConditions
 from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowActions
 from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowConditions
+from Products.MeetingNamur.config import WriteDecisionProject
 from Products.MeetingNamur.interfaces import IMeetingItemNamurCollegeWorkflowActions
 from Products.MeetingNamur.interfaces import IMeetingItemNamurCollegeWorkflowConditions
 from Products.MeetingNamur.interfaces import IMeetingItemNamurCouncilWorkflowActions
@@ -31,13 +31,17 @@ from Products.MeetingNamur.interfaces import IMeetingNamurCouncilWorkflowConditi
 from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowActions
 from Products.MeetingNamur.interfaces import IMeetingNamurWorkflowConditions
 from Products.PloneMeeting.adapters import ItemPrettyLinkAdapter
-from Products.PloneMeeting.interfaces import IMeetingCustom, IMeetingConfigCustom
+from Products.PloneMeeting.config import MEETING_REMOVE_MOG_WFA
+from Products.PloneMeeting.interfaces import IMeetingConfigCustom
+from Products.PloneMeeting.interfaces import IMeetingCustom
 from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.interfaces import IToolPloneMeetingCustom
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
-from Products.PloneMeeting.utils import sendMail, org_id_to_uid
+from Products.PloneMeeting.model.adaptations import WF_APPLIED
+from Products.PloneMeeting.utils import org_id_to_uid
+from Products.PloneMeeting.utils import sendMail
 from zope.i18n import translate
 from zope.interface import implements
 
@@ -46,7 +50,6 @@ customWfAdaptations = (
     'item_validation_shortcuts',
     'item_validation_no_validate_shortcuts',
     'only_creator_may_delete',
-    'meeting_remove_global_access',
     'meetingmanager_correct_closed_meeting',
     # first define meeting workflow state removal
     'no_freeze',
@@ -74,6 +77,8 @@ customWfAdaptations = (
     'transfered',
     'transfered_and_duplicated',
     'namur_meetingmanager_may_not_edit_decision_project',
+    MEETING_REMOVE_MOG_WFA
+
 )
 MeetingConfig.wfAdaptations = customWfAdaptations
 

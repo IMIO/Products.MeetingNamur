@@ -3,7 +3,9 @@
 from DateTime import DateTime
 from plone import api
 from Products.MeetingCommunes.migrations.migrate_to_4200 import Migrate_To_4200 as MCMigrate_To_4200
+
 import logging
+
 
 logger = logging.getLogger('MeetingNamur')
 

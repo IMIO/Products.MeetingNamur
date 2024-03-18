@@ -5,6 +5,7 @@
 
 from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 from Products.MeetingNamur.tests.MeetingNamurTestCase import MeetingNamurTestCase
+from Products.PloneMeeting.config import EXECUTE_EXPR_VALUE
 from Products.PloneMeeting.utils import get_annexes
 from Products.PloneMeeting.utils import ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR
 from Products.statusmessages.interfaces import IStatusMessage
@@ -97,8 +98,8 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         # is made but the rich text is not changed and a portal_message is displayed
         self.meetingConfig.setOnTransitionFieldTransforms(
             ({'transition': 'accept',
-              'field_name': 'MeetingItem.decision',
-              'tal_expression': 'some_wrong_tal_expression'},))
+              'field_name': EXECUTE_EXPR_VALUE,
+              'tal_expression': 'python: wrong_expression'},))
         item4 = meeting.get_items()[3]
         item4.setDecision('<p>My decision that will not be touched.</p>')
         self.do(item4, 'accept')
@@ -108,8 +109,9 @@ class testMeetingItem(MeetingNamurTestCase, mctmi):
         self.assertTrue(item4.getDecision(keepWithNext=False) == '<p>My decision that will not be touched.</p>')
         # a portal_message is displayed to the user that triggered the transition
         messages = IStatusMessage(self.request).show()
-        self.assertTrue(messages[-1].message == ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR % (
-            'decision', "'some_wrong_tal_expression'"))
+        self.assertEqual(
+            messages[-1].message, ON_TRANSITION_TRANSFORM_TAL_EXPR_ERROR %
+            (EXECUTE_EXPR_VALUE, "name 'wrong_expression' is not defined"))
 
     def test_pm_DuplicatedItemDoesNotKeepDecisionAnnexes(self):
         """When an item is duplicated using the 'duplicate and keep link',
