@@ -35,4 +35,12 @@
         handler="Products.MeetingNamur.migrations.migrate_to_4200.migrate"
         profile="Products.MeetingNamur:default"/>
 
+    <genericsetup:upgradeStep
+        title="Go to MeetingNamur 4201"
+        description=""
+        source="4200"
+        destination="4201"
+        handler="Products.MeetingNamur.migrations.migrate_to_4201.migrate"
+        profile="Products.MeetingNamur:default"/>
+
 </configure>

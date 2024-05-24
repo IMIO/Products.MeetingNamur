@@ -21,13 +21,14 @@ class testCustomMeetingItem(MeetingNamurTestCase, mctcmi):
         self.do(m, 'freeze')
         item = m.get_items()[0]
         # no MeetingBudgetImpactReviewer in rôle
-        developers_budgetimpactreviewers_uid = org_id_to_uid("developers_budgetimpactreviewers")
+        developers_uid = org_id_to_uid("developers")
+        developers_budgetimpactreviewers_uid = developers_uid + "_budgetimpactreviewers"
         vendors_budgetimpactreviewers_uid = org_id_to_uid("vendors_budgetimpactreviewers")
         self.assertFalse((developers_budgetimpactreviewers_uid, (
             'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles())
         self.assertFalse((vendors_budgetimpactreviewers_uid, (
             'Reader', 'MeetingBudgetImpactReviewer')) in item.get_local_roles())
-        item.setGrpBudgetInfos(('developers',))
+        item.setGrpBudgetInfos((developers_uid,))
         item.update_local_roles()
         # MeetingBudgetImpactReviewer role define for finance (only)
         self.assertTrue((developers_budgetimpactreviewers_uid, (
