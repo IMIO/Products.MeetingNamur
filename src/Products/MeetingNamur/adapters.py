@@ -329,7 +329,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
         res = []
         orgs = get_organizations(not_empty_suffix='budgetimpactreviewers')
         for group in orgs:
-            res.append((group.id, group.getProperty('title')))
+            res.append((group.UID(), group.getProperty('title')))
         return DisplayList(tuple(res))
 
     MeetingItem.listGrpBudgetInfosAdviser = listGrpBudgetInfosAdviser
@@ -349,8 +349,7 @@ class CustomNamurMeetingItem(CustomMeetingItem):
             for grpBudgetInfo in item.grpBudgetInfos:
                 # for each group_budgetimpactreviewers add new local roles
                 if grpBudgetInfo:
-                    grp_role = '%s_budgetimpactreviewers' % grpBudgetInfo
-                    grp_uid = org_id_to_uid(grp_role)
+                    grp_uid = '%s_budgetimpactreviewers' % grpBudgetInfo
                     grp_uids.append(grp_uid)
                     item.manage_addLocalRoles(grp_uid, ('Reader', 'MeetingBudgetImpactReviewer',))
         # suppress old unused group_budgetimpactreviewers

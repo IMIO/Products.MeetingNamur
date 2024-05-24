@@ -9,6 +9,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 
 - Cleanup.
   [gbastien]
+- Migrate `MeetingItem.grpBudgetInfos` to use orgs UIDs.
+  [aduchene]
 
 
 4.2.0 (2024-03-11)
@@ -34,6 +36,7 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
   [gbastien]
 - `meetingnamur.css` is now completely empty.
   [gbastien]
+
 
 4.2.0rc2 (2023-07-04)
 ---------------------
