@@ -28,7 +28,7 @@ class Migrate_To_4201(Migrator):
                 for grpBudgetInfo in item.grpBudgetInfos:
                     if grpBudgetInfo == "":
                         continue
-                    matching_ids = [id for id in orgs_ids if id == grpBudgetInfo or re.match("\/%s$" % grpBudgetInfo, id)]
+                    matching_ids = [id for id in orgs_ids if id == grpBudgetInfo or re.match(".*\/%s$" % grpBudgetInfo, id)]
                     if len(matching_ids) == 1:
                         grp_uid = org_id_to_uid(matching_ids[0])
                         new_values.append(grp_uid)
