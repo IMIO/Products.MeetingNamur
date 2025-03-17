@@ -7,8 +7,11 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Added `IMeetingNamurLayer browserlayer` that inherits from
+  `IMeetingCommunesLayer` so the document generator views are the ones from
+  `Products.MeetingCommunes` and we can use the overrided
+  `MCItemDocumentGenerationHelperView.deliberation_for_restapi`.
+  [gbastien]
 
 4.2.1 (2024-05-24)
 ------------------
@@ -77,7 +80,7 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.2.0a2 (2023-04-06)
 --------------------
 
-- Adapted code regarding removal of MeetingConfig.useGroupsAsCategories. 
+- Adapted code regarding removal of MeetingConfig.useGroupsAsCategories.
   [gbastien]
 
 4.2.0a1 (2023-02-23)
