@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<layers>
+    <layer name="Products.MeetingNamur.interfaces.IMeetingNamurLayer"
+           interface="Products.MeetingNamur.interfaces.IMeetingNamurLayer" />
+</layers>
