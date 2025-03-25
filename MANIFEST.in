@@ -11,6 +11,10 @@ include dev.cfg
 include versions-base.cfg
 include versions-dev.cfg
 include *.rst
+include *.txt
+recursive-include src *.conf
+recursive-include src *.robot
+recursive-include src *.zargo
 recursive-include src *.gitkeep
 recursive-include docs *.GPL
 recursive-include docs *.txt
