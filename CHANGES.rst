@@ -7,7 +7,8 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
 4.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update `meetingitem_view.pt` due to upstream changes.
+  [aduchene]
 
 
 4.2.2 (2025-03-25)
@@ -18,6 +19,7 @@ The Products.MeetingNamur version must be the same as the Products.PloneMeeting 
   `Products.MeetingCommunes` and we can use the overrided
   `MCItemDocumentGenerationHelperView.deliberation_for_restapi`.
   [gbastien]
+
 
 4.2.1 (2024-05-24)
 ------------------
